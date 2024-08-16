@@ -10,10 +10,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Input } from "antd";
 
+import "./Headers.css";
+
 const { Search } = Input;
 
 const Header: FC = () => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [submenuVisible, setSubmenuVisible] = useState(false);
 
   const handleMenuClick = () => {
     setMenuVisible(!menuVisible);
@@ -32,6 +35,12 @@ const Header: FC = () => {
     },
     { key: "promos", label: "Promos", href: "/promos" },
     { key: "sell-with-us", label: "Sell With Us", href: "/sell-with-us" },
+  ];
+
+  const submenuItems = [
+    { key: "brand1", label: "Brand 1", href: "/brand1" },
+    { key: "brand2", label: "Brand 2", href: "/brand2" },
+    { key: "brand3", label: "Brand 3", href: "/brand3" },
   ];
 
   return (
@@ -68,7 +77,7 @@ const Header: FC = () => {
           <span>VN</span>
         </div>
 
-        <div className="block md:hidden">
+        <div className="block md:block md:ml-5 md:items-center lg:hidden">
           <button onClick={handleMenuClick}>
             <MenuOutlined className="text-xl" />
           </button>
@@ -76,35 +85,66 @@ const Header: FC = () => {
       </div>
 
       {menuVisible && (
-        <div className="bg-white shadow-lg">
+        <div className="bg-white shadow-lg lg:hidden">
           {menuItems.map((item) => (
-            <Link
+            <div
               key={item.key}
-              href={item.href}
-              className="block px-4 py-2 border-b hover:bg-gray-100"
+              className={`relative ${
+                item.key === "sell-with-us"
+                  ? "bg-black text-white"
+                  : ""
+              } mb-1`}
             >
-              {item.label}
-            </Link>
+              <Link
+                href={item.href}
+                className={`block px-4 py-2 border-b ${
+                  item.key === "sell-with-us"
+                    ? "bg-black text-white hover:bg-gray-700"
+                    : "hover:bg-gray-100"
+                }`}
+              >
+                {item.label}
+              </Link>
+            </div>
           ))}
         </div>
       )}
 
-      <div className="hidden lg:flex justify-center border-t mt-4 py-2">
-        {/* <div className="relative overflow-hidden">
-          <span className="cursor-pointer">All Brands</span>
-        </div> */}
-
+      <div className="hidden lg:flex items-center justify-center border-t mt-4 py-2 relative">
         <div className="flex justify-center space-x-8">
           {menuItems.slice(0, -1).map((item) => (
-            <Link
+            <div
               key={item.key}
-              href={item.href}
-              className="px-4 py-2 cursor-pointer hover:text-gray-700"
+              className="relative hover:font-semibold hover:text-blue-600 text-gray-600"
+              onMouseEnter={() =>
+                item.key === "all-brands" && setSubmenuVisible(true)
+              }
+              onMouseLeave={() => setSubmenuVisible(false)}
             >
-              {item.label}
-            </Link>
+              <Link
+                href={item.href}
+                className="px-4 py-2 cursor-pointer hover:text-gray-700"
+              >
+                {item.label}
+              </Link>
+
+              {item.key === "all-brands" && submenuVisible && (
+                <div className="absolute left-0 top-full bg-white shadow-lg mt-2 py-2">
+                  {submenuItems.map((submenuItem) => (
+                    <Link
+                      key={submenuItem.key}
+                      href={submenuItem.href}
+                      className="block px-4 py-2 hover:bg-gray-100 hover:text-blue-500"
+                    >
+                      {submenuItem.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
+
         <Link
           href="/sell-with-us"
           className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-gray-700 ml-6"

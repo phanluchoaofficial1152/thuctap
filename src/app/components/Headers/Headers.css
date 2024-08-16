@@ -1,79 +1,25 @@
-/* Headers.css */
-.ant-menu-item:hover,
-.ant-menu-submenu-title:hover {
-  border-bottom: 1px solid #1e40af;
+.relative:hover .absolute {
+  display: block;
 }
 
-.ant-menu-title-content {
-  color: black;
-}
-
-.ant-menu-title-content:hover {
-  color: #1e40af;
-}
-
-.header-inner,
-.header-menu-inner {
-  width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-}
-
-.header-menu {
-  width: 100%;
-}
-
-.ant-menu-item,
-.ant-menu-submenu-title {
-  transition: border-bottom 0.3s ease;
-}
-
-.mobile-menu-container {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  width: 100%;
+.absolute {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 20;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 105px;
+  background-color: white;
+  border: 1px solid #ddd;
+  z-index: 10;
 }
 
-.mobile-menu .ant-menu-item {
+.absolute a {
   display: block;
-  width: 100%;
+  color: black;
 }
 
-.ant-dropdown-trigger {
-  font-size: 24px;
-}
-
-@media (max-width: 768px) {
-  .header-menu {
-    display: none;
-  }
-
-  .header-inner {
-    flex-direction: column;
-  }
-
-  .header-menu-inner {
-    flex-direction: column;
-    padding: 0;
-  }
-
-  .mobile-menu-container {
-    display: flex;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .header-menu {
-    display: flex;
-  }
-
-  .header-inner .flex-grow {
-    display: block;
-  }
+.absolute a:hover {
+  color: blue;
+  background-color: #f2f2f2;
+  font-weight: bold;
 }

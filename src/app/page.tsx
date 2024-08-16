@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useRef } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -16,9 +16,58 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import "./Home.css";
+import axios from "axios";
+
+interface Class {
+  id: string;
+  class_name: string;
+  class_code: string;
+  course_price: number;
+  course_discount: number;
+  campus: {
+    campus_name: string;
+    campus_address: string;
+  };
+  teachers: [
+    {
+      id: string;
+      name: string;
+      email: string;
+    }
+  ];
+}
 
 const Home: FC = () => {
   const carouselRef = useRef<any>(null);
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [classesSwiper, setClassesSwiper] = useState<Class[]>([]);
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get(
+          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=2"
+        );
+        setClasses(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchClassesSwiper = async () => {
+      try {
+        const response = await axios.get(
+          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=4"
+        );
+        setClassesSwiper(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchClasses();
+    fetchClassesSwiper();
+  }, []);
 
   const handlePrev = () => {
     carouselRef.current.prev();
@@ -99,114 +148,96 @@ const Home: FC = () => {
             </button>
           </div>
 
-          <div className="lg:w-3/5 flex flex-col lg:flex-row gap-6">
-            <div className="border border-gray-200 p-4 relative flex-1">
-              <Image
-                src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                alt="Product 1"
-                width={500}
-                height={500}
-                className="w-full h-[400px] object-cover"
-              />
-              <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                Category
-              </span>
-              <h3 className="mt-2 text-lg font-semibold">Product Name 1</h3>
-              <p className="text-sm text-gray-600">Brand Name</p>
-              <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-red-500">$40.00</span>
-                  <span className="text-sm line-through text-gray-500">
-                    $60.00
+          <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
+            {classes.map((classItem, index) => (
+              <div key={index}>
+                <div className="border border-gray-200 p-4 relative flex-1">
+                  <Image
+                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                    alt="Product 1"
+                    width={500}
+                    height={500}
+                    className="w-full h-[400px] object-cover"
+                  />
+                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                    {classItem.campus.campus_name}
                   </span>
-                </div>
-                <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                  30% OFF
+                  <h3 className="mt-2 text-lg font-semibold">
+                    {classItem.class_name}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {classItem.campus.campus_address}
+                  </p>
+                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-red-500">
+                        {classItem.course_price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </span>
+                      {classItem.course_discount > 0 && (
+                        <span className="text-sm line-through text-gray-500">
+                          {classItem.course_price + classItem.course_discount}
+                        </span>
+                      )}
+                    </div>
+                    {classItem.course_discount > 0 && (
+                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                        {classItem.course_discount}% OFF
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="border border-gray-200 p-4 relative flex-1">
-              <Image
-                src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                alt="Product 2"
-                width={500}
-                height={500}
-                className="w-full h-[400px] object-cover"
-              />
-              <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                Category
-              </span>
-              <h3 className="mt-2 text-lg font-semibold">Product Name 2</h3>
-              <p className="text-sm text-gray-600">Brand Name</p>
-              <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-red-500">$50.00</span>
-                  <span className="text-sm line-through text-gray-500">
-                    $70.00
-                  </span>
-                </div>
-                <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                  30% OFF
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
         <div className="product-content flex flex-col lg:flex-row gap-6 mt-8">
-          <div className="lg:w-3/5 flex flex-col lg:flex-row gap-6">
-            <div className="border border-gray-200 p-4 relative flex-1">
-              <Image
-                src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                alt="Product 1"
-                width={500}
-                height={500}
-                className="w-full h-[400px] object-cover"
-              />
-              <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                Category
-              </span>
-              <h3 className="mt-2 text-lg font-semibold">Product Name 1</h3>
-              <p className="text-sm text-gray-600">Brand Name</p>
-              <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-red-500">$40.00</span>
-                  <span className="text-sm line-through text-gray-500">
-                    $60.00
+          <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
+            {classes.map((classItem, index) => (
+              <div key={index}>
+                <div className="border border-gray-200 p-4 relative flex-1">
+                  <Image
+                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                    alt="Product 1"
+                    width={500}
+                    height={500}
+                    className="w-full h-[400px] object-cover"
+                  />
+                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                    {classItem.campus.campus_name}
                   </span>
-                </div>
-                <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                  30% OFF
+                  <h3 className="mt-2 text-lg font-semibold">
+                    {classItem.class_name}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {classItem.campus.campus_address}
+                  </p>
+                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-red-500">
+                        {classItem.course_price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </span>
+                      {classItem.course_discount > 0 && (
+                        <span className="text-sm line-through text-gray-500">
+                          {classItem.course_price + classItem.course_discount}
+                        </span>
+                      )}
+                    </div>
+                    {classItem.course_discount > 0 && (
+                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                        {classItem.course_discount}% OFF
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="border border-gray-200 p-4 relative flex-1">
-              <Image
-                src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                alt="Product 2"
-                width={500}
-                height={500}
-                className="w-full h-[400px] object-cover"
-              />
-              <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                Category
-              </span>
-              <h3 className="mt-2 text-lg font-semibold">Product Name 2</h3>
-              <p className="text-sm text-gray-600">Brand Name</p>
-              <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-red-500">$50.00</span>
-                  <span className="text-sm line-through text-gray-500">
-                    $70.00
-                  </span>
-                </div>
-                <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                  30% OFF
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="relative lg:w-2/5 flex-1">
@@ -262,155 +293,48 @@ const Home: FC = () => {
           }}
         >
           <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                  alt="Product 1"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 1</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $40.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $60.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                  alt="Product 2"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 2</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $50.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $70.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
+            {classesSwiper.map((classItem) => (
+              <SwiperSlide key={classItem.id}>
+                <div className="border border-gray-200 p-4 relative">
+                  <Image
+                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                    alt={classItem.class_name}
+                    width={500}
+                    height={500}
+                    className="w-full h-[400px] object-cover"
+                  />
+                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                    {classItem.campus.campus_name}
+                  </span>
+                  <h3 className="mt-2 text-lg font-semibold">
+                    {classItem.class_name}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {classItem.campus.campus_address}
+                  </p>
+                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-red-500">
+                        {classItem.course_price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </span>
+                      {classItem.course_discount > 0 && (
+                        <span className="text-sm line-through text-gray-500">
+                          ${classItem.course_price + classItem.course_discount}
+                        </span>
+                      )}
+                    </div>
+                    {classItem.course_discount > 0 && (
+                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                        {classItem.course_discount}% OFF
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                  alt="Product 3"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 3</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $40.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $60.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                  alt="Product 4"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 4</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $50.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $70.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                  alt="Product 4"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 4</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $50.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $70.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+              </SwiperSlide>
+            ))}
           </div>
         </Swiper>
 
@@ -476,155 +400,48 @@ const Home: FC = () => {
           }}
         >
           <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                  alt="Product 1"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 1</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $40.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $60.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                  alt="Product 2"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 2</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $50.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $70.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
+            {classesSwiper.map((classItem) => (
+              <SwiperSlide key={classItem.id}>
+                <div className="border border-gray-200 p-4 relative">
+                  <Image
+                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                    alt={classItem.class_name}
+                    width={500}
+                    height={500}
+                    className="w-full h-[400px] object-cover"
+                  />
+                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                    {classItem.campus.campus_name}
+                  </span>
+                  <h3 className="mt-2 text-lg font-semibold">
+                    {classItem.class_name}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {classItem.campus.campus_address}
+                  </p>
+                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-bold text-red-500">
+                        {classItem.course_price.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </span>
+                      {classItem.course_discount > 0 && (
+                        <span className="text-sm line-through text-gray-500">
+                          ${classItem.course_price + classItem.course_discount}
+                        </span>
+                      )}
+                    </div>
+                    {classItem.course_discount > 0 && (
+                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                        {classItem.course_discount}% OFF
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                  alt="Product 3"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 3</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $40.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $60.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                  alt="Product 4"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 4</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $50.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $70.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 relative">
-                <Image
-                  src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/fe7124f0ee14c9982411cf6e79d0796f.webp"
-                  alt="Product 4"
-                  width={500}
-                  height={500}
-                  className="w-full h-[400px] object-cover"
-                />
-                <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                  Category
-                </span>
-                <h3 className="mt-2 text-lg font-semibold">Product Name 4</h3>
-                <p className="text-sm text-gray-600">Brand Name</p>
-                <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-500">
-                      $50.00
-                    </span>
-                    <span className="text-sm line-through text-gray-500">
-                      $70.00
-                    </span>
-                  </div>
-                  <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                    30% OFF
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+              </SwiperSlide>
+            ))}
           </div>
         </Swiper>
 
@@ -690,170 +507,61 @@ const Home: FC = () => {
           }}
         >
           <div className="flex space-x-6 overflow-x-auto">
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
-                <div className="w-32 h-32 mb-4">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
-                    alt="User"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
+            {classesSwiper.map((classItem, index) => (
+              <div key={index}>
+                <SwiperSlide>
+                  <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
+                    <div className="w-32 h-32 mb-4">
+                      <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
+                        alt="User"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
 
-                <div className="text-xl font-semibold mb-2">Tên User</div>
-                <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
-                  @username
-                </div>
+                    {classItem.teachers.map((teacher, key) => (
+                      <div key={key} className="text-xl font-semibold mb-2">
+                        {teacher.name}
+                      </div>
+                    ))}
 
-                <div className="flex space-x-3 mb-4">
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <FacebookOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <TwitterOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <YoutubeOutlined />
-                  </Link>
-                </div>
+                    {classItem.teachers.map((teacher, key) => (
+                      <div
+                        key={key}
+                        className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2"
+                      >
+                        {teacher.email}
+                      </div>
+                    ))}
 
-                <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                  Shop with me
-                </button>
+                    <div className="flex space-x-3 mb-4">
+                      <Link
+                        href="#"
+                        className="text-gray-600 hover:text-blue-500"
+                      >
+                        <FacebookOutlined />
+                      </Link>
+                      <Link
+                        href="#"
+                        className="text-gray-600 hover:text-blue-500"
+                      >
+                        <TwitterOutlined />
+                      </Link>
+                      <Link
+                        href="#"
+                        className="text-gray-600 hover:text-blue-500"
+                      >
+                        <YoutubeOutlined />
+                      </Link>
+                    </div>
+
+                    <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+                      Shop with me
+                    </button>
+                  </div>
+                </SwiperSlide>
               </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
-                <div className="w-32 h-32 mb-4">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
-                    alt="User"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-
-                <div className="text-xl font-semibold mb-2">Tên User</div>
-                <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
-                  @username
-                </div>
-
-                <div className="flex space-x-3 mb-4">
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <FacebookOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <TwitterOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <YoutubeOutlined />
-                  </Link>
-                </div>
-
-                <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                  Shop with me
-                </button>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
-                <div className="w-32 h-32 mb-4">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
-                    alt="User"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-
-                <div className="text-xl font-semibold mb-2">Tên User</div>
-                <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
-                  @username
-                </div>
-
-                <div className="flex space-x-3 mb-4">
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <FacebookOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <TwitterOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <YoutubeOutlined />
-                  </Link>
-                </div>
-
-                <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                  Shop with me
-                </button>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
-                <div className="w-32 h-32 mb-4">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
-                    alt="User"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-
-                <div className="text-xl font-semibold mb-2">Tên User</div>
-                <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
-                  @username
-                </div>
-
-                <div className="flex space-x-3 mb-4">
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <FacebookOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <TwitterOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <YoutubeOutlined />
-                  </Link>
-                </div>
-
-                <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                  Shop with me
-                </button>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
-                <div className="w-32 h-32 mb-4">
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
-                    alt="User"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-
-                <div className="text-xl font-semibold mb-2">Tên User</div>
-                <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
-                  @username
-                </div>
-
-                <div className="flex space-x-3 mb-4">
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <FacebookOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <TwitterOutlined />
-                  </Link>
-                  <Link href="#" className="text-gray-600 hover:text-blue-500">
-                    <YoutubeOutlined />
-                  </Link>
-                </div>
-
-                <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                  Shop with me
-                </button>
-              </div>
-            </SwiperSlide>
+            ))}
           </div>
         </Swiper>
 

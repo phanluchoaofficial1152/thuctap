@@ -29,10 +29,10 @@ export default function RootLayout({
         />
       </head>
 
-      <body className={`${quicksand.className} container mx-auto w-full`}>
+      <body className={`${quicksand.className}`}>
         {" "}
         <Headers />
-        <main style={{ backgroundColor: "#F7F7F7" }}>{children}</main>
+        <main className="container" style={{ backgroundColor: "#F7F7F7" }}>{children}</main>
         <Footer />
       </body>
     </html>

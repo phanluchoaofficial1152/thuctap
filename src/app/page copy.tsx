@@ -78,7 +78,7 @@ const Home: FC = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <div className="carousel-container">
         <Carousel ref={carouselRef} dots={false} effect="fade" autoplay>
           <div className="carousel-slide">
@@ -574,7 +574,7 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

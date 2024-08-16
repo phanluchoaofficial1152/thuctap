@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Input, Menu, Space, Button } from "antd";
 import {
   ShoppingCartOutlined,
   UserOutlined,
@@ -9,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import Image from "next/image";
-import "./Headers.css";
+import { Input } from "antd";
 
 const { Search } = Input;
 
@@ -21,49 +20,23 @@ const Header: FC = () => {
   };
 
   const menuItems = [
-    { key: "skincare", label: <Link href="/skincare">Skincare</Link> },
-    { key: "makeup", label: <Link href="/makeup">Makeup</Link> },
-    { key: "hair-care", label: <Link href="/hair-care">Hair Care</Link> },
-    { key: "bath-body", label: <Link href="/bath-body">Bath & Body</Link> },
+    { key: "all-brands", label: "All Brands", href: "/all-brands" },
+    { key: "skincare", label: "Skincare", href: "/skincare" },
+    { key: "makeup", label: "Makeup", href: "/makeup" },
+    { key: "hair-care", label: "Hair Care", href: "/hair-care" },
+    { key: "bath-body", label: "Bath & Body", href: "/bath-body" },
     {
       key: "beauty-supplements",
-      label: <Link href="/beauty-supplements">Beauty Supplements</Link>,
+      label: "Beauty Supplements",
+      href: "/beauty-supplements",
     },
-    { key: "promos", label: <Link href="/promos">Promos</Link> },
-    {
-      key: "sell-with-us",
-      label: (
-        <Link
-          href="/sell-with-us"
-          style={{
-            cursor: "pointer",
-            color: "white",
-            textDecoration: "none",
-            transition: "color 0.3s",
-          }}
-          onMouseOver={(e: any) => (e.target.style.color = "black")}
-          onMouseOut={(e: any) => (e.target.style.color = "white")}
-        >
-          Sell With Us
-        </Link>
-      ),
-      className: "sell-with-us bg-black md:bg-black sm:bg-black",
-      style: {
-        marginRight: "10px",
-        cursor: "pointer",
-      },
-    },
-  ];
-
-  const submenuItems = [
-    { key: "brand1", label: "Brand 1" },
-    { key: "brand2", label: "Brand 2" },
-    { key: "brand3", label: "Brand 3" },
+    { key: "promos", label: "Promos", href: "/promos" },
+    { key: "sell-with-us", label: "Sell With Us", href: "/sell-with-us" },
   ];
 
   return (
     <div className="w-full bg-gray-100">
-      <div className="header-inner flex items-center justify-between py-4 px-4 md:px-6">
+      <div className="flex items-center justify-between py-4 px-4 md:px-6">
         <div className="flex-shrink-0">
           <Image
             src="https://pubcdn.ivymoda.com/ivy2/images/logo.png"
@@ -81,75 +54,64 @@ const Header: FC = () => {
           />
         </div>
 
-        <div className="flex items-center space-x-4 md:mb-2">
-          <Space>
-            <Link href={"/giohang"}>
-              <div className="flex items-center">
-                <ShoppingCartOutlined className="text-xl" />
-                <span className="ml-2">Cart</span>
-              </div>
-            </Link>
-            <span>|</span>
-            <Link href={"/taikhoan"}>
-              <div className="flex items-center">
-                <UserOutlined className="text-xl" />
-                <span className="ml-2">User</span>
-              </div>
-            </Link>
-            <span>|</span>
-            <span>VN</span>
-          </Space>
+        <div className="flex items-center space-x-4">
+          <Link href="/giohang" className="flex items-center cursor-pointer">
+            <ShoppingCartOutlined className="text-xl" />
+            <span className="ml-2">Cart</span>
+          </Link>
+          <span>|</span>
+          <Link href="/taikhoan" className="flex items-center cursor-pointer">
+            <UserOutlined className="text-xl" />
+            <span className="ml-2">User</span>
+          </Link>
+          <span>|</span>
+          <span>VN</span>
         </div>
 
-        <div className="block md:flex lg:hidden md:ml-3">
-          <Button icon={<MenuOutlined />} onClick={handleMenuClick} />
+        <div className="block md:hidden">
+          <button onClick={handleMenuClick}>
+            <MenuOutlined className="text-xl" />
+          </button>
         </div>
       </div>
 
       {menuVisible && (
-        <Menu
-          mode="vertical"
-          className="mobile-menu"
-          style={{ width: "100%" }}
-          items={menuItems}
-        />
+        <div className="bg-white shadow-lg">
+          {menuItems.map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              className="block px-4 py-2 border-b hover:bg-gray-100"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
       )}
 
-      <Menu
-        mode="horizontal"
-        className="header-menu hidden md:hidden lg:flex justify-between"
-        items={[
-          {
-            key: "all-brands",
-            label: "All Brands",
-            children: submenuItems,
-          },
-          ...menuItems.slice(0, -1),
-          {
-            key: "sell-with-us",
-            label: (
-              <Link
-                href="/sell-with-us"
-                style={{
-                  cursor: "pointer",
-                  color: "white",
-                  textDecoration: "none",
-                  transition: "color 0.3s",
-                }}
-                onMouseOver={(e: any) => (e.target.style.color = "black")}
-                onMouseOut={(e: any) => (e.target.style.color = "white")}
-              >
-                Sell With Us
-              </Link>
-            ),
-            className: "sell-with-us bg-black md:bg-black sm:bg-black",
-            style: {
-              marginRight: "10px",
-              cursor: "pointer",
-            },
-          },
-        ]}
-      />
+      <div className="hidden lg:flex justify-center border-t mt-4 py-2">
+        {/* <div className="relative overflow-hidden">
+          <span className="cursor-pointer">All Brands</span>
+        </div> */}
+
+        <div className="flex justify-center space-x-8">
+          {menuItems.slice(0, -1).map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              className="px-4 py-2 cursor-pointer hover:text-gray-700"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+        <Link
+          href="/sell-with-us"
+          className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-gray-700 ml-6"
+        >
+          Sell With Us
+        </Link>
+      </div>
     </div>
   );
 };

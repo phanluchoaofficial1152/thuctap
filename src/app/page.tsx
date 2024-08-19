@@ -133,7 +133,7 @@ const Home: FC = () => {
         </div>
 
         <div className="product-content flex flex-col lg:flex-row gap-6">
-          <div className="relative lg:w-2/5 flex-1">
+          <div className="relativee lg:w-2/5 flex-1">
             {" "}
             <Image
               src="https://cotton4u.vn/files/news/2024/07/27/079d6932fffc257aafc0eb19e2172061.webp"
@@ -142,7 +142,7 @@ const Home: FC = () => {
               height={400}
               className="w-full h-full object-cover"
             />
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded">
+            <button className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded">
               Shop Now
             </button>
           </div>
@@ -150,15 +150,17 @@ const Home: FC = () => {
           <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
             {classes.map((classItem, index) => (
               <div key={index}>
-                <div className="border border-gray-200 p-4 relative flex-1">
-                  <Image
-                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                    alt="Product 1"
-                    width={500}
-                    height={500}
-                    className="w-full h-[400px] object-cover"
-                  />
-                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                <div className="border border-gray-200 p-4 relativee flex-1">
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <Image
+                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                      alt="Product 1"
+                      width={500}
+                      height={500}
+                      className="w-full h-[400px] object-cover"
+                    />
+                  </Link>
+                  <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
                   <h3 className="mt-2 text-lg font-semibold">
@@ -182,7 +184,7 @@ const Home: FC = () => {
                       )}
                     </div>
                     {classItem.course_discount > 0 && (
-                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
                         {classItem.course_discount}% OFF
                       </div>
                     )}
@@ -197,15 +199,17 @@ const Home: FC = () => {
           <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
             {classes.map((classItem, index) => (
               <div key={index}>
-                <div className="border border-gray-200 p-4 relative flex-1">
-                  <Image
-                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                    alt="Product 1"
-                    width={500}
-                    height={500}
-                    className="w-full h-[400px] object-cover"
-                  />
-                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                <div className="border border-gray-200 p-4 relativee flex-1">
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <Image
+                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                      alt="Product 1"
+                      width={500}
+                      height={500}
+                      className="w-full h-[400px] object-cover"
+                    />
+                  </Link>
+                  <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
                   <h3 className="mt-2 text-lg font-semibold">
@@ -229,7 +233,7 @@ const Home: FC = () => {
                       )}
                     </div>
                     {classItem.course_discount > 0 && (
-                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
                         {classItem.course_discount}% OFF
                       </div>
                     )}
@@ -239,7 +243,7 @@ const Home: FC = () => {
             ))}
           </div>
 
-          <div className="relative lg:w-2/5 flex-1">
+          <div className="relativee lg:w-2/5 flex-1">
             {" "}
             <Image
               src="https://cotton4u.vn/files/news/2024/07/27/079d6932fffc257aafc0eb19e2172061.webp"
@@ -248,7 +252,7 @@ const Home: FC = () => {
               height={400}
               className="w-full h-full object-cover"
             />
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded">
+            <button className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded">
               Shop Now
             </button>
           </div>
@@ -294,15 +298,17 @@ const Home: FC = () => {
           <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {classesSwiper.map((classItem) => (
               <SwiperSlide key={classItem.id}>
-                <div className="border border-gray-200 p-4 relative">
-                  <Image
-                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                    alt={classItem.class_name}
-                    width={500}
-                    height={500}
-                    className="w-full h-[400px] object-cover"
-                  />
-                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                <div className="border border-gray-200 p-4 relativee">
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <Image
+                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                      alt={classItem.class_name}
+                      width={500}
+                      height={500}
+                      className="w-full h-[400px] object-cover"
+                    />
+                  </Link>
+                  <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
                   <h3 className="mt-2 text-lg font-semibold">
@@ -326,7 +332,7 @@ const Home: FC = () => {
                       )}
                     </div>
                     {classItem.course_discount > 0 && (
-                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
                         {classItem.course_discount}% OFF
                       </div>
                     )}
@@ -401,15 +407,17 @@ const Home: FC = () => {
           <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {classesSwiper.map((classItem) => (
               <SwiperSlide key={classItem.id}>
-                <div className="border border-gray-200 p-4 relative">
-                  <Image
-                    src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                    alt={classItem.class_name}
-                    width={500}
-                    height={500}
-                    className="w-full h-[400px] object-cover"
-                  />
-                  <span className="absolute top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                <div className="border border-gray-200 p-4 relativee">
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <Image
+                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
+                      alt={classItem.class_name}
+                      width={500}
+                      height={500}
+                      className="w-full h-[400px] object-cover"
+                    />
+                  </Link>
+                  <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
                   <h3 className="mt-2 text-lg font-semibold">
@@ -433,7 +441,7 @@ const Home: FC = () => {
                       )}
                     </div>
                     {classItem.course_discount > 0 && (
-                      <div className="absolute top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
+                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
                         {classItem.course_discount}% OFF
                       </div>
                     )}

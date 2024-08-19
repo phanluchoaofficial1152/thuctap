@@ -3,6 +3,14 @@
   padding: 0 20px;
 }
 
+.relativee {
+  position: relative;
+}
+
+.absolutee {
+  position: absolute;
+}
+
 .banner-sale-off-50 {
   position: relative;
   width: 100%;

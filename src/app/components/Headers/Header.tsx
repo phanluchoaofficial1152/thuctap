@@ -79,7 +79,7 @@ const Header: FC = () => {
           <span>VN</span>
         </div>
 
-        <div className="block md:block md:ml-5 md:items-center lg:hidden">
+        <div className="block md:block md:ml-5 sm:ml-5 md:items-center lg:hidden">
           <button onClick={handleMenuClick}>
             <MenuOutlined className="text-xl" />
           </button>

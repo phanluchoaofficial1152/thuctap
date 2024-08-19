@@ -5,7 +5,6 @@ import { Breadcrumb, Button, Rate, Row, Col, Typography } from "antd";
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 const { Title, Paragraph, Text } = Typography;
 
 interface AvatarProps {
@@ -19,12 +18,14 @@ const Avatar: React.FC<AvatarProps> = ({ name, rating }) => {
       <div className="rounded-full bg-gray-200 w-12 h-12 flex items-center justify-center text-gray-500 font-bold">
         {name.charAt(0)}
       </div>
+
       <div className="ml-2">
         <div className="text-gray-400">{name}</div>
         <div className="flex text-yellow-500 text-sm mt-1">
           {[...Array(Math.floor(rating))].map((_, i) => (
             <i key={i} className="fas fa-star mr-1"></i>
           ))}
+
           {rating % 1 !== 0 && <i className="fas fa-star-half-alt mr-1"></i>}
           {[...Array(5 - Math.ceil(rating))].map((_, i) => (
             <i key={i} className="far fa-star mr-1"></i>
@@ -53,48 +54,11 @@ const ProductDetails: FC = () => {
         <Breadcrumb.Item>Product Name</Breadcrumb.Item>
       </Breadcrumb>
 
-      <div className="mt-8 flex flex-col md:flex-row bg-white p-6 rounded-lg shadow-lg">
-        <div className="flex flex-col w-1/12 space-y-2">
-          <Image
-            src="/path/to/image1.jpg"
-            alt="Thumbnail 1"
-            width={100}
-            height={100}
-            layout="responsive"
-            className="w-full h-auto"
-          />
-
-          <Image
-            src="/path/to/image2.jpg"
-            alt="Thumbnail 2"
-            width={100}
-            height={100}
-            layout="responsive"
-            className="w-full h-auto"
-          />
-
-          <Image
-            src="/path/to/image3.jpg"
-            alt="Thumbnail 3"
-            width={100}
-            height={100}
-            layout="responsive"
-            className="w-full h-auto"
-          />
-          
-          <Image
-            src="/path/to/image4.jpg"
-            alt="Thumbnail 4"
-            width={100}
-            height={100}
-            layout="responsive"
-            className="w-full h-auto"
-          />
-        </div>
-
+      <div className="mt-8 flex flex-col md:flex-row bg-white p-3 rounded-lg shadow-lg">
+        {/* Main Image */}
         <div className="w-full md:w-5/12">
           <Image
-            src="/path/to/product-image.jpg"
+            src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
             alt="Product Name"
             width={500}
             height={500}
@@ -102,6 +66,54 @@ const ProductDetails: FC = () => {
             className="w-full h-auto"
           />
         </div>
+        {/* End main image */}
+
+        {/* Thumbnail Images */}
+        <div className="flex flex-wrap md:flex-col w-full md:w-1/12 mt-4 ml-2 md:mt-0">
+          <div className="flex flex-wrap gap-1 justify-center items-center">
+            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
+              <Image
+                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
+                alt="Thumbnail 1"
+                width={100}
+                height={100}
+                layout="responsive"
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
+              <Image
+                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/3bbd35da6cd59d6ad35f79d0cfea8fb7.webp"
+                alt="Thumbnail 2"
+                width={100}
+                height={100}
+                layout="responsive"
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
+              <Image
+                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/3e52564ad486c238c1277b8d4dc49fea.webp"
+                alt="Thumbnail 3"
+                width={100}
+                height={100}
+                layout="responsive"
+                className="w-full h-auto"
+              />
+            </div>
+            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
+              <Image
+                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/dba04ce4fae3cf8ef5fdba757b60e20d.webp"
+                alt="Thumbnail 4"
+                width={100}
+                height={100}
+                layout="responsive"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+        {/* End thumbnail images */}
 
         <div className="w-full md:w-5/12 mt-4 md:mt-0 md:ml-8">
           <p className="text-sm uppercase text-gray-500">Brand</p>

@@ -47,12 +47,14 @@ const Header: FC = () => {
     <div className="w-100 bg-gray-100">
       <div className="flex items-center justify-between py-4 px-4 md:px-6">
         <div className="flex-shrink-0">
-          <Image
-            src="https://pubcdn.ivymoda.com/ivy2/images/logo.png"
-            alt="Logo"
-            width={130}
-            height={80}
-          />
+          <Link href="/">
+            <Image
+              src="https://pubcdn.ivymoda.com/ivy2/images/logo.png"
+              alt="Logo"
+              width={130}
+              height={80}
+            />
+          </Link>
         </div>
 
         <div className="flex-grow hidden md:flex md:mb-2 md:w-full justify-center">

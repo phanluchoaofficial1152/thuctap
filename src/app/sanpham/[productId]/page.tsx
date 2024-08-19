@@ -63,6 +63,7 @@ const ProductDetails: FC = () => {
             layout="responsive"
             className="w-full h-auto"
           />
+
           <Image
             src="/path/to/image2.jpg"
             alt="Thumbnail 2"
@@ -71,6 +72,7 @@ const ProductDetails: FC = () => {
             layout="responsive"
             className="w-full h-auto"
           />
+
           <Image
             src="/path/to/image3.jpg"
             alt="Thumbnail 3"
@@ -79,6 +81,7 @@ const ProductDetails: FC = () => {
             layout="responsive"
             className="w-full h-auto"
           />
+          
           <Image
             src="/path/to/image4.jpg"
             alt="Thumbnail 4"

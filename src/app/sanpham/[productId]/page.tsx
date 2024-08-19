@@ -1,10 +1,12 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Breadcrumb, Button, Rate, Row, Col, Typography } from "antd";
-import { FC } from "react";
+import { Breadcrumb, Button, Row, Col, Typography, Spin } from "antd";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
+
 const { Title, Paragraph, Text } = Typography;
 
 interface AvatarProps {
@@ -36,8 +38,80 @@ const Avatar: React.FC<AvatarProps> = ({ name, rating }) => {
   );
 };
 
+interface Course {
+  id: string;
+  course_name: string;
+  course_price: number;
+  course_discount: number;
+  course_description: string;
+  course_type: string;
+}
+
+interface Campus {
+  campus_name: string;
+  campus_address: string;
+}
+
+interface ClassDetail {
+  id: string;
+  class_name: string;
+  class_location: string;
+  start_date: string;
+  end_date: string;
+  course: Course;
+  campus: Campus;
+}
+
+const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(amount);
+};
+
 const ProductDetails: FC = () => {
   const { productId } = useParams();
+  const [classDetail, setClassDetail] = useState<ClassDetail | null>(null);
+  const [loading, setLoading] = useState<any>(true);
+  const [activeImage, setActiveImage] = useState<string>(
+    "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
+  );
+
+  useEffect(() => {
+    const fetchClassDetail = async () => {
+      try {
+        const response = await axios.get(
+          `https://api-pro.teklearner.com/class/v1/class-detail?id=${productId}`
+        );
+
+        setLoading(false);
+
+        setClassDetail(response.data.data);
+      } catch (error) {
+        setLoading(false);
+        console.error("Failed to fetch class details", error);
+      }
+    };
+
+    fetchClassDetail();
+  }, [productId]);
+
+  if (!classDetail && loading) {
+    return (
+      <div className="mx-auto px-3">
+        <Spin />
+      </div>
+    );
+  }
+
+  const coursePrice = classDetail?.course.course_price;
+
+  const thumbnails = [
+    "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp",
+    "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/3bbd35da6cd59d6ad35f79d0cfea8fb7.webp",
+    "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/3e52564ad486c238c1277b8d4dc49fea.webp",
+    "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/dba04ce4fae3cf8ef5fdba757b60e20d.webp",
+  ];
 
   return (
     <div className="px-4 py-4">
@@ -51,14 +125,13 @@ const ProductDetails: FC = () => {
         <Breadcrumb.Item>
           <Link href="/brand">Brand</Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Item>Product Name</Breadcrumb.Item>
+        <Breadcrumb.Item>{classDetail?.course.course_name}</Breadcrumb.Item>
       </Breadcrumb>
 
       <div className="mt-8 flex flex-col md:flex-row bg-white p-3 rounded-lg shadow-lg">
-        {/* Main Image */}
-        <div className="w-full md:w-5/12">
+        <div className="w-full md:w-5/12 cursor-pointer">
           <Image
-            src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
+            src={activeImage}
             alt="Product Name"
             width={500}
             height={500}
@@ -66,59 +139,34 @@ const ProductDetails: FC = () => {
             className="w-full h-auto"
           />
         </div>
-        {/* End main image */}
 
-        {/* Thumbnail Images */}
         <div className="flex flex-wrap md:flex-col w-full md:w-1/12 mt-4 ml-2 md:mt-0">
-          <div className="flex flex-wrap gap-1 justify-center items-center">
-            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
-              <Image
-                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
-                alt="Thumbnail 1"
-                width={100}
-                height={100}
-                layout="responsive"
-                className="w-full h-auto"
-              />
-            </div>
-            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
-              <Image
-                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/3bbd35da6cd59d6ad35f79d0cfea8fb7.webp"
-                alt="Thumbnail 2"
-                width={100}
-                height={100}
-                layout="responsive"
-                className="w-full h-auto"
-              />
-            </div>
-            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
-              <Image
-                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/3e52564ad486c238c1277b8d4dc49fea.webp"
-                alt="Thumbnail 3"
-                width={100}
-                height={100}
-                layout="responsive"
-                className="w-full h-auto"
-              />
-            </div>
-            <div className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2">
-              <Image
-                src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/dba04ce4fae3cf8ef5fdba757b60e20d.webp"
-                alt="Thumbnail 4"
-                width={100}
-                height={100}
-                layout="responsive"
-                className="w-full h-auto"
-              />
-            </div>
+          <div className="flex flex-wrap gap-1 justify-center items-center cursor-pointer">
+            {thumbnails.map((thumbnail, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-1/3 md:w-full mb-3 md:mb-2"
+                onClick={() => setActiveImage(thumbnail)}
+              >
+                <Image
+                  src={thumbnail}
+                  alt={`Thumbnail ${index + 1}`}
+                  width={100}
+                  height={100}
+                  layout="responsive"
+                  className="w-full h-auto"
+                />
+              </div>
+            ))}
           </div>
         </div>
-        {/* End thumbnail images */}
 
         <div className="w-full md:w-5/12 mt-4 md:mt-0 md:ml-8">
-          <p className="text-sm uppercase text-gray-500">Brand</p>
+          <p className="text-sm uppercase text-gray-500">
+            {classDetail?.course.course_type}
+          </p>
           <h1 className="text-2xl md:text-3xl font-bold">
-            Product Name Goes Here
+            {classDetail?.course.course_name}
           </h1>
           <button className="text-gray-500 text-sm mt-2 flex items-center">
             <svg
@@ -138,15 +186,20 @@ const ProductDetails: FC = () => {
             Add to Favourites
           </button>
           <p className="mt-4 text-gray-700 leading-relaxed">
-            Nisl, do fames, consequat adipisicing. Recusandae platea neque, cum,
-            accusamus.
+            {classDetail?.course.course_description}
             <a href="#" className="text-blue-500 ml-2">
               Read More
             </a>
           </p>
           <div className="mt-4 flex items-center">
-            <p className="line-through text-gray-400 mr-4">AED 32.00</p>
-            <p className="text-2xl font-semibold text-black">AED 25.60</p>
+            {(classDetail as ClassDetail)?.course?.course_discount > 0 && (
+              <p className="line-through text-gray-400 mr-4">
+                {formatCurrency(Number(classDetail?.course?.course_discount))}
+              </p>
+            )}
+            <p className="text-2xl font-semibold text-black">
+              {formatCurrency(Number(coursePrice))}
+            </p>
             <span className="ml-4 py-1 px-3 border border-gray-400 text-gray-700">
               30% Off
             </span>

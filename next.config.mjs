@@ -8,6 +8,7 @@ const nextConfig = {
       "example.com",
       "shopsanpham.com",
       "mint07.com",
+      "encrypted-tbn0.gstatic.com",
     ],
   },
 };

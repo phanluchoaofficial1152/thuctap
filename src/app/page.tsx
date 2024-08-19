@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import "./Home.css";
 import axios from "axios";
+import ClassCard from "./components/TeacherCard";
 
 interface Class {
   id: string;
@@ -30,10 +31,24 @@ interface Class {
   };
   teachers: [
     {
+      id: string;
       name: string;
       email: string;
     }
   ];
+}
+
+function formatTeacherInfo(teachers: any) {
+  return teachers.map((teacher: any, index: any) => {
+    return (
+      <div key={`teacher-${index}`}>
+        <div className="text-xl font-semibold mb-2">{teacher.name}</div>
+        <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
+          {teacher.email}
+        </div>
+      </div>
+    );
+  });
 }
 
 const Home: FC = () => {
@@ -89,6 +104,7 @@ const Home: FC = () => {
               style={{ objectFit: "contain" }}
             />
           </div>
+
           <div className="carousel-slide">
             <Image
               src="https://cotton4u.vn/files/news/2024/07/25/971943fd5e05439de2c8fed10872c4b4.webp"
@@ -98,6 +114,7 @@ const Home: FC = () => {
               style={{ objectFit: "contain" }}
             />
           </div>
+
           <div className="carousel-slide">
             <Image
               src="https://cotton4u.vn/files/news/2024/07/01/5d855d0b818e29bdc91c15f6d68eba65.webp"
@@ -113,6 +130,7 @@ const Home: FC = () => {
           <div className="arrow arrow-prev" onClick={handlePrev}>
             <ArrowLeftOutlined />
           </div>
+
           <div className="arrow arrow-next" onClick={handleNext}>
             <ArrowRightOutlined />
           </div>
@@ -127,6 +145,7 @@ const Home: FC = () => {
           >
             New Arrivals
           </h2>
+
           <Link href="/all-products" className="text-blue-500 hover:underline">
             See All
           </Link>
@@ -148,8 +167,8 @@ const Home: FC = () => {
           </div>
 
           <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
-            {classes.map((classItem, index) => (
-              <div key={index}>
+            {classes.map((classItem, items) => (
+              <div key={"class item" + items}>
                 <div className="border border-gray-200 p-4 relativee flex-1">
                   <Link href={`/sanpham/${classItem.id}`}>
                     <Image
@@ -163,9 +182,11 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    {classItem.class_name}
-                  </h3>
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <h3 className="mt-2 text-lg font-semibold">
+                      {classItem.class_name}
+                    </h3>
+                  </Link>
                   <p className="text-sm text-gray-600">
                     {classItem.campus.campus_address}
                   </p>
@@ -197,8 +218,8 @@ const Home: FC = () => {
 
         <div className="product-content flex flex-col lg:flex-row gap-6 mt-8">
           <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
-            {classes.map((classItem, index) => (
-              <div key={index}>
+            {classes.map((classItem, value) => (
+              <div key={"value items" + value}>
                 <div className="border border-gray-200 p-4 relativee flex-1">
                   <Link href={`/sanpham/${classItem.id}`}>
                     <Image
@@ -212,9 +233,11 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    {classItem.class_name}
-                  </h3>
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <h3 className="mt-2 text-lg font-semibold">
+                      {classItem.class_name}
+                    </h3>
+                  </Link>
                   <p className="text-sm text-gray-600">
                     {classItem.campus.campus_address}
                   </p>
@@ -296,8 +319,8 @@ const Home: FC = () => {
           }}
         >
           <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {classesSwiper.map((classItem) => (
-              <SwiperSlide key={classItem.id}>
+            {classesSwiper.map((classItem, valueswiper) => (
+              <SwiperSlide key={"valuee swiper" + valueswiper}>
                 <div className="border border-gray-200 p-4 relativee">
                   <Link href={`/sanpham/${classItem.id}`}>
                     <Image
@@ -311,9 +334,11 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    {classItem.class_name}
-                  </h3>
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <h3 className="mt-2 text-lg font-semibold">
+                      {classItem.class_name}
+                    </h3>
+                  </Link>
                   <p className="text-sm text-gray-600">
                     {classItem.campus.campus_address}
                   </p>
@@ -405,8 +430,8 @@ const Home: FC = () => {
           }}
         >
           <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {classesSwiper.map((classItem) => (
-              <SwiperSlide key={classItem.id}>
+            {classesSwiper.map((classItem, itemswiperclass) => (
+              <SwiperSlide key={"item swiper class" + itemswiperclass}>
                 <div className="border border-gray-200 p-4 relativee">
                   <Link href={`/sanpham/${classItem.id}`}>
                     <Image
@@ -420,9 +445,11 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    {classItem.class_name}
-                  </h3>
+                  <Link href={`/sanpham/${classItem.id}`}>
+                    <h3 className="mt-2 text-lg font-semibold">
+                      {classItem.class_name}
+                    </h3>
+                  </Link>
                   <p className="text-sm text-gray-600">
                     {classItem.campus.campus_address}
                   </p>
@@ -494,7 +521,7 @@ const Home: FC = () => {
 
         <Swiper
           modules={[Navigation]}
-          className="mySwiper2"
+          className="mySwiper5"
           slidesPerView={1}
           spaceBetween={15}
           breakpoints={{
@@ -514,60 +541,8 @@ const Home: FC = () => {
           }}
         >
           <div className="flex space-x-6 overflow-x-auto">
-            {classesSwiper.map((classItem, index) => (
-              <div key={index}>
-                <SwiperSlide>
-                  <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
-                    <div className="w-32 h-32 mb-4">
-                      <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"
-                        alt="User"
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    </div>
-
-                    {classItem.teachers.map((teacher, key) => (
-                      <div key={key} className="text-xl font-semibold mb-2">
-                        {teacher.name}
-                      </div>
-                    ))}
-
-                    {classItem.teachers.map((teacher, key) => (
-                      <div
-                        key={key}
-                        className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2"
-                      >
-                        {teacher.email}
-                      </div>
-                    ))}
-
-                    <div className="flex space-x-3 mb-4">
-                      <Link
-                        href="#"
-                        className="text-gray-600 hover:text-blue-500"
-                      >
-                        <FacebookOutlined />
-                      </Link>
-                      <Link
-                        href="#"
-                        className="text-gray-600 hover:text-blue-500"
-                      >
-                        <TwitterOutlined />
-                      </Link>
-                      <Link
-                        href="#"
-                        className="text-gray-600 hover:text-blue-500"
-                      >
-                        <YoutubeOutlined />
-                      </Link>
-                    </div>
-
-                    <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                      Shop with me
-                    </button>
-                  </div>
-                </SwiperSlide>
-              </div>
+            {classesSwiper.map((classItem2, itemclasses) => (
+              <ClassCard classItem2={classItem2} key={itemclasses} />
             ))}
           </div>
         </Swiper>

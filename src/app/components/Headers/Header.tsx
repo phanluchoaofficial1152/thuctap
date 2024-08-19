@@ -88,9 +88,9 @@ const Header: FC = () => {
 
       {menuVisible && (
         <div className="bg-white shadow-lg lg:hidden">
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <div
-              key={item.key}
+              key={"item" + index}
               className={`relative ${
                 item.key === "sell-with-us" ? "bg-black text-white" : ""
               } mb-1`}
@@ -112,9 +112,9 @@ const Header: FC = () => {
 
       <div className="hidden lg:flex items-center border-t mt-4 py-2 relative justify-between">
         <div className="flex justify-center space-x-9">
-          {menuItems.slice(0, -1).map((item) => (
+          {menuItems.slice(0, -1).map((item, value) => (
             <div
-              key={item.key}
+              key={"value 1" + value}
               className="relative hover:font-semibold hover:text-blue-600 text-gray-600"
               onMouseEnter={() =>
                 item.key === "all-brands" && setSubmenuVisible(true)

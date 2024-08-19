@@ -6,6 +6,13 @@ import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+
+import "./details.css";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -50,6 +57,7 @@ interface Course {
 interface Campus {
   campus_name: string;
   campus_address: string;
+  campus_slug: string;
 }
 
 interface ClassDetail {
@@ -72,6 +80,7 @@ const formatCurrency = (amount: number) => {
 const ProductDetails: FC = () => {
   const { productId } = useParams();
   const [classDetail, setClassDetail] = useState<ClassDetail | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<ClassDetail[]>([]);
   const [loading, setLoading] = useState<any>(true);
   const [activeImage, setActiveImage] = useState<string>(
     "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
@@ -83,6 +92,18 @@ const ProductDetails: FC = () => {
         const response = await axios.get(
           `https://api-pro.teklearner.com/class/v1/class-detail?id=${productId}`
         );
+
+        const relatedResponse = await axios.get(
+          `https://api-pro.teklearner.com/class/v1/get-list-class?id=${productId}&skip=0&limit=16`
+        );
+
+        const allProducts = relatedResponse.data.data;
+
+        const filteredProducts = allProducts.filter(
+          (product: ClassDetail) => product.id !== productId
+        );
+
+        setRelatedProducts(filteredProducts);
 
         setLoading(false);
 
@@ -113,20 +134,28 @@ const ProductDetails: FC = () => {
     "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/dba04ce4fae3cf8ef5fdba757b60e20d.webp",
   ];
 
+  const breadcrumbItems = [
+    {
+      title: <Link href="/">Home</Link>,
+    },
+    {
+      title: <Link href="/skincare">Skincare</Link>,
+    },
+    {
+      title: <Link href="/brand">Brand</Link>,
+    },
+    {
+      title: classDetail?.class_name,
+    },
+  ];
+
   return (
     <div className="px-4 py-4">
-      <Breadcrumb className="text-sm md:text-base" separator=">">
-        <Breadcrumb.Item>
-          <Link href="/">Home</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link href="/skincare">Skincare</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link href="/brand">Brand</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{classDetail?.course.course_name}</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb
+        className="text-sm md:text-base"
+        separator=">"
+        items={breadcrumbItems}
+      />
 
       <div className="mt-8 flex flex-col md:flex-row bg-white p-3 rounded-lg shadow-lg">
         <div className="w-full md:w-5/12 cursor-pointer">
@@ -166,7 +195,7 @@ const ProductDetails: FC = () => {
             {classDetail?.course.course_type}
           </p>
           <h1 className="text-2xl md:text-3xl font-bold">
-            {classDetail?.course.course_name}
+            {classDetail?.class_name}
           </h1>
           <button className="text-gray-500 text-sm mt-2 flex items-center">
             <svg
@@ -498,6 +527,67 @@ const ProductDetails: FC = () => {
           </div>
         </div>
         {/* end top reviews */}
+      </div>
+
+      <div className="container mx-auto my-8">
+        <h2 className="text-2xl font-bold mb-4">Related Products</h2>
+
+        <Swiper
+          cssMode={true}
+          navigation={true}
+          modules={[Navigation]}
+          slidesPerView={4}
+          spaceBetween={16}
+        >
+          {relatedProducts.map((product, index) => (
+            <SwiperSlide key={index + 1}>
+              <div className="bg-white shadow-md rounded-md overflow-hidden">
+                <div className="relativeee">
+                  <Link href={`/sanpham/${product.id}`}>
+                    <Image
+                      src={
+                        "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
+                      }
+                      alt={product.class_name}
+                      width={500}
+                      height={200}
+                      className="w-full h-full object-cover"
+                    />
+                  </Link>
+                  <div className="absoluteee top-[92%] left-2 bg-black text-white px-2 py-1 rounded-md text-xs">
+                    {product.campus.campus_name}
+                  </div>
+                </div>
+                <div className="p-4">
+                  <Link href={`/sanpham/${product.id}`}>
+                    <h3 className="text-lg font-bold mb-2">
+                      {product.class_name}
+                    </h3>
+                  </Link>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500 line-through">
+                      {/* {formatCurrency(product.price)} */}
+                    </span>
+                    <span className="text-green-500 font-bold">
+                      {/* {formatCurrency(product.price - product.discount)} */}
+                    </span>
+                    {/* {product.discount > 0 && (
+                      <span className="ml-4 py-1 px-3 border border-gray-400 text-gray-700">
+                        {Math.round((product.discount / product.price) * 100)}%
+                        Off
+                      </span>
+                    )} */}
+                  </div>
+                  <div className="mt-4">
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md w-full">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );

@@ -30,7 +30,6 @@ interface Class {
   };
   teachers: [
     {
-      id: string;
       name: string;
       email: string;
     }

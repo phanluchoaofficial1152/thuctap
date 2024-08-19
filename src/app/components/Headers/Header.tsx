@@ -44,7 +44,7 @@ const Header: FC = () => {
   ];
 
   return (
-    <div className="w-full bg-gray-100">
+    <div className="w-100 bg-gray-100">
       <div className="flex items-center justify-between py-4 px-4 md:px-6">
         <div className="flex-shrink-0">
           <Image
@@ -90,14 +90,12 @@ const Header: FC = () => {
             <div
               key={item.key}
               className={`relative ${
-                item.key === "sell-with-us"
-                  ? "bg-black text-white"
-                  : ""
+                item.key === "sell-with-us" ? "bg-black text-white" : ""
               } mb-1`}
             >
               <Link
                 href={item.href}
-                className={`block px-4 py-2 border-b ${
+                className={`block py-2 border-b ml-2 p-2 w-full ${
                   item.key === "sell-with-us"
                     ? "bg-black text-white hover:bg-gray-700"
                     : "hover:bg-gray-100"
@@ -110,8 +108,8 @@ const Header: FC = () => {
         </div>
       )}
 
-      <div className="hidden lg:flex items-center justify-center border-t mt-4 py-2 relative">
-        <div className="flex justify-center space-x-8">
+      <div className="hidden lg:flex items-center border-t mt-4 py-2 relative justify-between">
+        <div className="flex justify-center space-x-9">
           {menuItems.slice(0, -1).map((item) => (
             <div
               key={item.key}
@@ -147,7 +145,7 @@ const Header: FC = () => {
 
         <Link
           href="/sell-with-us"
-          className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-gray-700 ml-6"
+          className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-gray-700 mr-6"
         >
           Sell With Us
         </Link>

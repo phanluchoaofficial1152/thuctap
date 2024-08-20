@@ -5,3 +5,18 @@
 .absoluteee {
   position: absolute;
 }
+
+.swiper-desktop {
+  --swiper-slides-per-view: 4;
+  --swiper-space-between: 16px;
+}
+
+.swiper-tablet {
+  --swiper-slides-per-view: 3;
+  --swiper-space-between: 12px;
+}
+
+.swiper-mobile {
+  --swiper-slides-per-view: 2;
+  --swiper-space-between: 8px;
+}

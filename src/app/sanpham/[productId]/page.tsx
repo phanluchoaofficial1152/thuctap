@@ -87,6 +87,28 @@ const ProductDetails: FC = () => {
   const [activeImage, setActiveImage] = useState<string>(
     "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
   );
+  const [slidesPerView, setSlidesPerView] = useState(4);
+  const [spaceBetween, setSpaceBetween] = useState(16);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 640) {
+        setSlidesPerView(2);
+        setSpaceBetween(8);
+      } else if (window.innerWidth <= 1024) {
+        setSlidesPerView(3);
+        setSpaceBetween(12);
+      } else {
+        setSlidesPerView(4);
+        setSpaceBetween(16);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchClassDetail = async () => {
@@ -551,11 +573,10 @@ const ProductDetails: FC = () => {
           <h2 className="text-2xl font-bold mb-4">Related Products</h2>
 
           <Swiper
-            cssMode={true}
             navigation={true}
             modules={[Navigation]}
-            slidesPerView={4}
-            spaceBetween={16}
+            slidesPerView={slidesPerView}
+            spaceBetween={spaceBetween}
           >
             {relatedProducts.map((product, index) => (
               <SwiperSlide key={index + 1}>
@@ -583,9 +604,6 @@ const ProductDetails: FC = () => {
                       </h3>
                     </Link>
                     <div className="flex items-center justify-between">
-                      {/* <span className="text-gray-500 line-through">
-                        {formatCurrency(product.course_price)}
-                      </span> */}
                       <span className="text-green-500 font-bold">
                         {formatCurrency(product.course_price)}
                       </span>

@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Input } from "antd";
 
 import "./Headers.css";
+import LoginModal from "../LoginModal";
 
 const { Search } = Input;
 
@@ -65,49 +66,57 @@ const Header: FC = () => {
           />
         </div>
 
-        <div className="flex items-center space-x-4">
-          <Link href="/giohang" className="flex items-center cursor-pointer">
-            <ShoppingCartOutlined className="text-xl" />
-            <span className="ml-2">Cart</span>
-          </Link>
+        <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer">
+          <ShoppingCartOutlined className="text-xl" />
+          <span className="ml-2">Cart</span>
           <span>|</span>
-          <Link href="/taikhoan" className="flex items-center cursor-pointer">
-            <UserOutlined className="text-xl" />
-            <span className="ml-2">User</span>
-          </Link>
+          <LoginModal />
           <span>|</span>
           <span>VN</span>
         </div>
 
-        <div className="block md:block md:ml-5 sm:ml-5 md:items-center lg:hidden">
-          <button onClick={handleMenuClick}>
+        <div className="flex sm:flex-col md:flex-row items-center justify-center md:ml-4 sm:ml-4 md:items-center lg:hidden">
+          <button onClick={handleMenuClick} className="sm:mb-0 sm:ml-0">
             <MenuOutlined className="text-xl" />
           </button>
         </div>
       </div>
 
       {menuVisible && (
-        <div className="bg-white shadow-lg lg:hidden">
-          {menuItems.map((item, index) => (
-            <div
-              key={"item" + index}
-              className={`relative ${
-                item.key === "sell-with-us" ? "bg-black text-white" : ""
-              } mb-1`}
-            >
-              <Link
-                href={item.href}
-                className={`block py-2 border-b ml-2 p-2 w-full ${
-                  item.key === "sell-with-us"
-                    ? "bg-black text-white hover:bg-gray-700"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                {item.label}
-              </Link>
+        <>
+          <div className="bg-white shadow-lg lg:hidden">
+            <div className="flex items-center justify-center space-x-2 md:hidden lg:hidden">
+              <div className="mt-4 flex space-x-2 mb-3">
+                <ShoppingCartOutlined className="text-xl" />
+                <span className="ml-2">Cart</span>
+                <span>|</span>
+                <LoginModal />
+                <span>|</span>
+                <span>VN</span>
+              </div>
             </div>
-          ))}
-        </div>
+
+            {menuItems.map((item, index) => (
+              <div
+                key={"item" + index}
+                className={`relative ${
+                  item.key === "sell-with-us" ? "bg-black text-white" : ""
+                } mb-1`}
+              >
+                <Link
+                  href={item.href}
+                  className={`block py-2 border-b ml-2 p-2 w-full ${
+                    item.key === "sell-with-us"
+                      ? "bg-black text-white hover:bg-gray-700"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       <div className="hidden lg:flex items-center border-t mt-4 py-2 relative justify-between">

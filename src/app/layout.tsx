@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Chakra_Petch } from "next/font/google";
 import "./globals.css";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
 
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
+const chakrapetch = Chakra_Petch({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Thực Tập NextJS - Phan Lục Hòa",
@@ -34,7 +37,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${montserrat.className} container-fluid mx-auto w-full h-screen`}
+        className={`${chakrapetch.className} container-fluid mx-auto w-full h-screen`}
       >
         {" "}
         <Headers />

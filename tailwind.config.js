@@ -10,6 +10,10 @@ module.exports = {
     container: {
       center: true,
     },
+    fontFamily: {
+      sans: ["Montserrat", "sans-serif"],
+      serif: ["Montserrat", "serif"],
+    },
     extend: {},
   },
   plugins: [],

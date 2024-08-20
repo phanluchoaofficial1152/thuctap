@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Quicksand } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
 
-const quicksand = Quicksand({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "Thực Tập NextJS - Phan Lục Hòa",
@@ -34,7 +34,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${quicksand.className} container-fluid mx-auto w-full h-screen`}
+        className={`${montserrat.className} container-fluid mx-auto w-full h-screen`}
       >
         {" "}
         <Headers />

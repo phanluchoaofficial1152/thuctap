@@ -25,17 +25,21 @@ const Header: FC = () => {
 
   const menuItems = [
     { key: "all-brands", label: "All Brands", href: "/all-brands" },
-    { key: "skincare", label: "Skincare", href: "/skincare" },
-    { key: "makeup", label: "Makeup", href: "/makeup" },
-    { key: "hair-care", label: "Hair Care", href: "/hair-care" },
-    { key: "bath-body", label: "Bath & Body", href: "/bath-body" },
+    { key: "skincare", label: "Skincare", href: "/danhmuc/skincare" },
+    { key: "makeup", label: "Makeup", href: "/danhmuc/makeup" },
+    { key: "hair-care", label: "Hair Care", href: "/danhmuc/hair-care" },
+    { key: "bath-body", label: "Bath & Body", href: "/danhmuc/bath-body" },
     {
       key: "beauty-supplements",
       label: "Beauty Supplements",
-      href: "/beauty-supplements",
+      href: "/danhmuc/beauty-supplements",
     },
-    { key: "promos", label: "Promos", href: "/promos" },
-    { key: "sell-with-us", label: "Sell With Us", href: "/sell-with-us" },
+    { key: "promos", label: "Promos", href: "/danhmuc/promos" },
+    {
+      key: "sell-with-us",
+      label: "Sell With Us",
+      href: "/danhmuc/sell-with-us",
+    },
   ];
 
   const submenuItems = [

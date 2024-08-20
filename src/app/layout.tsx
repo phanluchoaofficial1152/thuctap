@@ -4,6 +4,9 @@ import "./globals.css";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 const chakrapetch = Chakra_Petch({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -45,6 +48,7 @@ export default function RootLayout({
           className="container mx-auto"
           style={{ backgroundColor: "#F7F7F7" }}
         >
+          <ToastContainer position="top-center" />
           {children}
         </main>
         <Footer />

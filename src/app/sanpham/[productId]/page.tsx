@@ -180,12 +180,15 @@ const ProductDetails: FC = () => {
       <title>{`${classDetail?.class_name} - IVY moda - Thực tập NextJS`}</title>
 
       <div className="px-4 py-4">
+        {/* điều hướng trang */}
         <Breadcrumb
           className="text-sm md:text-base"
           separator=">"
           items={breadcrumbItems}
         />
+        {/* end điều hướng trang */}
 
+        {/* thông tin sản phẩm */}
         <div className="mt-8 flex flex-col md:flex-row bg-white p-3 rounded-lg shadow-lg">
           <div className="w-full md:w-5/12 cursor-pointer">
             <Image
@@ -312,7 +315,9 @@ const ProductDetails: FC = () => {
             </div>
           </div>
         </div>
+        {/* end thông tin sản phẩm */}
 
+        {/* khách hàng nói gì về sp này */}
         <div className="mt-6 bg-white rounded-lg p-6 shadow-lg">
           <h2 className="text-2xl font-bold text-center">
             See what Ambassadors say about the product
@@ -389,7 +394,9 @@ const ProductDetails: FC = () => {
             ))}
           </div>
         </div>
+        {/* end khách hàng nói gì về sp này */}
 
+        {/* chi tiết sp */}
         <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
           <Title level={2}>Product Details</Title>
           <Paragraph className="text-gray-500">
@@ -463,7 +470,9 @@ const ProductDetails: FC = () => {
             Retinol, Polysorbate
           </Paragraph>
         </div>
+        {/* end chi tiết sp */}
 
+        {/* bình luận */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <div className="flex justify-between items-center mb-4">
@@ -568,7 +577,9 @@ const ProductDetails: FC = () => {
           </div>
           {/* end top reviews */}
         </div>
+        {/* end bình luận */}
 
+        {/* sp liên quan */}
         <div className="container mx-auto my-8">
           <h2 className="text-2xl font-bold mb-4">Related Products</h2>
 
@@ -624,6 +635,7 @@ const ProductDetails: FC = () => {
             ))}
           </Swiper>
         </div>
+        {/* end sp liên quan */}
       </div>
     </>
   );

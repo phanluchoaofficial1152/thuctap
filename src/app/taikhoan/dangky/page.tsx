@@ -20,6 +20,9 @@ const RegisterPage: FC = () => {
         separator=">"
         items={breadcrumbItems}
       />
+      {/* register form */}
+      <div></div>
+      {/* end register form */}
     </div>
   );
 };

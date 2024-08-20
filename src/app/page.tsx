@@ -80,6 +80,7 @@ const Home: FC = () => {
 
   return (
     <div className="container">
+      {/* slider */}
       <div className="carousel-container">
         <Carousel ref={carouselRef} dots={false} effect="fade" autoplay>
           <div className="carousel-slide">
@@ -123,7 +124,9 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
+      {/* end slider */}
 
+      {/* sp mới */}
       <div className="product-container px-4 py-8">
         <div className="product-header flex justify-between items-center pb-4">
           <h2
@@ -268,7 +271,9 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
+      {/* end sp mới */}
 
+      {/* sp mới slider */}
       <div className="product-container px-4 pb-12">
         <div className="product-header flex justify-between items-center pb-4">
           <h2
@@ -364,7 +369,9 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
+      {/* end sp mới slider */}
 
+      {/* banner qcáo sp 50% */}
       <div className="banner-sale-off-50 py-8">
         <div className="sale-banner-image">
           <Image
@@ -379,7 +386,9 @@ const Home: FC = () => {
           <button className="sale-button">Shop Now</button>
         </div>
       </div>
+      {/* end banner qcáo sp 50% */}
 
+      {/* sp bán chạy slider */}
       <div className="product-container px-4 pb-12">
         <div className="product-header flex justify-between items-center pb-4">
           <h2
@@ -475,7 +484,9 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
+      {/* end sp bán chạy slider */}
 
+      {/* banner qcáo sp */}
       <div className="banner-sale-off-50 py-2">
         <div className="sale-banner-image">
           <Image
@@ -492,7 +503,9 @@ const Home: FC = () => {
           <button className="sale-button">Shop Now</button>
         </div>
       </div>
+      {/* end banner qcáo sp */}
 
+      {/* khách hàng */}
       <div className="product-container px-4 pb-12 mt-0">
         <div className="product-header flex justify-between items-center pb-4">
           <h2
@@ -543,6 +556,7 @@ const Home: FC = () => {
           </div>
         </div>
       </div>
+      {/* end khách hàng */}
     </div>
   );
 };

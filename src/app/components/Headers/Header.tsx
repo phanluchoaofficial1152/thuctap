@@ -47,6 +47,7 @@ const Header: FC = () => {
   return (
     <div className="w-full bg-gray-100">
       <div className="flex items-center justify-between py-4 px-4 md:px-6">
+        {/* logo */}
         <div className="flex-shrink-0">
           <Link href="/">
             <Image
@@ -57,7 +58,9 @@ const Header: FC = () => {
             />
           </Link>
         </div>
+        {/* end logo */}
 
+        {/* search */}
         <div className="flex-grow hidden md:flex md:mb-2 md:w-full justify-center">
           <Search
             placeholder="Search..."
@@ -65,7 +68,9 @@ const Header: FC = () => {
             className="w-1/2 md:w-1/3 lg:w-1/4"
           />
         </div>
+        {/* end search */}
 
+        {/* hành động */}
         <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer">
           <ShoppingCartOutlined className="text-xl" />
           <span className="ml-2">Cart</span>
@@ -74,14 +79,18 @@ const Header: FC = () => {
           <span>|</span>
           <span>VN</span>
         </div>
+        {/* end hành động */}
 
+        {/* toggle menu mobile */}
         <div className="flex sm:flex-col md:flex-row items-center justify-center md:ml-4 sm:ml-4 md:items-center lg:hidden">
           <button onClick={handleMenuClick} className="sm:mb-0 sm:ml-0">
             <MenuOutlined className="text-xl" />
           </button>
         </div>
+        {/* end toggle menu mobile */}
       </div>
 
+      {/* menu hiện ra khi toggle */}
       {menuVisible && (
         <>
           <div className="bg-white shadow-lg lg:hidden">
@@ -118,7 +127,9 @@ const Header: FC = () => {
           </div>
         </>
       )}
+      {/* end menu hiện ra khi toggle */}
 
+      {/* menu cho desktop */}
       <div className="hidden lg:flex items-center border-t mt-4 py-2 relative justify-between">
         <div className="flex justify-center space-x-9">
           {menuItems.slice(0, -1).map((item, value) => (
@@ -161,6 +172,7 @@ const Header: FC = () => {
           Sell With Us
         </Link>
       </div>
+      {/* end menu cho desktop */}
     </div>
   );
 };

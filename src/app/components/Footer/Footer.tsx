@@ -15,7 +15,7 @@ const Footer: FC = () => {
   return (
     <>
       <div
-        className="footer-container w-100 py-12 px-6 sticky"
+        className="footer-container w-full py-12 px-6"
         style={{ backgroundColor: "#E8E8E8" }}
       >
         <div className="container mx-auto flex flex-wrap justify-between pt-10 pb-10">

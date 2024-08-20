@@ -18,6 +18,7 @@ import Link from "next/link";
 import "./Home.css";
 import axios from "axios";
 import ClassCard from "./components/TeacherCard";
+import { useRouter } from "next/navigation";
 
 interface Class {
   id: string;
@@ -42,6 +43,7 @@ const Home: FC = () => {
   const carouselRef = useRef<any>(null);
   const [classes, setClasses] = useState<Class[]>([]);
   const [classesSwiper, setClassesSwiper] = useState<Class[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -76,6 +78,10 @@ const Home: FC = () => {
 
   const handleNext = () => {
     carouselRef.current.next();
+  };
+
+  const handleRedirect = () => {
+    router.replace("/sanpham");
   };
 
   return (
@@ -151,7 +157,10 @@ const Home: FC = () => {
               height={400}
               className="w-full h-full object-cover"
             />
-            <button className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded">
+            <button
+              onClick={handleRedirect}
+              className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded"
+            >
               Shop Now
             </button>
           </div>
@@ -265,7 +274,10 @@ const Home: FC = () => {
               height={400}
               className="w-full h-full object-cover"
             />
-            <button className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded">
+            <button
+              onClick={handleRedirect}
+              className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded"
+            >
               Shop Now
             </button>
           </div>
@@ -282,6 +294,7 @@ const Home: FC = () => {
           >
             New Arrivals
           </h2>
+
           <Link href="/all-products" className="text-blue-500 hover:underline">
             See All
           </Link>
@@ -397,6 +410,7 @@ const Home: FC = () => {
           >
             Top Sellers
           </h2>
+
           <Link href="/all-products" className="text-blue-500 hover:underline">
             See All
           </Link>
@@ -514,6 +528,7 @@ const Home: FC = () => {
           >
             Ambassadors
           </h2>
+
           <Link href="/all-products" className="text-blue-500 hover:underline">
             See All
           </Link>

@@ -38,19 +38,6 @@ interface Class {
   ];
 }
 
-function formatTeacherInfo(teachers: any) {
-  return teachers.map((teacher: any, index: any) => {
-    return (
-      <div key={`teacher-${index}`}>
-        <div className="text-xl font-semibold mb-2">{teacher.name}</div>
-        <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
-          {teacher.email}
-        </div>
-      </div>
-    );
-  });
-}
-
 const Home: FC = () => {
   const carouselRef = useRef<any>(null);
   const [classes, setClasses] = useState<Class[]>([]);

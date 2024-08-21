@@ -28,7 +28,7 @@ export default function CategorySlugLayout({
         <title>{`Sản phẩm ${title.toUpperCase()} | IVY moda | Thực tập NextJS`}</title>
       )}
 
-      <div className="px-4 py-8">{children}</div>
+      <div className="px-5 py-5">{children}</div>
     </>
   );
 }

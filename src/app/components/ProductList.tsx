@@ -1,11 +1,11 @@
 "use client";
 
+import { Pagination } from "antd";
 import Image from "next/image";
 import { FC, useState } from "react";
-import { Pagination } from "antd";
-
-import "../danhmuc/[slug]/slug.css";
 import { FaRegUserCircle } from "react-icons/fa";
+
+import "../sanpham/sanpham.css";
 
 interface Product {
   title: string;
@@ -18,7 +18,7 @@ interface Product {
   isNew: boolean;
 }
 
-interface CategoryProductProps {
+interface ProductProps {
   products: Product[];
 }
 
@@ -29,7 +29,7 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-const CategoryProduct: FC<CategoryProductProps> = ({ products }) => {
+const ProductList: FC<ProductProps> = ({ products }) => {
   const [current, setCurrent] = useState(1);
   const pageSize = 16;
 
@@ -44,7 +44,7 @@ const CategoryProduct: FC<CategoryProductProps> = ({ products }) => {
 
   return (
     <>
-      {/* sản phẩm theo danh mục */}
+      {/* sản phẩm */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {paginatedProducts.map((product, index) => (
           <div
@@ -95,7 +95,7 @@ const CategoryProduct: FC<CategoryProductProps> = ({ products }) => {
           </div>
         ))}
       </div>
-      {/* end sản phẩm theo danh mục */}
+      {/* end sản phẩm */}
 
       {/* phân trang */}
       <div className="flex justify-center mt-6">
@@ -112,4 +112,4 @@ const CategoryProduct: FC<CategoryProductProps> = ({ products }) => {
   );
 };
 
-export default CategoryProduct;
+export default ProductList;

@@ -111,6 +111,7 @@ const CategorySlugContent: FC = () => {
   const { slug } = useParams();
   const [title, setTitle] = useState<string | null>(null);
   const [products, setProducts] = useState<any[]>([]);
+  const [classCode, setClassCode] = useState<string | null>(null);
 
   useEffect(() => {
     if (slug) {
@@ -123,11 +124,38 @@ const CategorySlugContent: FC = () => {
   }, [slug]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchClassCode = async () => {
       try {
         const response = await axios.get(
           "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=16"
         );
+        const data = response.data.data;
+
+        const matchedClass = data.find((item: any) => item.class_slug === slug);
+
+        if (matchedClass) {
+          setClassCode(matchedClass.class_code);
+        } else {
+          console.error("Không tìm thấy class_slug");
+        }
+      } catch (error) {
+        console.error("Error fetching class code:", error);
+      }
+    };
+
+    if (slug) {
+      fetchClassCode();
+    }
+  }, [slug]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const apiUrl = classCode
+          ? `https://api-pro.teklearner.com/class/v1/get-list-class?class_code=${classCode}&skip=0&limit=16`
+          : `https://api-pro.teklearner.com/class/v1/get-list-class?skip=0&limit=16`;
+
+        const response = await axios.get(apiUrl);
         const data = response.data.data;
 
         const formattedProducts = data.map((item: any) => ({
@@ -144,12 +172,12 @@ const CategorySlugContent: FC = () => {
 
         setProducts(formattedProducts);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching products:", error);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [classCode]);
 
   const capitalizeFirstLetter = (string: string | null) => {
     if (!string) return "";

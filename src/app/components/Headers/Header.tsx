@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   ShoppingCartOutlined,
   UserOutlined,
@@ -9,7 +9,6 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "antd";
-
 import "./Headers.css";
 import LoginModal from "../Login/LoginModal";
 
@@ -18,13 +17,8 @@ const { Search } = Input;
 const Header: FC = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [submenuVisible, setSubmenuVisible] = useState(false);
-
-  const handleMenuClick = () => {
-    setMenuVisible(!menuVisible);
-  };
-
-  const menuItems = [
-    { key: "all-brands", label: "All Brands", href: "/all-brands" },
+  const [menuItems, setMenuItems] = useState([
+    { key: "all-brands", label: "All Brands", href: "/sanpham" },
     { key: "skincare", label: "Skincare", href: "/danhmuc/skincare" },
     { key: "makeup", label: "Makeup", href: "/danhmuc/makeup" },
     { key: "hair-care", label: "Hair Care", href: "/danhmuc/hair-care" },
@@ -40,7 +34,40 @@ const Header: FC = () => {
       label: "Sell With Us",
       href: "/danhmuc/sell-with-us",
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchClassData = async () => {
+      try {
+        const response = await fetch(
+          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=16"
+        );
+        const data = await response.json();
+
+        const updatedMenuItems = menuItems.map((item, index) => {
+          if (item.key === "all-brands") {
+            return item;
+          }
+
+          const classData = data.data[index];
+
+          return classData
+            ? { ...item, href: `/danhmuc/${classData.class_slug}` }
+            : item;
+        });
+
+        setMenuItems(updatedMenuItems);
+      } catch (error) {
+        console.error("Failed to fetch class data", error);
+      }
+    };
+
+    fetchClassData();
+  }, [menuItems]);
+
+  const handleMenuClick = () => {
+    setMenuVisible(!menuVisible);
+  };
 
   const submenuItems = [
     { key: "brand1", label: "Brand 1", href: "/brand1" },

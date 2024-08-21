@@ -98,7 +98,7 @@ const ProductList: FC<ProductProps> = ({ products }) => {
       {/* end sản phẩm */}
 
       {/* phân trang */}
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-6 pb-4">
         <Pagination
           current={current}
           pageSize={pageSize}

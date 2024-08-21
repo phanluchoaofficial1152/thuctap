@@ -54,13 +54,13 @@ const ProductPage = () => {
       {/* end title */}
 
       <Breadcrumb
-        className="text-sm md:text-base"
+        className="text-sm md:text-base px-5 py-5"
         separator=">"
         items={breadcrumbItems}
       />
 
       {/* sản phẩm */}
-      <div className="py-4 px-4">
+      <div className="px-4">
         <ProductList products={products} />
       </div>
       {/* End sản phẩm */}

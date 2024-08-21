@@ -62,9 +62,9 @@ const CategorySlugContent: FC = () => {
 
         const formattedProducts = data.map((item: any) => ({
           title: item.class_name,
-          brand: "Brand Name",
-          originalPrice: "AED 32.00",
-          discountedPrice: "AED 25.60",
+          brand: item.campus.campus_name,
+          originalPrice: item.course_price,
+          discountedPrice: item.course_discount,
           discount: "30% Off",
           category: item.campus.campus_name,
           image:

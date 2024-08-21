@@ -39,15 +39,10 @@ export default function RootLayout({
         />
       </head>
 
-      <body
-        className={`${chakrapetch.className} container mx-auto w-full h-screen`}
-      >
+      <body className={`${chakrapetch.className} container mx-auto`}>
         {" "}
         <Headers />
-        <main
-          className="container mx-auto"
-          style={{ backgroundColor: "#F7F7F7" }}
-        >
+        <main style={{ backgroundColor: "#F7F7F7" }}>
           <ToastContainer position="top-center" />
           {children}
         </main>

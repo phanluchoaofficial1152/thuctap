@@ -1,7 +1,16 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Breadcrumb, Button, Row, Col, Typography, Spin } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Row,
+  Col,
+  Typography,
+  Spin,
+  Input,
+  Modal,
+} from "antd";
 import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -89,6 +98,21 @@ const ProductDetails: FC = () => {
   );
   const [slidesPerView, setSlidesPerView] = useState(4);
   const [spaceBetween, setSpaceBetween] = useState(16);
+  const [visible, setVisible] = useState(false);
+  const [desiredPrice, setDesiredPrice] = useState("");
+  const [email, setEmail] = useState("");
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = () => {
+    setVisible(false);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -267,10 +291,90 @@ const ProductDetails: FC = () => {
             </div>
             <p className="mt-4 text-sm text-gray-500">
               You can track the price of this product
-              <a href="#" className="text-blue-500 ml-2">
+              <a href="#" className="text-blue-500 ml-2" onClick={showModal}>
                 Track Rate
               </a>
             </p>
+            <Modal
+              title="Track Price"
+              open={visible}
+              onOk={handleOk}
+              onCancel={handleCancel}
+              footer={[
+                <Button key="back" onClick={handleCancel}>
+                  Cancel
+                </Button>,
+              ]}
+            >
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <div className="flex items-center justify-between">
+                  <div className="w-1/3">
+                    <Image
+                      src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"
+                      alt="Product Name"
+                      width={1000}
+                      height={1000}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="w-2/3 ml-4">
+                    <h2 className="text-lg font-bold">
+                      {classDetail?.class_name}
+                    </h2>
+                    <p className="text-gray-500">{`${formatCurrency(
+                      Number(coursePrice)
+                    )} - 30% Off`}</p>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label
+                    htmlFor="desired-price"
+                    className="block font-medium text-gray-700"
+                  >
+                    Desired price
+                  </label>
+                  <Input
+                    id="desired-price"
+                    type="number"
+                    value={desiredPrice}
+                    onChange={(e) => setDesiredPrice(e.target.value)}
+                    placeholder="Enter desired price"
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <label
+                    htmlFor="email"
+                    className="block font-medium text-gray-700"
+                  >
+                    Email Address
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter email address"
+                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <p>
+                    When price of this product hits your desired price, we will
+                    notify you by sending an email.
+                  </p>
+                </div>
+
+                <div className="mt-4 flex justify-end">
+                  <Button type="primary" onClick={handleOk}>
+                    Track Price
+                  </Button>
+                </div>
+              </div>
+            </Modal>
             <div className="mt-6 flex space-x-4">
               <Button type="primary" size="large" className="w-full md:w-auto">
                 ADD TO CART

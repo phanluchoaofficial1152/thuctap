@@ -19,7 +19,7 @@ const ProductPage = () => {
 
         const formattedProducts = data.map((item: any) => ({
           title: item.class_name,
-          brand: "Brand Name",
+          brand: item.campus.campus_name,
           originalPrice: item.course_price,
           discountedPrice: item.course_discount,
           discount: "30% Off",

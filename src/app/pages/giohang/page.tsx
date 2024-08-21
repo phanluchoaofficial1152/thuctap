@@ -1,7 +1,7 @@
 "use client";
 
 import { NextPage } from "next";
-import React from "react";
+import React, { useState } from "react";
 import { Breadcrumb, Button, Input, Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,6 +41,23 @@ const breadcrumbItems = [
 ];
 
 const CartPage: NextPage<{}> = () => {
+  const [quantities, setQuantities] = useState<number[]>(
+    Array(products.length).fill(1)
+  );
+
+  const handleQuantityChange = (index: number, value: number) => {
+    const newQuantities = [...quantities];
+    newQuantities[index] = value;
+    setQuantities(newQuantities);
+  };
+
+  const handleInputChange = (index: number, value: string) => {
+    const parsedValue = parseInt(value);
+    if (!isNaN(parsedValue) && parsedValue >= 0) {
+      handleQuantityChange(index, parsedValue);
+    }
+  };
+
   return (
     <div className="px-4 py-4">
       <title>Giỏ hàng | IVY moda | Thực tập NextJS</title>
@@ -80,9 +97,32 @@ const CartPage: NextPage<{}> = () => {
                     </Text>
                   </div>
                   <div className="flex items-center mt-2">
-                    <Button>-</Button>
-                    <Text className="mx-2">1</Text>
-                    <Button>+</Button>
+                    <Button
+                      onClick={() =>
+                        handleQuantityChange(
+                          index,
+                          Math.max(1, quantities[index] - 1)
+                        )
+                      }
+                    >
+                      -
+                    </Button>
+                    <Input
+                      type="number"
+                      min={1}
+                      max={99}
+                      value={quantities[index]}
+                      onChange={(e) => handleInputChange(index, e.target.value)}
+                      onBlur={(e) => handleInputChange(index, e.target.value)}
+                      className="mx-2 w-20 text-center"
+                    />
+                    <Button
+                      onClick={() =>
+                        handleQuantityChange(index, quantities[index] + 1)
+                      }
+                    >
+                      +
+                    </Button>
                   </div>
                 </div>
               </div>

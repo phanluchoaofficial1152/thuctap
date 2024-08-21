@@ -11,7 +11,7 @@ import {
   Input,
   Modal,
 } from "antd";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
@@ -22,6 +22,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import "./details.css";
+import { NextPage } from "next";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -88,7 +89,7 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-const ProductDetails: FC = () => {
+const ProductDetails: NextPage<{}> = () => {
   const { productId } = useParams();
   const [classDetail, setClassDetail] = useState<ClassDetail | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<ClassDetail[]>([]);

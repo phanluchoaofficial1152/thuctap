@@ -3,11 +3,11 @@
 import { Breadcrumb, Button, Input, Upload } from "antd";
 import Title from "antd/es/typography/Title";
 import Link from "next/link";
-import { FC } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { NextPage } from "next";
 
-const RegisterPage: FC = () => {
+const RegisterPage: NextPage<{}> = () => {
   const breadcrumbItems = [
     {
       title: <Link href="/">Home</Link>,

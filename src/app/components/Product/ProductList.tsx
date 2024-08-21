@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FC, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 
-import "@/app/sanpham/sanpham.css";
+import "@/app/pages/sanpham/sanpham.css";
 
 interface Product {
   title: string;

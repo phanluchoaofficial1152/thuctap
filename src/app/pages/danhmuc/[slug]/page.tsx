@@ -4,12 +4,13 @@ import { Breadcrumb } from "antd";
 import Title from "antd/es/typography/Title";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import CategoryProduct from "@/app/components/Category/CategoryProduct";
 import axios from "axios";
+import { NextPage } from "next";
 
-const CategorySlugContent: FC = () => {
+const CategorySlugContent: NextPage<{}> = () => {
   const { slug } = useParams();
   const [title, setTitle] = useState<string | null>(null);
   const [products, setProducts] = useState<any[]>([]);

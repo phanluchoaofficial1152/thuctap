@@ -1,13 +1,10 @@
 "use client";
 
+import { NextPage } from "next";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
-export default function CategorySlugLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const CategorySlugLayout:NextPage<{ children: ReactNode }> = ({ children }) => {
   const { slug } = useParams();
   const [title, setTitle] = useState<string | null>(null);
 
@@ -31,3 +28,5 @@ export default function CategorySlugLayout({
     </>
   );
 }
+
+export default CategorySlugLayout;

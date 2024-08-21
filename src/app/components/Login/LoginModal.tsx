@@ -58,14 +58,14 @@ const LoginModal: FC = () => {
             <Button
               type="link"
               className="text-blue-500 hover:text-blue-700"
-              onClick={() => handleRedirect("/taikhoan/quenmatkhau")}
+              onClick={() => handleRedirect("/pages/taikhoan/quenmatkhau")}
             >
               Forgot Password?
             </Button>
             <Button
               type="link"
               className="text-blue-500 hover:text-blue-700"
-              onClick={() => handleRedirect("/taikhoan/dangky")}
+              onClick={() => handleRedirect("/pages/taikhoan/dangky")}
             >
               Register Now
             </Button>

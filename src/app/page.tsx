@@ -81,7 +81,7 @@ const Home: FC = () => {
   };
 
   const handleRedirect = () => {
-    router.replace("/sanpham");
+    router.replace("/pages/sanpham");
   };
 
   return (
@@ -169,7 +169,7 @@ const Home: FC = () => {
             {classes.map((classItem, items) => (
               <div key={"class item" + items}>
                 <div className="border border-gray-200 p-4 relativee flex-1">
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <Image
                       src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
                       alt="Product 1"
@@ -181,7 +181,7 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <h3 className="mt-2 text-lg font-semibold">
                       {classItem.class_name}
                     </h3>
@@ -220,7 +220,7 @@ const Home: FC = () => {
             {classes.map((classItem, value) => (
               <div key={"value items" + value}>
                 <div className="border border-gray-200 p-4 relativee flex-1">
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <Image
                       src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
                       alt="Product 1"
@@ -232,7 +232,7 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <h3 className="mt-2 text-lg font-semibold">
                       {classItem.class_name}
                     </h3>
@@ -327,7 +327,7 @@ const Home: FC = () => {
             {classesSwiper.map((classItem, valueswiper) => (
               <SwiperSlide key={"valuee swiper" + valueswiper}>
                 <div className="border border-gray-200 p-4 relativee">
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <Image
                       src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
                       alt={classItem.class_name}
@@ -339,7 +339,7 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <h3 className="mt-2 text-lg font-semibold">
                       {classItem.class_name}
                     </h3>
@@ -443,7 +443,7 @@ const Home: FC = () => {
             {classesSwiper.map((classItem, itemswiperclass) => (
               <SwiperSlide key={"item swiper class" + itemswiperclass}>
                 <div className="border border-gray-200 p-4 relativee">
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <Image
                       src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
                       alt={classItem.class_name}
@@ -455,7 +455,7 @@ const Home: FC = () => {
                   <span className="absolutee top-96 left-7 bg-gray-800 text-white text-xs px-2 py-1 rounded">
                     {classItem.campus.campus_name}
                   </span>
-                  <Link href={`/sanpham/${classItem.id}`}>
+                  <Link href={`/pages/sanpham/${classItem.id}`}>
                     <h3 className="mt-2 text-lg font-semibold">
                       {classItem.class_name}
                     </h3>

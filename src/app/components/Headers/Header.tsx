@@ -18,21 +18,21 @@ const Header: FC = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [submenuVisible, setSubmenuVisible] = useState(false);
   const [menuItems, setMenuItems] = useState([
-    { key: "all-brands", label: "All Brands", href: "/sanpham" },
-    { key: "skincare", label: "Skincare", href: "/danhmuc/skincare" },
-    { key: "makeup", label: "Makeup", href: "/danhmuc/makeup" },
-    { key: "hair-care", label: "Hair Care", href: "/danhmuc/hair-care" },
-    { key: "bath-body", label: "Bath & Body", href: "/danhmuc/bath-body" },
+    { key: "all-brands", label: "All Brands", href: "/pages/sanpham" },
+    { key: "skincare", label: "Skincare", href: "/pages/danhmuc/skincare" },
+    { key: "makeup", label: "Makeup", href: "/pages/danhmuc/makeup" },
+    { key: "hair-care", label: "Hair Care", href: "/pages/danhmuc/hair-care" },
+    { key: "bath-body", label: "Bath & Body", href: "/pages/danhmuc/bath-body" },
     {
       key: "beauty-supplements",
       label: "Beauty Supplements",
-      href: "/danhmuc/beauty-supplements",
+      href: "/pages/danhmuc/beauty-supplements",
     },
-    { key: "promos", label: "Promos", href: "/danhmuc/promos" },
+    { key: "promos", label: "Promos", href: "/pages/danhmuc/promos" },
     {
       key: "sell-with-us",
       label: "Sell With Us",
-      href: "/danhmuc/sell-with-us",
+      href: "/pages/danhmuc/sell-with-us",
     },
   ]);
 
@@ -52,7 +52,7 @@ const Header: FC = () => {
           const classData = data.data[index];
 
           return classData
-            ? { ...item, href: `/danhmuc/${classData.class_slug}` }
+            ? { ...item, href: `/pages/danhmuc/${classData.class_slug}` }
             : item;
         });
 
@@ -104,7 +104,9 @@ const Header: FC = () => {
         {/* hành động */}
         <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer">
           <ShoppingCartOutlined className="text-xl" />
-          <span className="ml-2">Cart</span>
+          <Link href={"/giohang"}>
+            <span className="ml-2">Cart</span>
+          </Link>
           <span>|</span>
           <LoginModal />
           <span>|</span>

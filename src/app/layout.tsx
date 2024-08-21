@@ -40,7 +40,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${chakrapetch.className} container-fluid mx-auto w-full h-screen`}
+        className={`${chakrapetch.className} container mx-auto w-full h-screen`}
       >
         {" "}
         <Headers />

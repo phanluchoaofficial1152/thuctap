@@ -11,12 +11,20 @@
   z-index: 10;
 }
 
+.absoluteeeee2 {
+  position: absolute;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  z-index: 10;
+}
+
 .new-label {
   top: 4%;
   left: 26px;
 }
 
 .category-label {
-  bottom: 15%;
+  bottom: 18%;
   left: 26px;
 }

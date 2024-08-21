@@ -42,6 +42,54 @@ const products = [
     category: "Makeup",
     image:
       "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
+    isNew: false,
+  },
+
+  {
+    title: "Product Title Goes Here",
+    brand: "Brand",
+    originalPrice: "AED 32.00",
+    discountedPrice: "AED 25.60",
+    discount: "30% Off",
+    category: "Makeup",
+    image:
+      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
+    isNew: false,
+  },
+
+  {
+    title: "Product Title Goes Here 222",
+    brand: "Brand",
+    originalPrice: "AED 32.00",
+    discountedPrice: "AED 25.60",
+    discount: "30% Off",
+    category: "Makeup",
+    image:
+      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
+    isNew: false,
+  },
+
+  {
+    title: "Product Title Goes Here",
+    brand: "Brand",
+    originalPrice: "AED 32.00",
+    discountedPrice: "AED 25.60",
+    discount: "30% Off",
+    category: "Makeup",
+    image:
+      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
+    isNew: false,
+  },
+
+  {
+    title: "Product Title Goes Here",
+    brand: "Brand",
+    originalPrice: "AED 32.00",
+    discountedPrice: "AED 25.60",
+    discount: "30% Off",
+    category: "Makeup",
+    image:
+      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
     isNew: true,
   },
 
@@ -54,151 +102,7 @@ const products = [
     category: "Makeup",
     image:
       "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
-  },
-
-  {
-    title: "Product Title Goes Here",
-    brand: "Brand",
-    originalPrice: "AED 32.00",
-    discountedPrice: "AED 25.60",
-    discount: "30% Off",
-    category: "Makeup",
-    image:
-      "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
-    isNew: false,
+    isNew: true,
   },
 ];
 

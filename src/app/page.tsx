@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import "./Home.css";
 import axios from "axios";
-import ClassCard from "./components/TeacherCard";
+import ClassCard from "./components/TeacherCard/TeacherCard";
 import { useRouter } from "next/navigation";
 
 interface Class {

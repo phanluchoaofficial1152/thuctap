@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ProductList from "../components/ProductList";
+import ProductList from "../components/Product/ProductList";
 import { Breadcrumb } from "antd";
 import Link from "next/link";
 

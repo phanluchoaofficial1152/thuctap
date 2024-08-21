@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import CategorySlugContent from "./page";
 
 export default function CategorySlugLayout({
   children,

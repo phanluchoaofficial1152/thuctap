@@ -11,7 +11,7 @@ import Image from "next/image";
 import { Input } from "antd";
 
 import "./Headers.css";
-import LoginModal from "../LoginModal";
+import LoginModal from "../Login/LoginModal";
 
 const { Search } = Input;
 

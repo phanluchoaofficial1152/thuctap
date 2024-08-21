@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 
-import CategoryProduct from "@/app/components/CategoryProduct";
+import CategoryProduct from "@/app/components/Category/CategoryProduct";
 import axios from "axios";
 
 // const products = [

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FC, useState } from "react";
 import { Pagination } from "antd";
 
-import "../danhmuc/[slug]/slug.css";
+import "@/app/danhmuc/[slug]/slug.css";
 import { FaRegUserCircle } from "react-icons/fa";
 
 interface Product {

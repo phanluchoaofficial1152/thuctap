@@ -104,7 +104,7 @@ const Header: FC = () => {
         {/* hành động */}
         <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer">
           <ShoppingCartOutlined className="text-xl" />
-          <Link href={"/giohang"}>
+          <Link href={"/pages/giohang"}>
             <span className="ml-2">Cart</span>
           </Link>
           <span>|</span>

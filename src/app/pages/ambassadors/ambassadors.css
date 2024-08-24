@@ -1,0 +1,9 @@
+.relativeslider,
+.relativeproductss {
+  position: relative;
+}
+
+.absoluteslider,
+.absoluteproductss {
+  position: absolute;
+}

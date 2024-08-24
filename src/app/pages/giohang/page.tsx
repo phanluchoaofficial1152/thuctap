@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Breadcrumb, Button, Input, Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 
@@ -45,6 +46,8 @@ const CartPage: NextPage<{}> = () => {
     Array(products.length).fill(1)
   );
 
+  const router = useRouter();
+
   const handleQuantityChange = (index: number, value: number) => {
     const newQuantities = [...quantities];
     newQuantities[index] = value;
@@ -58,6 +61,10 @@ const CartPage: NextPage<{}> = () => {
     }
   };
 
+  const handlePayment = () => {
+    router.replace("/pages/thanhtoan/buoc1");
+  };
+
   return (
     <div className="px-4 py-4">
       <title>Giỏ hàng | IVY moda | Thực tập NextJS</title>
@@ -68,7 +75,7 @@ const CartPage: NextPage<{}> = () => {
         items={breadcrumbItems}
       />
 
-      <div className="flex flex-col md:flex-row p-4">
+      <div className="flex flex-col md:flex-row">
         <div className="flex-1 space-y-4">
           <Title level={2}>CART</Title>
           {products.map((product, index) => (
@@ -160,7 +167,11 @@ const CartPage: NextPage<{}> = () => {
 
           <div className="flex justify-between mt-4">
             <Button>CONTINUE SHOPPING</Button>
-            <Button type="primary" className="bg-black border-black">
+            <Button
+              onClick={handlePayment}
+              type="primary"
+              className="bg-black border-black"
+            >
               PLACE ORDER
             </Button>
           </div>

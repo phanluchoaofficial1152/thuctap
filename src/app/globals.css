@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body,
+html,
+*,
+*::after,
+*::before {
+  font-family: "Montserrat", sans-serif;
+}
+
+.ant-typography,
+.ant-btn,
+.ant-menu,
+.ant-form-item,
+.ant-input,
+.ant-select,
+.ant-table,
+.ant-modal {
+  font-family: "Montserrat", sans-serif;
+}

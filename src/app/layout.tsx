@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-import { Chakra_Petch } from "next/font/google";
 import "./globals.css";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
-
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-
-const chakrapetch = Chakra_Petch({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 export const metadata: Metadata = {
   title: "Thực Tập NextJS - Phan Lục Hòa",
@@ -35,12 +28,14 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=optional"
+        />
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         />
       </head>
-
-      <body className={`${chakrapetch.className} container mx-auto`}>
-        {" "}
+      <body className="container mx-auto">
         <Headers />
         <main style={{ backgroundColor: "#F7F7F7" }}>
           <ToastContainer position="top-center" />

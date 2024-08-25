@@ -1,13 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import { Breadcrumb, Button, Input, Upload } from "antd";
 import Title from "antd/es/typography/Title";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
+import Image from "next/image";
+import {
+  FacebookOutlined,
+  GoogleOutlined,
+  InstagramOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+
+import "./register.css";
 
 const RegisterPage: NextPage<{}> = () => {
+  const [image, setImage] = useState<string | null>(null);
+
   const breadcrumbItems = [
     {
       title: <Link href="/">Home</Link>,
@@ -18,7 +30,16 @@ const RegisterPage: NextPage<{}> = () => {
   ];
 
   const uploadProps = {
-    beforeUpload: () => false,
+    beforeUpload: (file: File) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      return false;
+    },
+    accept: "image/*",
+    showUploadList: false,
   };
 
   const validationSchema = Yup.object().shape({
@@ -38,21 +59,16 @@ const RegisterPage: NextPage<{}> = () => {
       <title>Đăng ký - IVY moda - Thực tập NextJS</title>
 
       <div className="px-3 py-4 pb-10">
-        {/* điều hướng */}
         <Breadcrumb
           className="text-sm md:text-base p-1"
           separator=">"
           items={breadcrumbItems}
         />
-        {/* end điều hướng */}
 
-        {/* title */}
         <Title level={2} className="py-3">
           REGISTRATION
         </Title>
-        {/* end title */}
 
-        {/* Register form */}
         <Formik
           initialValues={{
             firstName: "",
@@ -71,13 +87,11 @@ const RegisterPage: NextPage<{}> = () => {
           {({ setFieldValue }) => (
             <Form className="h-full flex flex-col bg-white shadow-md rounded-lg p-6 mt-3">
               <div className="gap-3 flex flex-col sm:flex-row sm:gap-3 justify-center items-center mb-4">
-                <Button icon={<i className="fab fa-facebook-f"></i>}>
+                <Button icon={<FacebookOutlined />}>
                   Register with Facebook
                 </Button>
-                <Button icon={<i className="fab fa-google"></i>}>
-                  Register with Google
-                </Button>
-                <Button icon={<i className="fab fa-instagram"></i>}>
+                <Button icon={<GoogleOutlined />}>Register with Google</Button>
+                <Button icon={<InstagramOutlined />}>
                   Register with Instagram
                 </Button>
               </div>
@@ -93,10 +107,32 @@ const RegisterPage: NextPage<{}> = () => {
                   {...uploadProps}
                   className="border-dashed border-2 border-gray-300 rounded-md w-32 h-32 flex items-center justify-center mb-4"
                 >
-                  <div className="flex justify-center items-center text-4xl mb-4">
-                    +
-                  </div>
-                  <div>Upload Image</div>
+                  {image ? (
+                    <div className="relativeregister w-full h-full mt-5">
+                      <Image
+                        src={image}
+                        alt="Profile"
+                        width={1000}
+                        height={1000}
+                        objectFit="cover"
+                        className="rounded-md"
+                      />
+                      <button
+                        className="absoluteregister text-[15px] top-0 right-0 p-1 transition-all hover:bg-black rounded-sm bg-slate-200"
+                        onClick={() => setImage(null)}
+                        aria-label="Delete image"
+                      >
+                        <DeleteOutlined className="text-red-500 hover:text-white" />
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex justify-center items-center text-4xl mb-4">
+                        +
+                      </div>
+                      <div>Upload Image</div>
+                    </>
+                  )}
                 </Upload>
               </div>
 
@@ -209,7 +245,6 @@ const RegisterPage: NextPage<{}> = () => {
             </Form>
           )}
         </Formik>
-        {/* end register form */}
       </div>
     </>
   );

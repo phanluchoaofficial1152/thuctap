@@ -76,8 +76,8 @@ const Header: FC = () => {
   ];
 
   return (
-    <div className="w-full bg-gray-100">
-      <div className="flex items-center justify-between py-4 px-4 md:px-6">
+    <div className="w-full py-4 px-4">
+      <div className="flex items-center justify-between md:px-6">
         {/* logo */}
         <div className="flex-shrink-0">
           <Link href="/">

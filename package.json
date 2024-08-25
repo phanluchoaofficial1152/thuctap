@@ -22,6 +22,7 @@
     "react-toastify": "^10.0.5",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.1.10",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "yup": "^1.4.0"
   },
   "devDependencies": {

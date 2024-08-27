@@ -35,7 +35,7 @@ export default function RootLayout({
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         />
       </head>
-      <body className="container mx-auto bg-white">
+      <body className="container mx-auto bg-[#F7F7F7]">
         <Headers />
         <main>
           <ToastContainer position="top-center" />

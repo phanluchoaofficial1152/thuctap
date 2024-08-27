@@ -22,7 +22,11 @@ const Header: FC = () => {
     { key: "skincare", label: "Skincare", href: "/pages/danhmuc/skincare" },
     { key: "makeup", label: "Makeup", href: "/pages/danhmuc/makeup" },
     { key: "hair-care", label: "Hair Care", href: "/pages/danhmuc/hair-care" },
-    { key: "bath-body", label: "Bath & Body", href: "/pages/danhmuc/bath-body" },
+    {
+      key: "bath-body",
+      label: "Bath & Body",
+      href: "/pages/danhmuc/bath-body",
+    },
     {
       key: "beauty-supplements",
       label: "Beauty Supplements",
@@ -76,7 +80,7 @@ const Header: FC = () => {
   ];
 
   return (
-    <div className="w-full py-4 px-4">
+    <div className="w-full py-4">
       <div className="flex items-center justify-between md:px-6">
         {/* logo */}
         <div className="flex-shrink-0">
@@ -163,7 +167,7 @@ const Header: FC = () => {
       {/* end menu hiện ra khi toggle */}
 
       {/* menu cho desktop */}
-      <div className="hidden lg:flex items-center border-t mt-4 py-2 relative justify-between">
+      <div className="hidden bg-white lg:flex items-center border-t mt-3 py-2 relative justify-between">
         <div className="flex justify-center space-x-9">
           {menuItems.slice(0, -1).map((item, value) => (
             <div
@@ -182,7 +186,7 @@ const Header: FC = () => {
               </Link>
 
               {item.key === "all-brands" && submenuVisible && (
-                <div className="absolute left-0 top-full bg-white shadow-lg mt-2 py-2">
+                <div className="absolute left-2 top-full bg-white shadow-lg mt-2 py-2">
                   {submenuItems.map((submenuItem) => (
                     <Link
                       key={submenuItem.key}

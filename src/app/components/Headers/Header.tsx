@@ -17,8 +17,9 @@ const { Search } = Input;
 const Header: FC = () => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [submenuVisible, setSubmenuVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [menuItems, setMenuItems] = useState([
-    { key: "all-brands", label: "All Brands", href: "/pages/sanpham" },
+    { key: "all-brands", label: "All Brands", href: "#" },
     { key: "skincare", label: "Skincare", href: "/pages/danhmuc/skincare" },
     { key: "makeup", label: "Makeup", href: "/pages/danhmuc/makeup" },
     { key: "hair-care", label: "Hair Care", href: "/pages/danhmuc/hair-care" },
@@ -69,8 +70,27 @@ const Header: FC = () => {
     fetchClassData();
   }, [menuItems]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const handleMenuClick = () => {
     setMenuVisible(!menuVisible);
+  };
+
+  const handleSubmenuClick = (key: string) => {
+    if (isMobile && key === "all-brands") {
+      setSubmenuVisible(!submenuVisible);
+    }
   };
 
   const submenuItems = [
@@ -80,8 +100,8 @@ const Header: FC = () => {
   ];
 
   return (
-    <div className="w-full py-4">
-      <div className="flex items-center justify-between md:px-6">
+    <div className="w-full py-4 sticky">
+      <div className="flex items-center px-4 justify-between md:px-6">
         {/* logo */}
         <div className="flex-shrink-0">
           <Link href="/">
@@ -148,6 +168,8 @@ const Header: FC = () => {
                 className={`relative ${
                   item.key === "sell-with-us" ? "bg-black text-white" : ""
                 } mb-1`}
+                onMouseEnter={() => handleSubmenuClick(item.key)}
+                onMouseLeave={() => setSubmenuVisible(false)}
               >
                 <Link
                   href={item.href}
@@ -159,6 +181,20 @@ const Header: FC = () => {
                 >
                   {item.label}
                 </Link>
+
+                {item.key === "all-brands" && submenuVisible && (
+                  <div className="absolute left-2 bg-white shadow-lg mt-1 py-1">
+                    {submenuItems.map((submenuItem) => (
+                      <Link
+                        key={submenuItem.key}
+                        href={submenuItem.href}
+                        className="block px-4 py-2 hover:bg-gray-100 hover:text-blue-500"
+                      >
+                        {submenuItem.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -167,16 +203,18 @@ const Header: FC = () => {
       {/* end menu hiện ra khi toggle */}
 
       {/* menu cho desktop */}
-      <div className="hidden bg-white lg:flex items-center border-t mt-3 py-2 relative justify-between">
+      <div className="hidden bg-white lg:flex items-center border-t mt-4 py-2 relative justify-between">
         <div className="flex justify-center space-x-9">
           {menuItems.slice(0, -1).map((item, value) => (
             <div
               key={"value 1" + value}
               className="relative hover:font-semibold hover:text-blue-600 text-gray-600"
               onMouseEnter={() =>
-                item.key === "all-brands" && setSubmenuVisible(true)
+                !isMobile &&
+                item.key === "all-brands" &&
+                setSubmenuVisible(true)
               }
-              onMouseLeave={() => setSubmenuVisible(false)}
+              onMouseLeave={() => !isMobile && setSubmenuVisible(false)}
             >
               <Link
                 href={item.href}

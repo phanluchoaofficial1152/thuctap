@@ -4,17 +4,17 @@ import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { FC, ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Thực Tập NextJS - Phan Lục Hòa",
   description: "Thực Tập NextJS - Phan Lục Hòa",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout: FC<{
+  children: ReactNode;
+  color?: string;
+}> = ({ children, color }) => {
   return (
     <html lang="vi">
       <head>
@@ -26,6 +26,7 @@ export default function RootLayout({
           type="image/png"
           sizes="16x16"
         />
+        <title>Thực tập NextJS | IVY moda</title>
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=optional"
@@ -35,7 +36,12 @@ export default function RootLayout({
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         />
       </head>
-      <body className="container mx-auto bg-[#F7F7F7]">
+      <body
+        style={{
+          background: color ? color : "rgba(247, 247, 247, 1)",
+        }}
+        className="container w-full mx-auto"
+      >
         <Headers />
         <main>
           <ToastContainer position="top-center" />
@@ -45,4 +51,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

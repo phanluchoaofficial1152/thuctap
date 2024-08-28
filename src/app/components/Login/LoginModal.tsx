@@ -2,7 +2,11 @@
 
 import { FC, useState } from "react";
 import { Modal, Input, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  FacebookOutlined,
+  GoogleOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 
 const LoginModal: FC = () => {
@@ -42,7 +46,8 @@ const LoginModal: FC = () => {
         <div className="space-y-4">
           <Input
             size="large"
-            placeholder="Enter Username"
+            placeholder="Enter Email"
+            type="email"
             prefix={<UserOutlined />}
             className="rounded-md"
           />
@@ -73,7 +78,7 @@ const LoginModal: FC = () => {
           <div className="flex flex-col items-center justify-center">
             <Button
               type="default"
-              icon={<i className="fab fa-facebook-f"></i>}
+              icon={<FacebookOutlined />}
               className="rounded-md"
             >
               Login with Facebook
@@ -81,7 +86,7 @@ const LoginModal: FC = () => {
 
             <Button
               type="default"
-              icon={<i className="fab fa-google"></i>}
+              icon={<GoogleOutlined />}
               className="rounded-md mt-3"
             >
               Login with Google+

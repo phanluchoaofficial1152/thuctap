@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Breadcrumb, Button, Input, Upload } from "antd";
+import { Breadcrumb, Button, Input, message, Upload } from "antd";
 import Title from "antd/es/typography/Title";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -14,11 +14,16 @@ import {
   InstagramOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-
-import "./register.css";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const RegisterPage: NextPage<{}> = () => {
   const [image, setImage] = useState<string | null>(null);
+  const [otpSent, setOtpSent] = useState(false);
+  const [resendTimeout, setResendTimeout] = useState(0);
+  const router = useRouter();
+
+  const url: string = "https://api-pro.teklearner.com";
 
   const breadcrumbItems = [
     {
@@ -42,17 +47,106 @@ const RegisterPage: NextPage<{}> = () => {
     showUploadList: false,
   };
 
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required("Họ là bắt buộc."),
-    lastName: Yup.string().required("Tên là bắt buộc."),
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Tên là bắt buộc."),
     email: Yup.string()
       .email("Email không hợp lệ.")
       .required("Email là bắt buộc."),
-    mobile: Yup.string().required("Số điện thoại là bắt buộc."),
-    street: Yup.string().required("Đường là bắt buộc."),
-    area: Yup.string().required("Vùng là bắt buộc."),
-    emirate: Yup.string().required("Trường này là bắt buộc."),
+    phone: Yup.string().required("Số điện thoại là bắt buộc."),
+    password: Yup.string().required("Mật khẩu là bắt buộc."),
+    otp: Yup.string().test(
+      "otp-required",
+      "Mã OTP là bắt buộc.",
+      function (value) {
+        const { otpSent } = this.parent;
+        return otpSent ? !!value : true;
+      }
+    ),
   });
+
+  const checkEmailAndPhone = async (
+    email: string,
+    phone: string
+  ): Promise<boolean> => {
+    try {
+      const emailCheck = await axios.post(`${url}/auth/v1/check-email`, {
+        email,
+      });
+      if (emailCheck.data.data === true) {
+        message.error("Email đã tồn tại trong hệ thống.");
+        return false;
+      }
+
+      const phoneCheck = await axios.post(`${url}/auth/v1/check-phone`, {
+        phone,
+      });
+      if (phoneCheck.data.data === true) {
+        message.error("Số điện thoại đã tồn tại trong hệ thống.");
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      message.error("Đã xảy ra lỗi trong quá trình kiểm tra.");
+      console.log("Lỗi: ", error);
+      return false;
+    }
+  };
+
+  const handleSubmit = async (values: {
+    name: string;
+    email: string;
+    phone: string;
+    password: string;
+    otp: string;
+  }) => {
+    const { email, phone, otp } = values;
+
+    if (!otpSent) {
+      const valid = await checkEmailAndPhone(email, phone);
+      if (valid) {
+        try {
+          await axios.post(`${url}/auth/v1/send-otp-email`, { email });
+          setOtpSent(true);
+          message.success("Mã OTP đã được gửi đến email.");
+        } catch (error) {
+          message.error("Không thể gửi OTP.");
+          console.log("Lỗi: ", error);
+        }
+      }
+    } else {
+      try {
+        await axios.post(`${url}/auth/v1/register`, values);
+        message.success("Đăng ký thành công!");
+        router.replace("/");
+      } catch (error) {
+        message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
+        console.log("Lỗi: ", error);
+      }
+    }
+  };
+
+  const handleResendOTP = async (email: string) => {
+    if (resendTimeout > 0) {
+      message.error("Vui lòng chờ trước khi gửi lại OTP.");
+      return;
+    }
+    try {
+      await axios.post(`${url}/auth/v1/send-otp-email`, { email });
+      message.success("Mã OTP đã được gửi đến email.");
+      setResendTimeout(60);
+
+      const interval = setInterval(() => {
+        setResendTimeout((prev) => {
+          if (prev === 1) clearInterval(interval);
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (error) {
+      message.error("Không thể gửi OTP.");
+      console.log("Lỗi: ", error);
+    }
+  };
 
   return (
     <>
@@ -71,20 +165,16 @@ const RegisterPage: NextPage<{}> = () => {
 
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
+            name: "",
             email: "",
-            mobile: "",
-            street: "",
-            area: "",
-            emirate: "",
+            phone: "",
+            password: "",
+            otp: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
+          onSubmit={handleSubmit}
         >
-          {({ setFieldValue }) => (
+          {({ setFieldValue, values }) => (
             <Form className="h-full flex flex-col bg-white shadow-md rounded-lg p-6 mt-3">
               <div className="gap-3 flex flex-col sm:flex-row sm:gap-3 justify-center items-center mb-4">
                 <Button icon={<FacebookOutlined />}>
@@ -126,12 +216,15 @@ const RegisterPage: NextPage<{}> = () => {
                       </button>
                     </div>
                   ) : (
-                    <>
-                      <div className="flex justify-center items-center text-4xl mb-4">
+                    <div className="cursor-pointer">
+                      <div
+                        className="flex justify-center items-center mb-1"
+                        style={{ fontSize: "34px" }}
+                      >
                         +
                       </div>
                       <div>Upload Image</div>
-                    </>
+                    </div>
                   )}
                 </Upload>
               </div>
@@ -142,26 +235,13 @@ const RegisterPage: NextPage<{}> = () => {
 
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="mb-2">
-                  <Field name="firstName">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="First Name *" />
+                  <Field name="name">
+                    {({ field }: { field: any }) => (
+                      <Input {...field} placeholder="Họ và Tên *" />
                     )}
                   </Field>
                   <ErrorMessage
-                    name="firstName"
-                    component="div"
-                    className="text-red-500"
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <Field name="lastName">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="Last Name *" />
-                    )}
-                  </Field>
-                  <ErrorMessage
-                    name="lastName"
+                    name="name"
                     component="div"
                     className="text-red-500"
                   />
@@ -169,8 +249,8 @@ const RegisterPage: NextPage<{}> = () => {
 
                 <div className="mb-2">
                   <Field name="email">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="Email Address *" />
+                    {({ field }: { field: any }) => (
+                      <Input {...field} placeholder="Email *" />
                     )}
                   </Field>
                   <ErrorMessage
@@ -181,66 +261,67 @@ const RegisterPage: NextPage<{}> = () => {
                 </div>
 
                 <div className="mb-2">
-                  <Field name="mobile">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="Mobile Number *" />
+                  <Field name="phone">
+                    {({ field }: { field: any }) => (
+                      <Input {...field} placeholder="Số điện thoại *" />
                     )}
                   </Field>
                   <ErrorMessage
-                    name="mobile"
+                    name="phone"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+
+                <div className="mb-2">
+                  <Field name="password">
+                    {({ field }: { field: any }) => (
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="Mật khẩu *"
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage
+                    name="password"
                     component="div"
                     className="text-red-500"
                   />
                 </div>
               </div>
 
-              <Title level={4} className="mb-4 font-semibold">
-                Address
-              </Title>
-
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="mb-2">
-                  <Field name="street">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="Street *" />
+              {otpSent && (
+                <div className="mb-4">
+                  <Field name="otp">
+                    {({ field }: { field: any }) => (
+                      <Input {...field} placeholder="Nhập mã OTP *" />
                     )}
                   </Field>
                   <ErrorMessage
-                    name="street"
+                    name="otp"
                     component="div"
                     className="text-red-500"
                   />
                 </div>
+              )}
 
-                <div className="mb-2">
-                  <Field name="area">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="Area *" />
-                    )}
-                  </Field>
-                  <ErrorMessage
-                    name="area"
-                    component="div"
-                    className="text-red-500"
-                  />
-                </div>
+              {otpSent && (
+                <Button
+                  onClick={() => handleResendOTP(values.email)}
+                  disabled={resendTimeout > 0}
+                >
+                  Gửi lại OTP
+                  {resendTimeout > 0 && ` (${resendTimeout}s)`}
+                </Button>
+              )}
 
-                <div className="mb-2">
-                  <Field name="emirate">
-                    {({ field }: any) => (
-                      <Input {...field} placeholder="Emirate *" />
-                    )}
-                  </Field>
-                  <ErrorMessage
-                    name="emirate"
-                    component="div"
-                    className="text-red-500"
-                  />
-                </div>
-              </div>
-
-              <Button type="primary" className="w-full" htmlType="submit">
-                Register
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full mt-3 py-2"
+              >
+                {otpSent ? "Đăng ký" : "Gửi OTP"}
               </Button>
             </Form>
           )}

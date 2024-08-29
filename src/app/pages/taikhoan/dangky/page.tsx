@@ -303,6 +303,9 @@ const RegisterPage: NextPage<{}> = () => {
                     component="div"
                     className="text-red-500"
                   />
+                  <p className="text-red-500 font-semibold mt-3">
+                    VUI LÒNG CHECK MAIL ĐỂ XÁC THỰC TÀI KHOẢN!!!
+                  </p>
                 </div>
               )}
 

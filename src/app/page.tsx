@@ -85,7 +85,7 @@ const Home: FC = () => {
   };
 
   return (
-    <div className="container">
+    <>
       {/* slider */}
       <div className="carousel-container">
         <Carousel ref={carouselRef} dots={false} effect="fade" autoplay>
@@ -572,7 +572,7 @@ const Home: FC = () => {
         </div>
       </div>
       {/* end khách hàng */}
-    </div>
+    </>
   );
 };
 

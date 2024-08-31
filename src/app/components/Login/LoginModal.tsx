@@ -1,17 +1,22 @@
+// components/LoginModal.tsx
 "use client";
 
 import { FC, useState } from "react";
 import { Modal, Input, Button } from "antd";
 import {
+  UserOutlined,
   FacebookOutlined,
   GoogleOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/app/store/auth/authSlice";
 
 const LoginModal: FC = () => {
   const [visible, setVisible] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
+  const { login, isAuthenticated } = useAuthStore();
 
   const showModal = () => {
     setVisible(true);
@@ -19,6 +24,14 @@ const LoginModal: FC = () => {
 
   const handleCancel = () => {
     setVisible(false);
+  };
+
+  const handleLogin = async () => {
+    await login(username, password);
+    if (isAuthenticated) {
+      handleCancel();
+      router.push("/");
+    }
   };
 
   const handleRedirect = (url: string) => {
@@ -50,13 +63,22 @@ const LoginModal: FC = () => {
             type="email"
             prefix={<UserOutlined />}
             className="rounded-md"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <Input.Password
             size="large"
             placeholder="Enter Password"
             className="rounded-md"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="primary" block className="rounded-md">
+          <Button
+            type="primary"
+            block
+            className="rounded-md"
+            onClick={handleLogin}
+          >
             Sign In
           </Button>
           <div className="flex justify-between items-center">
@@ -83,7 +105,6 @@ const LoginModal: FC = () => {
             >
               Login with Facebook
             </Button>
-
             <Button
               type="default"
               icon={<GoogleOutlined />}

@@ -8,9 +8,10 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import Image from "next/image";
-import { Input } from "antd";
+import { Dropdown, Input, Menu } from "antd";
 import "./Headers.css";
 import LoginModal from "../Login/LoginModal";
+import { useAuthStore } from "@/app/store/auth/authSlice";
 
 const { Search } = Input;
 
@@ -40,6 +41,7 @@ const Header: FC = () => {
       href: "/pages/danhmuc/sell-with-us",
     },
   ]);
+  const { isAuthenticated, logout, name } = useAuthStore();
 
   useEffect(() => {
     const fetchClassData = async () => {
@@ -99,6 +101,22 @@ const Header: FC = () => {
     { key: "brand3", label: "Brand 3", href: "/brand3" },
   ];
 
+  const userMenu = (
+    <Menu>
+      <Menu.Item>
+        <Link href="/pages/taikhoan/update-account">Update Account</Link>
+      </Menu.Item>
+      <Menu.Item onClick={() => logout()}>Logout</Menu.Item>
+    </Menu>
+  );
+
+  const truncateName = (fullName: string, maxLength: number) => {
+    if (fullName.length <= maxLength) return fullName;
+    return `${fullName.slice(0, maxLength)}...`;
+  };
+
+  const displayName = name ? truncateName(name, 12) : "";
+
   return (
     <div className="w-full py-4 sticky">
       <div className="flex items-center px-4 justify-between md:px-6">
@@ -126,13 +144,28 @@ const Header: FC = () => {
         {/* end search */}
 
         {/* hành động */}
-        <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer">
+        <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer whitespace-nowrap">
           <ShoppingCartOutlined className="text-xl" />
           <Link href={"/pages/giohang"}>
             <span className="ml-2">Cart</span>
           </Link>
           <span>|</span>
-          <LoginModal />
+          {isAuthenticated ? (
+            <Dropdown overlay={userMenu} trigger={["click"]}>
+              <div className="flex items-center space-x-2 cursor-pointer">
+                {/* <Image
+                src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhdHN8ZW58MHx8MHx8fDA%3D"
+                alt="User"
+                width={30} // Adjusted width
+                height={30} // Adjusted height
+                className="rounded-full"
+              /> */}
+                <span>Chào, {displayName}</span> {/* Display User's Name */}
+              </div>
+            </Dropdown>
+          ) : (
+            <LoginModal />
+          )}
           <span>|</span>
           <span>VN</span>
         </div>
@@ -151,12 +184,28 @@ const Header: FC = () => {
       {menuVisible && (
         <>
           <div className="bg-white shadow-lg lg:hidden">
-            <div className="flex items-center justify-center space-x-2 md:hidden lg:hidden">
+            <div className="flex items-center justify-center space-x-2 md:hidden lg:hidden whitespace-nowrap">
               <div className="mt-4 flex space-x-2 mb-3">
                 <ShoppingCartOutlined className="text-xl" />
                 <span className="ml-2">Cart</span>
                 <span>|</span>
-                <LoginModal />
+                {isAuthenticated ? (
+                  <Dropdown overlay={userMenu} trigger={["click"]}>
+                    <div className="flex items-center space-x-2 cursor-pointer">
+                      {/* <Image
+                        src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhdHN8ZW58MHx8MHx8fDA%3D"
+                        alt="User"
+                        width={30} // Adjusted width
+                        height={30} // Adjusted height
+                        className="rounded-full"
+                      /> */}
+                      <span>Chào, {displayName}</span>{" "}
+                      {/* Display User's Name */}
+                    </div>
+                  </Dropdown>
+                ) : (
+                  <LoginModal />
+                )}
                 <span>|</span>
                 <span>VN</span>
               </div>

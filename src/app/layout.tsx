@@ -1,20 +1,14 @@
-import type { Metadata } from "next";
-import "./globals.css";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
+import { FC, ReactNode } from "react";
+import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { FC, ReactNode } from "react";
 
-export const metadata: Metadata = {
-  title: "Thực Tập NextJS - Phan Lục Hòa",
-  description: "Thực Tập NextJS - Phan Lục Hòa",
-};
-
-const RootLayout: FC<{
-  children: ReactNode;
-  color?: string;
-}> = ({ children, color }) => {
+const RootLayout: FC<{ children: ReactNode; color?: string }> = ({
+  children,
+  color,
+}) => {
   return (
     <html lang="vi">
       <head>

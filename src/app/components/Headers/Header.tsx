@@ -156,11 +156,11 @@ const Header: FC = () => {
                 {/* <Image
                 src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhdHN8ZW58MHx8MHx8fDA%3D"
                 alt="User"
-                width={30} // Adjusted width
-                height={30} // Adjusted height
+                width={30} 
+                height={30} 
                 className="rounded-full"
               /> */}
-                <span>Chào, {displayName}</span> {/* Display User's Name */}
+                <span>Chào, {displayName}</span>
               </div>
             </Dropdown>
           ) : (
@@ -195,12 +195,11 @@ const Header: FC = () => {
                       {/* <Image
                         src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhdHN8ZW58MHx8MHx8fDA%3D"
                         alt="User"
-                        width={30} // Adjusted width
-                        height={30} // Adjusted height
+                        width={30} 
+                        height={30} 
                         className="rounded-full"
                       /> */}
-                      <span>Chào, {displayName}</span>{" "}
-                      {/* Display User's Name */}
+                      <span>Chào, {displayName}</span>
                     </div>
                   </Dropdown>
                 ) : (

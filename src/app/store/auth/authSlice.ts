@@ -16,7 +16,7 @@ interface AuthState {
 
 const SECRET_KEY: Buffer = crypto
   .createHash("sha256")
-  .update("ABCDEFGHIERFGJSLFS1234567890@#$%^&*")
+  .update(String(process.env.NEXT_PUBLIC_KEY_SECRET))
   .digest();
 
 export const useAuthStore = create<AuthState>((set) => ({

@@ -41,36 +41,37 @@ const Header: FC = () => {
       href: "/pages/danhmuc/sell-with-us",
     },
   ]);
-  const { isAuthenticated, logout, name } = useAuthStore();
+  const { isAuthenticated, logout, getDisplayName } = useAuthStore();
+  const displayName = getDisplayName() || "";
+
+  const fetchClassData = async () => {
+    try {
+      const response = await fetch(
+        "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=16"
+      );
+      const data = await response.json();
+
+      const updatedMenuItems = menuItems.map((item, index) => {
+        if (item.key === "all-brands") {
+          return item;
+        }
+
+        const classData = data.data[index];
+
+        return classData
+          ? { ...item, href: `/pages/danhmuc/${classData.class_slug}` }
+          : item;
+      });
+
+      setMenuItems(updatedMenuItems);
+    } catch (error) {
+      console.error("Failed to fetch class data", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchClassData = async () => {
-      try {
-        const response = await fetch(
-          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=16"
-        );
-        const data = await response.json();
-
-        const updatedMenuItems = menuItems.map((item, index) => {
-          if (item.key === "all-brands") {
-            return item;
-          }
-
-          const classData = data.data[index];
-
-          return classData
-            ? { ...item, href: `/pages/danhmuc/${classData.class_slug}` }
-            : item;
-        });
-
-        setMenuItems(updatedMenuItems);
-      } catch (error) {
-        console.error("Failed to fetch class data", error);
-      }
-    };
-
     fetchClassData();
-  }, [menuItems]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -115,8 +116,6 @@ const Header: FC = () => {
     return `${fullName.slice(0, maxLength)}...`;
   };
 
-  const displayName = name ? truncateName(name, 12) : "";
-
   return (
     <div className="w-full py-4 sticky">
       <div className="flex items-center px-4 justify-between md:px-6">
@@ -160,7 +159,7 @@ const Header: FC = () => {
                 height={30} 
                 className="rounded-full"
               /> */}
-                <span>Chào, {displayName}</span>
+                <span>Chào, {truncateName(displayName, 12)}</span>
               </div>
             </Dropdown>
           ) : (
@@ -199,7 +198,7 @@ const Header: FC = () => {
                         height={30} 
                         className="rounded-full"
                       /> */}
-                      <span>Chào, {displayName}</span>
+                      <span>Chào, {truncateName(displayName, 12)}</span>
                     </div>
                   </Dropdown>
                 ) : (

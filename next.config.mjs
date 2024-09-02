@@ -10,6 +10,7 @@ const nextConfig = {
       "mint07.com",
       "encrypted-tbn0.gstatic.com",
       "images.unsplash.com",
+      "files.fullstack.edu.vn",
     ],
   },
 };

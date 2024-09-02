@@ -206,6 +206,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         Cookies.set("access_token", newToken, { expires: 30 / (24 * 60) });
 
         set({ token: newToken });
+        useAuthStore.getState().scheduleTokenRefresh();
       } catch (error) {
         console.error("Lỗi khi refresh token:", error);
         Cookies.remove("access_token");
@@ -219,7 +220,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (token) {
       setTimeout(() => {
         useAuthStore.getState().refreshToken();
-      }, 4 * 60 * 1000);
+      }, 1 * 60 * 1000);
     }
   },
 }));

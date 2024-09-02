@@ -152,14 +152,20 @@ const Header: FC = () => {
           {isAuthenticated ? (
             <Dropdown overlay={userMenu} trigger={["click"]}>
               <div className="flex items-center space-x-2 cursor-pointer">
-                {/* <Image
-                src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhdHN8ZW58MHx8MHx8fDA%3D"
-                alt="User"
-                width={30} 
-                height={30} 
-                className="rounded-full"
-              /> */}
-                <span>Chào, {truncateName(displayName, 12)}</span>
+                <Image
+                  src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
+                  alt={displayName ? displayName : "Avatar"}
+                  width={30}
+                  height={30}
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                  className="rounded-full"
+                />
+                <span style={{ marginRight: "30px" }}>
+                  Chào, {truncateName(displayName, 12)}
+                </span>
               </div>
             </Dropdown>
           ) : (
@@ -186,26 +192,30 @@ const Header: FC = () => {
             <div className="flex items-center justify-center space-x-2 md:hidden lg:hidden whitespace-nowrap">
               <div className="mt-4 flex space-x-2 mb-3">
                 <ShoppingCartOutlined className="text-xl" />
-                <span className="ml-2">Cart</span>
-                <span>|</span>
+                <span className="ml-2 mt-1">Cart</span>
+                <span className="mt-1">|</span>
                 {isAuthenticated ? (
                   <Dropdown overlay={userMenu} trigger={["click"]}>
                     <div className="flex items-center space-x-2 cursor-pointer">
-                      {/* <Image
-                        src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNhdHN8ZW58MHx8MHx8fDA%3D"
-                        alt="User"
-                        width={30} 
-                        height={30} 
+                      <Image
+                        src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
+                        alt={displayName ? displayName : "Avatar"}
+                        width={30}
+                        height={30}
+                        style={{
+                          objectFit: "cover",
+                          borderRadius: "50%",
+                        }}
                         className="rounded-full"
-                      /> */}
+                      />
                       <span>Chào, {truncateName(displayName, 12)}</span>
                     </div>
                   </Dropdown>
                 ) : (
                   <LoginModal />
                 )}
-                <span>|</span>
-                <span>VN</span>
+                <span className="mt-1">|</span>
+                <span className="mt-1">VN</span>
               </div>
             </div>
 

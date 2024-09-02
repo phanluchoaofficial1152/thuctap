@@ -188,7 +188,7 @@ const RegisterPage: NextPage<{}> = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleRegister = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
@@ -293,7 +293,7 @@ const RegisterPage: NextPage<{}> = () => {
                 <Button icon={<FacebookOutlined />}>
                   Register with Facebook
                 </Button>
-                <Button icon={<GoogleOutlined />} onClick={handleGoogleLogin}>
+                <Button icon={<GoogleOutlined />} onClick={handleGoogleRegister}>
                   Register with Google
                 </Button>
                 <Modal

@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCDNZP5YMgEwAOlcT1qygrNFyEfYYZj9bo",
-  authDomain: "thuctap-nextjs.firebaseapp.com",
-  projectId: "thuctap-nextjs",
-  storageBucket: "thuctap-nextjs.appspot.com",
-  messagingSenderId: "346502247691",
-  appId: "1:346502247691:web:d093516bb42adefc909e0e",
+  apiKey: String(process.env.NEXT_PUBLIC_API_KEY),
+  authDomain: String(process.env.NEXT_PUBLIC_APP_DOMAIN),
+  projectId: String(process.env.NEXT_PUBLIC_PROJECT_ID),
+  storageBucket: String(process.env.NEXT_PUBLIC_STORAGE_BUCKET),
+  messagingSenderId: String(process.env.NEXT_PUBLIC_MESSAGE_ID),
+  appId: String(process.env.NEXT_PUBLIC_APP_ID),
 };
 
 const app = initializeApp(firebaseConfig);

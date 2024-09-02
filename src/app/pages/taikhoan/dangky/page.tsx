@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Breadcrumb, Button, Input, message, Upload } from "antd";
+import { Breadcrumb, Button, Input, message, Modal, Upload } from "antd";
 import Title from "antd/es/typography/Title";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -16,11 +16,16 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/app/firebase/firebaseConfig";
 
 const RegisterPage: NextPage<{}> = () => {
   const [image, setImage] = useState<string | null>(null);
   const [otpSent, setOtpSent] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [registrationData, setRegistrationData] = useState<any>(null);
   const router = useRouter();
 
   const url: string = "https://api-pro.teklearner.com";
@@ -63,6 +68,41 @@ const RegisterPage: NextPage<{}> = () => {
       }
     ),
   });
+
+  const checkEmailFirebase = async (email: string): Promise<boolean> => {
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+      if (methods.length > 0) {
+        message.error("Email đã tồn tại trong Firebase.");
+        return false;
+      }
+      return true;
+    } catch (error) {
+      message.error("Lỗi trong quá trình kiểm tra email.");
+      console.error(error);
+      return false;
+    }
+  };
+
+  const checkEmailGoogle = async (email: string): Promise<boolean> => {
+    try {
+      const response = await axios.post(`${url}/auth/v1/check-email`, {
+        email,
+      });
+
+      if (response.data.data === true) {
+        message.error("Email đã tồn tại trong hệ thống.");
+        return false;
+      }
+
+      const firebaseCheck = await checkEmailFirebase(email);
+      return firebaseCheck;
+    } catch (error) {
+      message.error("Đã xảy ra lỗi trong quá trình kiểm tra.");
+      console.log("Lỗi: ", error);
+      return false;
+    }
+  };
 
   const checkEmailAndPhone = async (
     email: string,
@@ -148,6 +188,79 @@ const RegisterPage: NextPage<{}> = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const email = user.email;
+      const phone =
+        user.phoneNumber ||
+        `09${Math.floor(10000000 + Math.random() * 90000000)}`;
+
+      if (email) {
+        const valid = await checkEmailGoogle(email);
+
+        if (valid) {
+          const fullAccessToken = await user.getIdToken();
+          const accessToken = fullAccessToken.slice(0, 20);
+
+          const otpResponse = await axios.post(
+            `${url}/auth/v1/send-otp-email`,
+            { email }
+          );
+
+          if (otpResponse.status === 200) {
+            message.success("Mã OTP đã được gửi đến email.");
+            setIsModalOpen(true);
+
+            if (otpResponse.status === 200) {
+              message.success("Mã OTP đã được gửi đến email.");
+              setIsModalOpen(true);
+
+              const registrationData = {
+                name: user.displayName || "Phan Lục Hòa",
+                email,
+                phone,
+                password: accessToken,
+                otp: "",
+              };
+
+              setRegistrationData(registrationData);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      message.error("Đăng nhập bằng Google thất bại.");
+      console.log("Lỗi: ", error);
+    }
+  };
+
+  const submitRegisterGoogle = async (data: any, otp: string) => {
+    const dataSubmit: any = {
+      ...data,
+      otp,
+    };
+
+    const handleSubmit = async () => {
+      try {
+        await axios.post(`${url}/auth/v1/register`, dataSubmit);
+        message.success("Đăng ký thành công!");
+        setIsModalOpen(false);
+        router.replace("/");
+      } catch (error) {
+        message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
+        console.log("Lỗi: ", error);
+      }
+    };
+
+    const handleOk = () => {
+      handleSubmit();
+    };
+
+    return { handleOk };
+  };
+
   return (
     <>
       <title>Đăng ký - IVY moda - Thực tập NextJS</title>
@@ -180,7 +293,33 @@ const RegisterPage: NextPage<{}> = () => {
                 <Button icon={<FacebookOutlined />}>
                   Register with Facebook
                 </Button>
-                <Button icon={<GoogleOutlined />}>Register with Google</Button>
+                <Button icon={<GoogleOutlined />} onClick={handleGoogleLogin}>
+                  Register with Google
+                </Button>
+                <Modal
+                  title="Nhập mã OTP"
+                  open={isModalOpen}
+                  onOk={async () => {
+                    if (registrationData) {
+                      const response = await submitRegisterGoogle(
+                        registrationData,
+                        otp
+                      );
+                      response.handleOk();
+                    } else {
+                      message.error(
+                        "Đăng ký không thành công. Vui lòng thử lại."
+                      );
+                    }
+                  }}
+                  onCancel={() => setIsModalOpen(false)}
+                >
+                  <Input
+                    placeholder="Nhập mã OTP"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                  />
+                </Modal>
                 <Button icon={<InstagramOutlined />}>
                   Register with Instagram
                 </Button>

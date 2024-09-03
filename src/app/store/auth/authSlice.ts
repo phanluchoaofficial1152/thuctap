@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
 import crypto from "crypto";
+import { message } from "antd";
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -85,10 +86,12 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         useAuthStore.getState().scheduleTokenRefresh();
       } else {
-        throw new Error("Đăng nhập thất bại!");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Đăng nhập thất bại!");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Đăng nhập thất bại:", error);
+      message.error(`${error.message}`);
     }
   },
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Modal, Input, Button } from "antd";
+import { Modal, Input, Button, message } from "antd";
 import {
   UserOutlined,
   FacebookOutlined,
@@ -11,11 +11,16 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/app/firebase/firebaseConfig";
+import axios from "axios";
 
 const LoginModal: FC = () => {
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const { login, isAuthenticated } = useAuthStore();
+
+  const url: string = "https://api-pro.teklearner.com";
 
   const showModal = () => {
     setVisible(true);
@@ -36,14 +41,64 @@ const LoginModal: FC = () => {
     }
   };
 
+  const checkEmailGoogle = async (email: string) => {
+    try {
+      const response = await axios.post(`${url}/auth/v1/check-email`, {
+        email,
+      });
+      if (response.data.data === true) {
+        return true;
+      } else {
+        message.error("Email không tồn tại trong hệ thống.");
+        return false;
+      }
+    } catch (error) {
+      message.error("Đã xảy ra lỗi trong quá trình kiểm tra.");
+      console.log("Lỗi: ", error);
+      return false;
+    }
+  };
+
+  const handleLoginGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const email: any = user.email;
+
+      if (email.length > 0) {
+        const valid = await checkEmailGoogle(email);
+
+        if (valid) {
+          const fullAccessToken = await user.getIdToken();
+          const accessToken = fullAccessToken.slice(0, 20);
+          const password = accessToken;
+
+          await login(email, password);
+          handleCancel();
+        } else {
+          message.error("Email không tồn tại trong hệ thống.");
+        }
+      } else {
+        message.error(
+          "Không tìm thấy email, vui lòng thực hiện đăng nhập lại."
+        );
+      }
+    } catch (error: any) {
+      message.error(`${error.message}`);
+      console.log("Đã xảy ra lỗi khi đăng nhập với Google: ", error.message);
+    }
+  };
+
   const handleRedirect = (url: string) => {
     handleCancel();
     router.push(url);
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string().required("Required"),
+    username: Yup.string()
+      .email("Email không hợp lệ.")
+      .required("Trường này là bắt buộc."),
+    password: Yup.string().required("Trường này là bắt buộc."),
   });
 
   return (
@@ -137,6 +192,7 @@ const LoginModal: FC = () => {
                   type="default"
                   icon={<GoogleOutlined />}
                   className="rounded-md mt-3"
+                  onClick={handleLoginGoogle}
                 >
                   Login with Google+
                 </Button>

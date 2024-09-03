@@ -105,7 +105,7 @@ const Header: FC = () => {
   const userMenu = (
     <Menu>
       <Menu.Item>
-        <Link href="/pages/taikhoan/update-account">Update Account</Link>
+        <Link href="/pages/taikhoan/capnhattaikhoan">Update Account</Link>
       </Menu.Item>
       <Menu.Item onClick={() => logout()}>Logout</Menu.Item>
     </Menu>

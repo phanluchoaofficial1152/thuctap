@@ -4,14 +4,13 @@ import { FC, useState } from "react";
 import { Modal, Input, Button, message } from "antd";
 import {
   UserOutlined,
-  FacebookOutlined,
   GoogleOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
 import axios from "axios";
 
@@ -181,13 +180,6 @@ const LoginModal: FC = () => {
                 </Button>
               </div>
               <div className="flex flex-col items-center justify-center">
-                <Button
-                  type="default"
-                  icon={<FacebookOutlined />}
-                  className="rounded-md"
-                >
-                  Login with Facebook
-                </Button>
                 <Button
                   type="default"
                   icon={<GoogleOutlined />}

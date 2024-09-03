@@ -9,14 +9,16 @@ import * as Yup from "yup";
 import { NextPage } from "next";
 import Image from "next/image";
 import {
-  FacebookOutlined,
   GoogleOutlined,
   InstagramOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
+import {
+  fetchSignInMethodsForEmail,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
 
 const RegisterPage: NextPage<{}> = () => {
@@ -26,6 +28,7 @@ const RegisterPage: NextPage<{}> = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [otp, setOtp] = useState("");
   const [registrationData, setRegistrationData] = useState<any>(null);
+    useState<any>(null);
   const router = useRouter();
 
   const url: string = "https://api-pro.teklearner.com";
@@ -290,10 +293,10 @@ const RegisterPage: NextPage<{}> = () => {
           {({ setFieldValue, values }) => (
             <Form className="h-full flex flex-col bg-white shadow-md rounded-lg p-6 mt-3">
               <div className="gap-3 flex flex-col sm:flex-row sm:gap-3 justify-center items-center mb-4">
-                <Button icon={<FacebookOutlined />}>
-                  Register with Facebook
-                </Button>
-                <Button icon={<GoogleOutlined />} onClick={handleGoogleRegister}>
+                <Button
+                  icon={<GoogleOutlined />}
+                  onClick={handleGoogleRegister}
+                >
                   Register with Google
                 </Button>
                 <Modal

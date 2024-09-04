@@ -23,7 +23,7 @@ const RootLayout: FC<{ children: ReactNode; color?: string }> = ({
         <title>Thực tập NextJS | IVY moda</title>
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=optional"
+          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=optional"
         />
         <link
           rel="stylesheet"
@@ -34,13 +34,11 @@ const RootLayout: FC<{ children: ReactNode; color?: string }> = ({
         style={{
           background: color ? color : "rgba(247, 247, 247, 1)",
         }}
-        className="container w-full mx-auto"
+        className="container mx-auto"
       >
         <Headers />
-        <main>
-          <ToastContainer position="top-center" />
-          {children}
-        </main>
+        <ToastContainer position="top-center" />
+        {children}
         <Footer />
       </body>
     </html>

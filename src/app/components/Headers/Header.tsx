@@ -8,12 +8,11 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import Image from "next/image";
-import { Dropdown, Input, Menu } from "antd";
+import { Dropdown, Menu } from "antd";
+import { Input } from "@/components/ui/input";
 import "./Headers.css";
 import LoginModal from "../Login/LoginModal";
 import { useAuthStore } from "@/app/store/auth/authSlice";
-
-const { Search } = Input;
 
 const Header: FC = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -117,7 +116,7 @@ const Header: FC = () => {
   };
 
   return (
-    <div className="w-full py-4 sticky">
+    <div className="w-full pt-5">
       <div className="flex items-center px-4 justify-between md:px-6">
         {/* logo */}
         <div className="flex-shrink-0">
@@ -133,20 +132,17 @@ const Header: FC = () => {
         {/* end logo */}
 
         {/* search */}
-        <div className="flex-grow hidden md:flex md:mb-2 md:w-full justify-center">
-          <Search
-            placeholder="Search..."
-            enterButton
-            className="w-1/2 md:w-1/3 lg:w-1/4"
-          />
+        <div className="flex-grow md:flex md:w-full justify-center">
+          <Input placeholder="Search..." className="w-1/2 md:w-1/3 lg:w-1/4" />
         </div>
+
         {/* end search */}
 
         {/* hành động */}
-        <div className="hidden lg:flex sm:hidden md:flex items-center space-x-3 cursor-pointer whitespace-nowrap">
-          <ShoppingCartOutlined className="text-xl" />
+        <div className="hidden lg:flex sm:hidden md:flex items-center space-x-2 cursor-pointer whitespace-nowrap">
+          <ShoppingCartOutlined style={{ fontSize: "18px" }} />
           <Link href={"/pages/giohang"}>
-            <span className="ml-2">Cart</span>
+            <span>Cart</span>
           </Link>
           <span>|</span>
           {isAuthenticated ? (
@@ -260,7 +256,7 @@ const Header: FC = () => {
       {/* end menu hiện ra khi toggle */}
 
       {/* menu cho desktop */}
-      <div className="hidden bg-white lg:flex items-center border-t mt-4 py-2 relative justify-between">
+      <div className="hidden bg-white lg:flex items-center border-t mt-6 py-2 relative justify-between">
         <div className="flex justify-center space-x-9">
           {menuItems.slice(0, -1).map((item, value) => (
             <div

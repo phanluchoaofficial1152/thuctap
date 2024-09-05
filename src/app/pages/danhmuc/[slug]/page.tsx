@@ -69,7 +69,7 @@ const CategorySlugContent: NextPage<{}> = () => {
           discount: "30% Off",
           category: item.campus.campus_name,
           image:
-            "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp", // Thay thế bằng link hình ảnh nếu có
+            "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/a83bc666879e970ebfa39facf7e4ef4f.webp",
           isNew: new Date(item.start_date) > new Date(),
         }));
 
@@ -93,7 +93,7 @@ const CategorySlugContent: NextPage<{}> = () => {
     },
     {
       title: (
-        <Link href={`/danhmuc/${title}`}>
+        <Link href={`/pages/danhmuc/${title}`}>
           {title ? capitalizeFirstLetter(title) : ""}
         </Link>
       ),

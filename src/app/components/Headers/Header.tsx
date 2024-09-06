@@ -123,7 +123,7 @@ const Header: FC = () => {
   };
 
   return (
-    <div className="w-full pt-5">
+    <div className="pt-6">
       <div className="flex items-center px-4 justify-between md:px-6">
         {/* logo */}
         <div className="flex-shrink-0">

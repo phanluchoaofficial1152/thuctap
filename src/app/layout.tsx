@@ -1,6 +1,6 @@
+import { FC, ReactNode } from "react";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
-import { FC, ReactNode } from "react";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -34,12 +34,13 @@ const RootLayout: FC<{ children: ReactNode; color?: string }> = ({
         style={{
           background: color ? color : "rgba(247, 247, 247, 1)",
         }}
-        className="container mx-auto"
       >
-        <Headers />
-        <ToastContainer position="top-center" />
-        {children}
-        <Footer />
+        <div className="container mx-auto">
+          <Headers />
+          <ToastContainer position="top-center" />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

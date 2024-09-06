@@ -7,7 +7,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
-      <div className="flex items-center justify-center w-full">
+      <div className="flex items-center mb-2 justify-center w-full">
         <input
           type={type}
           className={cn(

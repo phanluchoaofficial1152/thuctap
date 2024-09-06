@@ -18,10 +18,10 @@ interface ClassItem2 {
 
 function ClassCard({ classItem2 }: { classItem2: ClassItem2 }) {
   function formatTeacherInfo(teachers: Teacher[]) {
-    return teachers.map((teacher, index) => (
-      <div key={`teacher-${index}`}>
+    return teachers.map((teacher, index2) => (
+      <div key={`teacherclasses-${index2}`}>
         <div className="text-xl font-semibold mb-2">{teacher.name}</div>
-        <div className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-600 mb-2">
+        <div className="border border-gray-300 rounded-full px-3 py-2 text-sm text-gray-600 mb-2">
           {teacher.email}
         </div>
       </div>
@@ -29,7 +29,7 @@ function ClassCard({ classItem2 }: { classItem2: ClassItem2 }) {
   }
 
   return (
-    <div className="border border-gray-200 p-4 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
+    <div className="border border-gray-200 p-5 flex flex-col items-center text-center bg-white shadow-md rounded-lg">
       <div className="w-32 h-32 mb-4">
         <Image
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81iX4Mo49Z3oCPSx-GtgiMAkdDop2uVmVvw&s"

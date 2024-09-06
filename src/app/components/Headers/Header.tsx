@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import "./Headers.css";
 import LoginModal from "../Login/LoginModal";
 import { useAuthStore } from "@/app/store/auth/authSlice";
+import { CircularProgress } from "@mui/material";
 
 const Header: FC = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -42,12 +43,16 @@ const Header: FC = () => {
   ]);
   const { isAuthenticated, logout, getDisplayName } = useAuthStore();
   const displayName = getDisplayName() || "";
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchClassData = async () => {
     try {
+      setIsLoading(true);
+
       const response = await fetch(
         "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=16"
       );
+
       const data = await response.json();
 
       const updatedMenuItems = menuItems.map((item, index) => {
@@ -63,6 +68,8 @@ const Header: FC = () => {
       });
 
       setMenuItems(updatedMenuItems);
+
+      setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch class data", error);
     }
@@ -145,7 +152,9 @@ const Header: FC = () => {
             <span>Cart</span>
           </Link>
           <span>|</span>
-          {isAuthenticated ? (
+          {isLoading ? (
+            <CircularProgress style={{ width: 20, height: 20 }} />
+          ) : isAuthenticated ? (
             <Dropdown overlay={userMenu} trigger={["click"]}>
               <div className="flex items-center space-x-2 cursor-pointer">
                 <Image
@@ -190,7 +199,9 @@ const Header: FC = () => {
                 <ShoppingCartOutlined className="text-xl" />
                 <span className="ml-2 mt-1">Cart</span>
                 <span className="mt-1">|</span>
-                {isAuthenticated ? (
+                {isLoading ? (
+                  <CircularProgress style={{ width: 20, height: 20 }} />
+                ) : isAuthenticated ? (
                   <Dropdown overlay={userMenu} trigger={["click"]}>
                     <div className="flex items-center space-x-2 cursor-pointer">
                       <Image
@@ -204,7 +215,9 @@ const Header: FC = () => {
                         }}
                         className="rounded-full"
                       />
-                      <span>Chào, {truncateName(displayName, 12)}</span>
+                      <span style={{ marginRight: "30px" }}>
+                        Chào, {truncateName(displayName, 12)}
+                      </span>
                     </div>
                   </Dropdown>
                 ) : (

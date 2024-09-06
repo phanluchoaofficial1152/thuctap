@@ -83,8 +83,6 @@ export const useAuthStore = create<AuthState>((set) => ({
           token,
           name: data.data.name,
         });
-
-        useAuthStore.getState().scheduleTokenRefresh();
       } else {
         const errorData = await response.json();
         throw new Error(errorData.error || "Đăng nhập thất bại!");
@@ -206,7 +204,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         );
 
         const newToken: string = `${newTokenData}.${newSignature}`;
-        Cookies.set("access_token", newToken, { expires: 30 / (24 * 60) });
+        Cookies.set("access_token", newToken, { expires: 60 / (24 * 60) });
 
         set({ token: newToken });
         useAuthStore.getState().scheduleTokenRefresh();

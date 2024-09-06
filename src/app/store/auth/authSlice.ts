@@ -20,6 +20,18 @@ const SECRET_KEY: Buffer = crypto
   .update(String(process.env.NEXT_PUBLIC_KEY_SECRET))
   .digest();
 
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const tokenParts = token.split(".");
+    const payload = JSON.parse(Buffer.from(tokenParts[1], "base64").toString());
+    const currentTime = Math.floor(Date.now() / 1000);
+    return payload.exp < currentTime;
+  } catch (error) {
+    console.error("Lỗi khi kiểm tra token:", error);
+    return true;
+  }
+};
+
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
   token: null,
@@ -76,7 +88,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         const token: string = `${tokenData}.${signature}`;
 
-        Cookies.set("access_token", token, { expires: 5 / (24 * 60) });
+        Cookies.set("access_token", token, { expires: 7 });
 
         set({
           isAuthenticated: true,
@@ -136,18 +148,20 @@ export const useAuthStore = create<AuthState>((set) => ({
     const token = Cookies.get("access_token");
 
     if (token) {
-      const name = useAuthStore.getState().getDisplayName();
-
-      if (name) {
-        set({
-          isAuthenticated: true,
-          token,
-          name,
-        });
-
-        useAuthStore.getState().scheduleTokenRefresh();
-      } else {
+      if (isTokenExpired(token)) {
         useAuthStore.getState().refreshToken();
+      } else {
+        const name = useAuthStore.getState().getDisplayName();
+
+        if (name) {
+          set({
+            isAuthenticated: true,
+            token,
+            name,
+          });
+
+          useAuthStore.getState().scheduleTokenRefresh();
+        }
       }
     }
   },
@@ -155,7 +169,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   refreshToken: () => {
     const token = Cookies.get("access_token");
 
-    if (token) {
+    if (token && !isTokenExpired(token)) {
       try {
         const tokenParts = token.split(".");
         if (tokenParts.length !== 3) {
@@ -204,7 +218,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         );
 
         const newToken: string = `${newTokenData}.${newSignature}`;
-        Cookies.set("access_token", newToken, { expires: 60 / (24 * 60) });
+        Cookies.set("access_token", newToken, { expires: 1 / 24 });
 
         set({ token: newToken });
         useAuthStore.getState().scheduleTokenRefresh();
@@ -221,7 +235,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (token) {
       setTimeout(() => {
         useAuthStore.getState().refreshToken();
-      }, 1 * 60 * 1000);
+      }, 15 * 60 * 1000);
     }
   },
 }));

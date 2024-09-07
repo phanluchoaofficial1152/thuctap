@@ -553,7 +553,7 @@ const HomePage = () => {
                   <h3 className="font-semibold text-lg text-center">
                     {classItem.campus.campus_name}
                   </h3>
-                  <div className="flex justify-center">
+                  <div className="flex justify-center mt-2 mb-1">
                     <span className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-full text-gray-500 text-sm">
                       {classItem.teachers.length > 0
                         ? `@${classItem.course_level.course_level_title}`

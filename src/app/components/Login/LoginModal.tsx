@@ -1,22 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, Input, Button, message } from "antd";
-import { UserOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useAuthStore } from "@/app/store/auth/authSlice";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import GoogleIcon from "@mui/icons-material/Google";
+import { signInWithPopup } from "firebase/auth";
+import { message } from "antd";
 
 const LoginModal = () => {
   const [visible, setVisible] = useState(false);
-  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ username: "", password: "" });
   const { login, isAuthenticated } = useAuthStore();
 
   const url: string = "https://api-pro.teklearner.com";
+
+  const urlLogin: string = "http://localhost:8005/";
 
   const showModal = () => {
     setVisible(true);
@@ -24,24 +36,55 @@ const LoginModal = () => {
 
   const handleCancel = () => {
     setVisible(false);
+    setErrors({ username: "", password: "" });
   };
 
-  const handleLogin = async (values: {
-    username: string;
-    password: string;
-  }) => {
-    try {
-      console.log("Attempting login with:", values);
-      await login(values.username, values.password);
-      if (isAuthenticated) {
-        handleCancel();
-        router.push("/");
-      } else {
-        message.error("Login failed. Please check your credentials.");
+  const validateEmail = (email: string) => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
+  };
+
+  const validateForm = () => {
+    let formErrors = { username: "", password: "" };
+    let isValid = true;
+
+    if (!username) {
+      formErrors.username = "Email là bắt buộc. Không được để trống.";
+      isValid = false;
+    } else if (!validateEmail(username)) {
+      formErrors.username = "Email không đúng định dạng.";
+      isValid = false;
+    }
+
+    if (!password) {
+      formErrors.password = "Mật khẩu là bắt buộc. Không được để trống.";
+      isValid = false;
+    } else if (!validatePassword(password)) {
+      formErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
+      isValid = false;
+    }
+
+    setErrors(formErrors);
+    return isValid;
+  };
+
+  const handleLogin = async () => {
+    if (validateForm()) {
+      try {
+        await login(username, password);
+
+        if (isAuthenticated) {
+          handleCancel();
+          location.href = String(urlLogin);
+        }
+      } catch (error: any) {
+        message.error(error.message);
+        console.log("Login error:", error);
       }
-    } catch (error) {
-      message.error("An error occurred during login.");
-      console.log("Login error:", error);
     }
   };
 
@@ -50,14 +93,15 @@ const LoginModal = () => {
       const response = await axios.post(`${url}/auth/v1/check-email`, {
         email,
       });
+
       if (response.data.data === true) {
         return true;
       } else {
         message.error("Email không tồn tại trong hệ thống.");
         return false;
       }
-    } catch (error) {
-      message.error("Đã xảy ra lỗi trong quá trình kiểm tra.");
+    } catch (error: any) {
+      message.error(error.message);
       console.log("Lỗi: ", error);
       return false;
     }
@@ -80,34 +124,37 @@ const LoginModal = () => {
           await login(email, password);
           if (isAuthenticated) {
             handleCancel();
-          } else {
-            message.error("Login failed with Google.");
           }
         } else {
           message.error("Email không tồn tại trong hệ thống.");
         }
       } else {
-        message.error(
-          "Không tìm thấy email, vui lòng thực hiện đăng nhập lại."
-        );
+        message.error("Không thể tìm thấy email, vui lòng đăng nhập lại.");
       }
     } catch (error: any) {
       message.error(`${error.message}`);
-      console.log("Đã xảy ra lỗi khi đăng nhập với Google: ", error.message);
+      console.log("Lỗi đăng nhập với Google: ", error.message);
     }
   };
 
   const handleRedirect = (url: string) => {
+    location.href = String(url);
     handleCancel();
-    router.replace(url);
   };
 
-  const validationSchema = Yup.object({
-    username: Yup.string()
-      .email("Email không hợp lệ.")
-      .required("Trường này là bắt buộc."),
-    password: Yup.string().required("Trường này là bắt buộc."),
-  });
+  const handleBlur = (field: string) => {
+    let formErrors = { ...errors };
+
+    if (field === "username" && !validateEmail(username)) {
+      formErrors.username = "Email không đúng định dạng.";
+    }
+
+    if (field === "password" && !validatePassword(password)) {
+      formErrors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
+    }
+
+    setErrors(formErrors);
+  };
 
   return (
     <>
@@ -115,93 +162,99 @@ const LoginModal = () => {
         className="flex items-center space-x-2 cursor-pointer"
         onClick={showModal}
       >
-        <UserOutlined className="text-xl" />
+        <span className="text-xl">👤</span>
         <span>User</span>
       </div>
-      <Modal
-        title="Sign In"
-        open={visible}
-        onCancel={handleCancel}
-        footer={null}
-        width={400}
-        className="rounded-lg"
-      >
-        <Formik
-          initialValues={{ username: "", password: "" }}
-          validationSchema={validationSchema}
-          onSubmit={handleLogin}
-        >
-          {({ isSubmitting }) => (
-            <Form className="space-y-4">
-              <div>
-                <Field
-                  as={Input}
-                  name="username"
-                  size="large"
-                  placeholder="Enter Email"
-                  type="email"
-                  prefix={<UserOutlined />}
-                  className="rounded-md"
-                />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="text-red-500"
-                />
-              </div>
-              <div>
-                <Field
-                  as={Input.Password}
-                  name="password"
-                  size="large"
-                  placeholder="Enter Password"
-                  className="rounded-md"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-red-500"
-                />
-              </div>
-              <Button
-                type="primary"
-                block
-                className="rounded-md"
-                htmlType="submit"
-                //disabled={isSubmitting}
-              >
-                Sign In
-              </Button>
-              <div className="flex justify-between items-center">
-                <Button
-                  type="link"
-                  className="text-blue-500 hover:text-blue-700"
-                  onClick={() => handleRedirect("/pages/taikhoan/quenmatkhau")}
-                >
-                  Forgot Password?
-                </Button>
-                <Button
-                  type="link"
-                  className="text-blue-500 hover:text-blue-700"
-                  onClick={() => handleRedirect("/pages/taikhoan/dangky")}
-                >
-                  Register Now
-                </Button>
-              </div>
-              <div className="flex flex-col items-center justify-center">
-                <Button
-                  type="default"
-                  icon={<GoogleOutlined />}
-                  className="rounded-md mt-3"
-                  onClick={handleLoginGoogle}
-                >
-                  Login with Google+
-                </Button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </Modal>
+      <Dialog open={visible} onClose={handleCancel} maxWidth="sm" fullWidth>
+        <DialogTitle>
+          Sign In
+          <IconButton
+            aria-label="close"
+            onClick={handleCancel}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent dividers>
+          <div className="space-y-4">
+            <TextField
+              name="username"
+              type="email"
+              label="Email"
+              fullWidth
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                if (errors.username && validateEmail(e.target.value)) {
+                  setErrors({ ...errors, username: "" });
+                }
+              }}
+              onBlur={() => handleBlur("username")}
+              error={!!errors.username}
+              helperText={errors.username}
+              autoComplete="email"
+            />
+            <TextField
+              name="password"
+              type="password"
+              label="Password"
+              fullWidth
+              onBlur={() => handleBlur("password")}
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password && validatePassword(e.target.value)) {
+                  setErrors({ ...errors, password: "" });
+                }
+              }}
+              error={!!errors.password}
+              helperText={errors.password}
+              autoComplete="current-password"
+            />
+            <Button
+              onClick={handleLogin}
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              Sign In
+            </Button>
+          </div>
+          <Typography
+            variant="body2"
+            sx={{ textAlign: "center", marginTop: 2 }}
+          >
+            <Button
+              color="primary"
+              onClick={() => handleRedirect("/pages/taikhoan/quenmatkhau")}
+            >
+              Forgot Password?
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => handleRedirect("/pages/taikhoan/dangky")}
+            >
+              Register Now
+            </Button>
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center" }}>
+          <Button
+            variant="outlined"
+            color="inherit"
+            startIcon={<GoogleIcon />}
+            onClick={handleLoginGoogle}
+          >
+            Login with Google
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

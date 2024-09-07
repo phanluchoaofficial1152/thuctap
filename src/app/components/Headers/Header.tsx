@@ -155,7 +155,7 @@ const Header = () => {
             )}
           </Link>
           <span>|</span>
-          <Link href="#" className="text-lg">
+          <Link href="#" className="text-lg mb-2">
             عربى
           </Link>
         </div>
@@ -223,7 +223,7 @@ const Header = () => {
                   )}
                 </Link>
                 <span>|</span>
-                <Link href="#" className="text-lg">
+                <Link href="#" className="text-lg mb-2">
                   عربى
                 </Link>
               </div>

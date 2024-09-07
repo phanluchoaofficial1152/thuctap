@@ -18,6 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithPopup } from "firebase/auth";
 import { message } from "antd";
+import { FaUserCircle } from "react-icons/fa";
 
 const LoginModal = () => {
   const [visible, setVisible] = useState(false);
@@ -162,7 +163,9 @@ const LoginModal = () => {
         className="flex items-center space-x-2 cursor-pointer"
         onClick={showModal}
       >
-        <span className="text-xl">👤</span>
+        <span className="text-xl">
+          <FaUserCircle />
+        </span>
         <span>User</span>
       </div>
       <Dialog open={visible} onClose={handleCancel} maxWidth="sm" fullWidth>
@@ -244,7 +247,9 @@ const LoginModal = () => {
             </Button>
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center" }}>
+        <DialogActions
+          sx={{ justifyContent: "center", marginBottom: 1, marginTop: 1 }}
+        >
           <Button
             variant="outlined"
             color="inherit"

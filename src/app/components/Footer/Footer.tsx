@@ -10,20 +10,20 @@ import "./Footer.css";
 import Link from "next/link";
 import { FaCcMastercard } from "react-icons/fa6";
 import { RiVisaLine } from "react-icons/ri";
+import Image from "next/image";
 
 const Footer: FC = () => {
   return (
     <>
-      <div
-        className="footer-container w-full py-12 px-6"
-        style={{ backgroundColor: "#E8E8E8" }}
-      >
+      <div className="footer-container bg-gray-100 w-full border-t-slate-200 border py-12 px-6 dark:bg-gray-800 dark:border-t-slate-300 dark:border">
         <div className="container mx-auto flex flex-wrap justify-between pt-10 pb-10">
           <div className="w-full sm:w-1/5 mb-6 sm:mb-0">
-            <img
+            <Image
               src="https://pubcdn.ivymoda.com/ivy2/images/logo.png"
               alt="Logo"
-              className="mb-4 w-40"
+              className="mb-4 dark:filter dark:brightness-0 dark:invert"
+              width={130}
+              height={80}
             />
 
             <div className="flex space-x-4">
@@ -133,7 +133,7 @@ const Footer: FC = () => {
         </div>
       </div>
 
-      <div className="footer-copyright bg-gray-800 text-white py-4 px-6">
+      <div className="footer-copyright bg-gray-800 text-white py-4 px-6 dark:border-t-slate-100 dark:border">
         <div className="container mx-auto flex justify-between items-center">
           <div>&copy; 2024. All Rights Reserved.</div>
           <div className="flex space-x-4">

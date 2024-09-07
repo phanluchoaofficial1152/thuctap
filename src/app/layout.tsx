@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, ReactNode } from "react";
 import Headers from "./components/Headers/Header";
 import Footer from "./components/Footer/Footer";
@@ -5,10 +7,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-const RootLayout: FC<{ children: ReactNode; color?: string }> = ({
-  children,
-  color,
-}) => {
+const RootLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <html lang="vi">
       <head>
@@ -30,14 +29,10 @@ const RootLayout: FC<{ children: ReactNode; color?: string }> = ({
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
         />
       </head>
-      <body
-        style={{
-          background: color ? color : "rgba(247, 247, 247, 1)",
-        }}
-      >
-        <div className="container mx-auto">
-          <Headers />
+      <body>
+        <div className="container mx-auto bg-[#F7F7F7]">
           <ToastContainer position="top-center" />
+          <Headers />
           {children}
           <Footer />
         </div>

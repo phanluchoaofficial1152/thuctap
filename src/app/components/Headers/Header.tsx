@@ -1,24 +1,26 @@
-"use client";
-
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
-  ShoppingCartOutlined,
-  UserOutlined,
-  MenuOutlined,
-} from "@ant-design/icons";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { FaSearch, FaCartPlus, FaUser, FaBars } from "react-icons/fa";
 import Image from "next/image";
 import { Dropdown, Menu } from "antd";
-import { Input } from "@/components/ui/input";
-import "./Headers.css";
-import LoginModal from "../Login/LoginModal";
 import { useAuthStore } from "@/app/store/auth/authSlice";
+import LoginModal from "../Login/LoginModal";
 import { CircularProgress } from "@mui/material";
 
-const Header: FC = () => {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [submenuVisible, setSubmenuVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const { isAuthenticated, logout, getDisplayName } = useAuthStore();
+  const displayName = getDisplayName() || "";
+  const [isLoading, setIsLoading] = useState(false);
   const [menuItems, setMenuItems] = useState([
     { key: "all-brands", label: "All Brands", href: "#" },
     { key: "skincare", label: "Skincare", href: "/pages/danhmuc/skincare" },
@@ -41,9 +43,6 @@ const Header: FC = () => {
       href: "/pages/danhmuc/sell-with-us",
     },
   ]);
-  const { isAuthenticated, logout, getDisplayName } = useAuthStore();
-  const displayName = getDisplayName() || "";
-  const [isLoading, setIsLoading] = useState(false);
 
   const fetchClassData = async () => {
     try {
@@ -79,35 +78,6 @@ const Header: FC = () => {
     fetchClassData();
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const handleMenuClick = () => {
-    setMenuVisible(!menuVisible);
-  };
-
-  const handleSubmenuClick = (key: string) => {
-    if (isMobile && key === "all-brands") {
-      setSubmenuVisible(!submenuVisible);
-    }
-  };
-
-  const submenuItems = [
-    { key: "brand1", label: "Brand 1", href: "/brand1" },
-    { key: "brand2", label: "Brand 2", href: "/brand2" },
-    { key: "brand3", label: "Brand 3", href: "/brand3" },
-  ];
-
   const userMenu = (
     <Menu>
       <Menu.Item>
@@ -122,11 +92,14 @@ const Header: FC = () => {
     return `${fullName.slice(0, maxLength)}...`;
   };
 
+  const filteredMenuItems = menuItems.filter(
+    (item) => item.key !== "all-brands" && item.key !== "sell-with-us"
+  );
+
   return (
-    <div className="pt-6">
-      <div className="flex items-center px-4 justify-between md:px-6">
-        {/* logo */}
-        <div className="flex-shrink-0">
+    <header className="bg-gray-100 py-4 shadow-md">
+      <div className="container mx-auto flex justify-between items-center px-[6rem]">
+        <div className="flex items-center">
           <Link href="/">
             <Image
               src="https://pubcdn.ivymoda.com/ivy2/images/logo.png"
@@ -136,185 +109,187 @@ const Header: FC = () => {
             />
           </Link>
         </div>
-        {/* end logo */}
 
-        {/* search */}
-        <div className="flex-grow md:flex md:w-full justify-center">
-          <Input placeholder="Search..." className="w-1/2 md:w-1/3 lg:w-1/4" />
+        <div className="w-1/3 hidden relative md:hidden lg:flex items-center justify-center">
+          <Input
+            type="text"
+            placeholder="Type in and hit Enter"
+            className="border border-gray-300 px-4 py-2 rounded-full w-full"
+          />
+          <Button
+            variant="ghost"
+            className="absolute top-[40%] right-3 transform -translate-y-1/2 p-2 flex items-center justify-center"
+          >
+            <FaSearch className="text-gray-500" />
+          </Button>
         </div>
 
-        {/* end search */}
-
-        {/* hành động */}
-        <div className="hidden lg:flex sm:hidden md:flex items-center space-x-2 cursor-pointer whitespace-nowrap">
-          <ShoppingCartOutlined style={{ fontSize: "18px" }} />
-          <Link href={"/pages/giohang"}>
+        <div className="hidden md:hidden lg:flex items-center space-x-2">
+          <Link href="/pages/giohang" className="flex items-center space-x-2">
+            <FaCartPlus className="text-xl" />
             <span>Cart</span>
           </Link>
           <span>|</span>
-          {isLoading ? (
-            <CircularProgress style={{ width: 20, height: 20 }} />
-          ) : isAuthenticated ? (
-            <Dropdown overlay={userMenu} trigger={["click"]}>
-              <div className="flex items-center space-x-2 cursor-pointer">
-                <Image
-                  src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
-                  alt={displayName ? displayName : "Avatar"}
-                  width={30}
-                  height={30}
-                  style={{
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                  }}
-                  className="rounded-full"
-                />
-                <span style={{ marginRight: "30px" }}>
-                  Chào, {truncateName(displayName, 12)}
-                </span>
-              </div>
-            </Dropdown>
-          ) : (
-            <LoginModal />
-          )}
+          <Link href="#" className="flex items-center space-x-2">
+            {isLoading ? (
+              <CircularProgress style={{ width: 20, height: 20 }} />
+            ) : isAuthenticated ? (
+              <Dropdown overlay={userMenu} trigger={["click"]}>
+                <div className="flex items-center space-x-2 cursor-pointer">
+                  <Image
+                    src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
+                    alt={displayName ? displayName : "Avatar"}
+                    width={30}
+                    height={30}
+                    style={{
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                    }}
+                    className="rounded-full"
+                  />
+                  <span>Chào, {truncateName(displayName, 12)}</span>
+                </div>
+              </Dropdown>
+            ) : (
+              <LoginModal />
+            )}
+          </Link>
           <span>|</span>
-          <span>VN</span>
+          <Link href="#" className="text-lg">
+            عربى
+          </Link>
         </div>
-        {/* end hành động */}
 
-        {/* toggle menu mobile */}
-        <div className="flex sm:flex-col md:flex-row items-center justify-center md:ml-4 sm:ml-4 md:items-center lg:hidden">
-          <button onClick={handleMenuClick} className="sm:mb-0 sm:ml-0">
-            <MenuOutlined className="text-xl" />
-          </button>
-        </div>
-        {/* end toggle menu mobile */}
+        <button
+          onClick={toggleMenu}
+          className="flex md:flex sm:flex lg:hidden items-center text-2xl"
+        >
+          <FaBars />
+        </button>
       </div>
 
-      {/* menu hiện ra khi toggle */}
-      {menuVisible && (
-        <>
-          <div className="bg-white shadow-lg lg:hidden">
-            <div className="flex items-center justify-center space-x-2 md:hidden lg:hidden whitespace-nowrap">
-              <div className="mt-4 flex space-x-2 mb-3">
-                <ShoppingCartOutlined className="text-xl" />
-                <span className="ml-2 mt-1">Cart</span>
-                <span className="mt-1">|</span>
-                {isLoading ? (
-                  <CircularProgress style={{ width: 20, height: 20 }} />
-                ) : isAuthenticated ? (
-                  <Dropdown overlay={userMenu} trigger={["click"]}>
-                    <div className="flex items-center space-x-2 cursor-pointer">
-                      <Image
-                        src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
-                        alt={displayName ? displayName : "Avatar"}
-                        width={30}
-                        height={30}
-                        style={{
-                          objectFit: "cover",
-                          borderRadius: "50%",
-                        }}
-                        className="rounded-full"
-                      />
-                      <span style={{ marginRight: "30px" }}>
-                        Chào, {truncateName(displayName, 12)}
-                      </span>
-                    </div>
-                  </Dropdown>
-                ) : (
-                  <LoginModal />
-                )}
-                <span className="mt-1">|</span>
-                <span className="mt-1">VN</span>
-              </div>
-            </div>
-
-            {menuItems.map((item, index) => (
-              <div
-                key={"item" + index}
-                className={`relative ${
-                  item.key === "sell-with-us" ? "bg-black text-white" : ""
-                } mb-1`}
-                onMouseEnter={() => handleSubmenuClick(item.key)}
-                onMouseLeave={() => setSubmenuVisible(false)}
+      {isMenuOpen && (
+        <div className="md:flex lg:hidden flex inset-0 bg-white shadow-lg z-50 mt-2">
+          <div className="container mx-auto px-4 py-1">
+            <div className="relative items-center mt-3 flex justify-center">
+              <Input
+                type="text"
+                placeholder="Type in and hit Enter"
+                className="border border-gray-300 px-4 py-2 rounded-full w-full"
+              />
+              <Button
+                variant="ghost"
+                className="absolute top-[40%] right-3 transform -translate-y-1/2 p-2 flex items-center justify-center"
               >
-                <Link
-                  href={item.href}
-                  className={`block py-2 border-b ml-2 p-2 w-full ${
-                    item.key === "sell-with-us"
-                      ? "bg-black text-white hover:bg-gray-700"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
+                <FaSearch className="text-gray-500" />
+              </Button>
+            </div>
+            <div className="flex flex-col space-y-4 mt-4">
+              {filteredMenuItems.map((item) => (
+                <Link key={item.key} href={item.href} className="font-medium">
                   {item.label}
                 </Link>
-
-                {item.key === "all-brands" && submenuVisible && (
-                  <div className="absolute left-2 bg-white shadow-lg mt-1 py-1">
-                    {submenuItems.map((submenuItem) => (
-                      <Link
-                        key={submenuItem.key}
-                        href={submenuItem.href}
-                        className="block px-4 py-2 hover:bg-gray-100 hover:text-blue-500"
-                      >
-                        {submenuItem.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+              ))}
+              <div className="flex gap-4 justify-center items-center">
+                <Link href="/cart" className="flex items-center space-x-2">
+                  <FaCartPlus className="text-xl" />
+                  <span>Cart</span>
+                </Link>
+                <span>|</span>
+                <Link href="#" className="flex items-center space-x-2">
+                  {isLoading ? (
+                    <CircularProgress style={{ width: 20, height: 20 }} />
+                  ) : isAuthenticated ? (
+                    <Dropdown overlay={userMenu} trigger={["click"]}>
+                      <div className="flex items-center space-x-2 cursor-pointer">
+                        <Image
+                          src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
+                          alt={displayName ? displayName : "Avatar"}
+                          width={30}
+                          height={30}
+                          style={{
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                          }}
+                          className="rounded-full"
+                        />
+                        <span style={{ marginRight: "30px" }}>
+                          Chào, {truncateName(displayName, 12)}
+                        </span>
+                      </div>
+                    </Dropdown>
+                  ) : (
+                    <LoginModal />
+                  )}
+                </Link>
+                <span>|</span>
+                <Link href="#" className="text-lg">
+                  عربى
+                </Link>
               </div>
-            ))}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="w-full text-left">ALL BRANDS</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <Link href="/brand1">Brand 1</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/brand2">Brand 2</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/brand3">Brand 3</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Link href="/sell">
+                <Button className="bg-black text-white w-full py-2 mb-3">
+                  SELL WITH US
+                </Button>
+              </Link>
+            </div>
           </div>
-        </>
+        </div>
       )}
-      {/* end menu hiện ra khi toggle */}
 
-      {/* menu cho desktop */}
-      <div className="hidden bg-white lg:flex items-center border-t mt-6 py-2 relative justify-between">
-        <div className="flex justify-center space-x-9">
-          {menuItems.slice(0, -1).map((item, value) => (
-            <div
-              key={"value 1" + value}
-              className="relative hover:font-semibold hover:text-blue-600 text-gray-600"
-              onMouseEnter={() =>
-                !isMobile &&
-                item.key === "all-brands" &&
-                setSubmenuVisible(true)
-              }
-              onMouseLeave={() => !isMobile && setSubmenuVisible(false)}
-            >
-              <Link
-                href={item.href}
-                className="px-4 py-2 cursor-pointer hover:text-gray-700"
-              >
+      <nav className="hidden md:hidden lg:flex md:bg-white md:py-3 md:mt-2 md:shadow-sm lg:bg-white lg:py-3 lg:mt-2 lg:shadow-sm">
+        <div className="container mx-auto flex justify-between px-[6rem]">
+          <div className="hidden md:flex">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="px-4 py-2 font-medium">ALL BRANDS</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <Link href="/brand1">Brand 1</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/brand2">Brand 2</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href="/brand3">Brand 3</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <div className="hidden md:flex justify-center items-center space-x-8">
+            {filteredMenuItems.map((item) => (
+              <Link key={item.key} href={item.href} className="font-medium">
                 {item.label}
               </Link>
+            ))}
+          </div>
 
-              {item.key === "all-brands" && submenuVisible && (
-                <div className="absolute left-2 top-full bg-white shadow-lg mt-2 py-2">
-                  {submenuItems.map((submenuItem) => (
-                    <Link
-                      key={submenuItem.key}
-                      href={submenuItem.href}
-                      className="block px-4 py-2 hover:bg-gray-100 hover:text-blue-500"
-                    >
-                      {submenuItem.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+          <Link href="/sell">
+            <Button className="hidden md:block bg-black text-white px-6 py-2">
+              SELL WITH US
+            </Button>
+          </Link>
         </div>
-
-        <Link
-          href="/sell-with-us"
-          className="px-4 py-2 bg-black text-white cursor-pointer hover:bg-gray-700 mr-6"
-        >
-          Sell With Us
-        </Link>
-      </div>
-      {/* end menu cho desktop */}
-    </div>
+      </nav>
+    </header>
   );
 };
 

@@ -1,20 +1,17 @@
 "use client";
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import { Modal, Input, Button, message } from "antd";
-import {
-  UserOutlined,
-  GoogleOutlined,
-} from "@ant-design/icons";
-import { useRouter } from "next/navigation";
+import { UserOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const LoginModal: FC = () => {
+const LoginModal = () => {
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const { login, isAuthenticated } = useAuthStore();
@@ -33,10 +30,18 @@ const LoginModal: FC = () => {
     username: string;
     password: string;
   }) => {
-    await login(values.username, values.password);
-    if (isAuthenticated) {
-      handleCancel();
-      router.push("/");
+    try {
+      console.log("Attempting login with:", values);
+      await login(values.username, values.password);
+      if (isAuthenticated) {
+        handleCancel();
+        router.push("/");
+      } else {
+        message.error("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      message.error("An error occurred during login.");
+      console.log("Login error:", error);
     }
   };
 
@@ -73,7 +78,11 @@ const LoginModal: FC = () => {
           const password = accessToken;
 
           await login(email, password);
-          handleCancel();
+          if (isAuthenticated) {
+            handleCancel();
+          } else {
+            message.error("Login failed with Google.");
+          }
         } else {
           message.error("Email không tồn tại trong hệ thống.");
         }
@@ -90,7 +99,7 @@ const LoginModal: FC = () => {
 
   const handleRedirect = (url: string) => {
     handleCancel();
-    router.push(url);
+    router.replace(url);
   };
 
   const validationSchema = Yup.object({
@@ -103,11 +112,11 @@ const LoginModal: FC = () => {
   return (
     <>
       <div
-        className="flex items-center space-x-3 cursor-pointer"
+        className="flex items-center space-x-2 cursor-pointer"
         onClick={showModal}
       >
         <UserOutlined className="text-xl" />
-        <span className="ml-2">User</span>
+        <span>User</span>
       </div>
       <Modal
         title="Sign In"
@@ -159,7 +168,7 @@ const LoginModal: FC = () => {
                 block
                 className="rounded-md"
                 htmlType="submit"
-                disabled={isSubmitting}
+                //disabled={isSubmitting}
               >
                 Sign In
               </Button>

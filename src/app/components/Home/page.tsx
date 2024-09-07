@@ -1,21 +1,20 @@
 "use client";
 
-import React, { FC, useEffect, useRef, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import React, { useEffect, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import Slider from "react-slick";
 import Image from "next/image";
-import ArrowLeftOutlined from "@mui/icons-material/ArrowLeftOutlined";
-import ArrowRightOutlined from "@mui/icons-material/ArrowRightOutlined";
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import Link from "next/link";
 import "./Home.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { CircularProgress, Box, IconButton } from "@mui/material";
-import ClassCard from "../TeacherCard/TeacherCard";
+import { Button } from "@/components/ui/button";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 
 interface Class {
   id: string;
@@ -27,6 +26,9 @@ interface Class {
     campus_name: string;
     campus_address: string;
   };
+  course_level: {
+    course_level_title: string;
+  };
   teachers: [
     {
       id: string;
@@ -36,7 +38,7 @@ interface Class {
   ];
 }
 
-const HomePage: FC = () => {
+const HomePage = () => {
   const carouselRef = useRef<any>(null);
   const [classes, setClasses] = useState<Class[]>([]);
   const [classesSwiper, setClassesSwiper] = useState<Class[]>([]);
@@ -47,7 +49,7 @@ const HomePage: FC = () => {
     const fetchClasses = async () => {
       try {
         const response = await axios.get(
-          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=2"
+          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=4"
         );
         setClasses(response.data.data);
       } catch (error) {
@@ -58,7 +60,7 @@ const HomePage: FC = () => {
     const fetchClassesSwiper = async () => {
       try {
         const response = await axios.get(
-          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0&limit=4"
+          "https://api-pro.teklearner.com/class/v1/get-list-class?class_code=&skip=0"
         );
         setClassesSwiper(response.data.data);
       } catch (error) {
@@ -89,10 +91,6 @@ const HomePage: FC = () => {
     fade: true,
     autoplay: true,
     arrows: false,
-  };
-
-  const handleRedirect = () => {
-    router.replace("/pages/sanpham");
   };
 
   if (isLoading) {
@@ -142,7 +140,6 @@ const HomePage: FC = () => {
           </Box>
         </Slider>
 
-        {/* Custom Arrows */}
         <Box
           className="custom-arrows"
           position="absolute"
@@ -180,449 +177,405 @@ const HomePage: FC = () => {
       {/* end slider */}
 
       {/* sp mới */}
-      <div className="mx-auto px-4 py-8">
-        <div className="product-header flex justify-between items-center pb-4">
-          <h2
-            className="text-2xl font-bold"
-            style={{ textTransform: "uppercase" }}
-          >
-            New Arrivals
-          </h2>
-
-          <Link href="/all-products" className="text-blue-500 hover:underline">
-            See All
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <h2 className="text-2xl font-bold">NEW ARRIVALS</h2>
+          <Link href="#" className="mt-4 md:mt-0 text-gray-500">
+            SEE ALL
           </Link>
         </div>
 
-        <div className="product-content flex flex-col lg:flex-row gap-6">
-          <div className="relativee lg:w-2/5 flex-1">
-            {" "}
-            <Image
-              src="https://cotton4u.vn/files/news/2024/07/27/079d6932fffc257aafc0eb19e2172061.webp"
-              alt="Large Product Image"
-              width={1000}
-              height={400}
-              className="w-full h-full object-cover"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          <div className="relative bg-gray-200 flex flex-col items-center justify-center overflow-hidden">
+            <img
+              src="https://pubcdn.ivymoda.com/files/news/2024/08/26/web-50%20copy.jpg"
+              alt="Featured Product"
+              className="product-image rounded-lg"
             />
-            <button
-              onClick={handleRedirect}
-              className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded"
-            >
-              Shop Now
-            </button>
+            <Button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black text-white py-2 px-4 rounded">
+              SHOP NOW
+            </Button>
           </div>
 
-          <div className="lg:w-2/5 w-full flex flex-col lg:flex-row gap-6">
-            {classes.map((classItem, items) => (
-              <div key={"class item" + items}>
-                <div className="border border-gray-200 p-2 relativee">
+          {isLoading ? (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              minHeight="100vh"
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            classes.map((classItem) => (
+              <div
+                key={classItem.id}
+                className="border p-4 bg-white flex flex-col rounded-lg"
+              >
+                <div className="relative">
                   <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <Image
-                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                      alt="Product 1"
-                      width={500}
-                      height={500}
-                      className="w-full h-[400px] object-cover"
+                    <img
+                      src="https://pubcdn.ivymoda.com/files/product/thumab/400/2024/06/19/9c2dc8cb739c45c9389309359d569ffe.webp"
+                      alt={classItem.class_name}
+                      className="w-full h-full object-cover rounded-lg"
                     />
                   </Link>
-                  <span className="absolutee top-[65%] left-5 bg-gray-700 text-white text-xs px-2 py-1 rounded">
-                    {classItem.campus.campus_name}
-                  </span>
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <h3 className="mt-2 text-lg font-semibold">
-                      {classItem.class_name}
-                    </h3>
-                  </Link>
-                  <p className="text-sm text-gray-600">
-                    {classItem.campus.campus_address}
-                  </p>
-                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-red-500">
-                        {classItem.course_price.toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </span>
-                      {classItem.course_discount > 0 && (
-                        <span className="text-sm line-through text-gray-500">
-                          {classItem.course_price + classItem.course_discount}
-                        </span>
-                      )}
-                    </div>
-                    {classItem.course_discount > 0 && (
-                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                        {classItem.course_discount}% OFF
-                      </div>
-                    )}
+                  <div className="absolute bottom-2 left-2 bg-black text-white text-sm px-2 py-1 rounded">
+                    {classItem.class_code}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="product-content flex flex-col lg:flex-row gap-6 mt-8">
-          <div className="lg:w-2/5 flex flex-col lg:flex-row gap-6">
-            {classes.map((classItem, value) => (
-              <div key={"value items" + value}>
-                <div className="border border-gray-200 p-4 relativee flex-1">
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <Image
-                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                      alt="Product 1"
-                      width={500}
-                      height={500}
-                      className="w-full h-[400px] object-cover"
-                    />
-                  </Link>
-                  <span className="absolutee top-[65%] left-5 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                    {classItem.campus.campus_name}
+                <h3 className="font-semibold mt-2 text-lg">
+                  {classItem.class_name}
+                </h3>
+                <div className="text-gray-500">
+                  {classItem.teachers.length > 0
+                    ? classItem.teachers[0].name
+                    : "No Brand"}
+                </div>
+                <div className="flex justify-between mt-2">
+                  <span className="line-through text-gray-400">
+                    VND {classItem.course_price.toLocaleString()}
                   </span>
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <h3 className="mt-2 text-lg font-semibold">
-                      {classItem.class_name}
-                    </h3>
-                  </Link>
-                  <p className="text-sm text-gray-600">
-                    {classItem.campus.campus_address}
-                  </p>
-                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-red-500">
-                        {classItem.course_price.toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </span>
-                      {classItem.course_discount > 0 && (
-                        <span className="text-sm line-through text-gray-500">
-                          {classItem.course_price + classItem.course_discount}
-                        </span>
-                      )}
-                    </div>
-                    {classItem.course_discount > 0 && (
-                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                        {classItem.course_discount}% OFF
-                      </div>
-                    )}
-                  </div>
+                  <span className="font-bold text-black">
+                    VND{" "}
+                    {(
+                      classItem.course_price - classItem.course_discount
+                    ).toLocaleString()}
+                  </span>
+                  <span className="text-green-500">
+                    {(
+                      (classItem.course_discount / classItem.course_price) *
+                      100
+                    ).toFixed(0)}
+                    % Off
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+            ))
+          )}
 
-          <div className="relativee lg:w-2/5 flex-1">
-            {" "}
-            <Image
-              src="https://cotton4u.vn/files/news/2024/07/27/079d6932fffc257aafc0eb19e2172061.webp"
-              alt="Large Product Image"
-              width={2000}
-              height={400}
-              className="w-full h-full object-cover"
+          <div className="relative bg-gray-200 flex flex-col items-center justify-center overflow-hidden rounded-lg">
+            <img
+              src="https://pubcdn.ivymoda.com/files/news/2024/08/26/web-50%20copy.jpg"
+              alt="Featured Product"
+              className="product-image"
             />
-            <button
-              onClick={handleRedirect}
-              className="absolutee bottom-4 left-1/2 transform -translate-x-1/2 bg-white border border-black text-black py-2 px-4 rounded"
-            >
-              Shop Now
-            </button>
+            <Button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black text-white py-2 px-4 rounded">
+              SHOP NOW
+            </Button>
           </div>
         </div>
       </div>
       {/* end sp mới */}
 
       {/* sp mới slider */}
-      <div className="product-container px-4 pb-12">
-        <div className="product-header flex justify-between items-center pb-4">
-          <h2
-            className="text-2xl font-bold"
-            style={{ textTransform: "uppercase" }}
-          >
-            New Arrivals
-          </h2>
-
-          <Link href="/all-products" className="text-blue-500 hover:underline">
-            See All
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">NEW ARRIVALS</h2>
+          <Link href="#" className="text-blue-500 hover:underline">
+            SEE ALL
           </Link>
         </div>
 
-        <Swiper
-          modules={[Navigation]}
-          className="mySwiper"
-          slidesPerView={1}
-          spaceBetween={15}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-
-            768: {
-              slidesPerView: 3,
-            },
-
-            1024: {
-              slidesPerView: 4,
-            },
-          }}
-          navigation={{
-            nextEl: ".custom-arrow-next",
-            prevEl: ".custom-arrow-prev",
-          }}
-        >
-          <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {classesSwiper.map((classItem, valueswiper) => (
-              <SwiperSlide key={"valuee swiper" + valueswiper}>
-                <div className="border border-gray-200 p-4 relativee">
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <Image
-                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                      alt={classItem.class_name}
-                      width={500}
-                      height={500}
-                      className="w-full h-[400px] object-cover"
-                    />
-                  </Link>
-                  <span className="absolutee top-[65%] left-5 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                    {classItem.campus.campus_name}
-                  </span>
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <h3 className="mt-2 text-lg font-semibold">
-                      {classItem.class_name}
-                    </h3>
-                  </Link>
-                  <p className="text-sm text-gray-600">
-                    {classItem.campus.campus_address}
-                  </p>
-                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-red-500">
-                        {classItem.course_price.toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </span>
-                      {classItem.course_discount > 0 && (
-                        <span className="text-sm line-through text-gray-500">
-                          ${classItem.course_price + classItem.course_discount}
-                        </span>
-                      )}
+        {isLoading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
+            navigation={true}
+            modules={[Navigation]}
+          >
+            {classesSwiper.map((classItem) => (
+              <SwiperSlide key={classItem.id}>
+                <div
+                  key={classItem.id}
+                  className="border p-4 bg-white flex flex-col rounded-lg"
+                >
+                  <div className="relative">
+                    <Link href={`/pages/sanpham/${classItem.id}`}>
+                      <img
+                        src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/23/7a640db034408beed84684f0cac6e6d8.webp"
+                        alt={classItem.class_name}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </Link>
+                    <div className="absolute bottom-2 left-2 bg-black text-white text-sm px-2 py-1 rounded">
+                      {classItem.class_code}
                     </div>
-                    {classItem.course_discount > 0 && (
-                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                        {classItem.course_discount}% OFF
-                      </div>
-                    )}
+                  </div>
+                  <h3 className="font-semibold mt-2 text-lg">
+                    {classItem.class_name}
+                  </h3>
+                  <div className="text-gray-500">
+                    {classItem.teachers.length > 0
+                      ? classItem.teachers[0].name
+                      : "No Brand"}
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    <span className="line-through text-gray-400">
+                      VND {classItem.course_price.toLocaleString()}
+                    </span>
+                    <span className="font-bold text-black">
+                      VND{" "}
+                      {(
+                        classItem.course_price - classItem.course_discount
+                      ).toLocaleString()}
+                    </span>
+                    <span className="text-green-500">
+                      {(
+                        (classItem.course_discount / classItem.course_price) *
+                        100
+                      ).toFixed(0)}
+                      % Off
+                    </span>
                   </div>
                 </div>
               </SwiperSlide>
             ))}
-          </div>
-        </Swiper>
-
-        <div className="custom-arrows-swiper">
-          <div className="arrows-swiper custom-arrow-prev">
-            <ArrowLeftOutlined />
-          </div>
-          <div className="arrows-swiper custom-arrow-next">
-            <ArrowRightOutlined />
-          </div>
-        </div>
+          </Swiper>
+        )}
       </div>
       {/* end sp mới slider */}
 
-      {/* banner qcáo sp 50% */}
-      <div className="banner-sale-off-50 py-8">
-        <div className="sale-banner-image">
-          <Image
-            src="https://pubcdn.ivymoda.com/files/news/2023/06/23/web-50.jpg"
-            alt="Sale Banner"
-            fill
-          />
-        </div>
-        <div className="sale-banner-content">
-          <h2 className="sale-title">SALE OFF 50%</h2>
-          <p className="sale-subtitle">On All Items</p>
-          <button className="sale-button">Shop Now</button>
+      {/* banner */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-8 bg-[#E3E3E3]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-4">
+          <div className="flex justify-center items-center">
+            <img
+              src="https://cotton4u.vn/files/news/2024/09/04/001ef89e97dc2d1922d95995d5f9ef9b.webp"
+              alt="Banner"
+              className="w-full h-auto object-cover rounded-lg"
+            />
+          </div>
+
+          <div className="text-center">
+            <p className="font-bold text-red-600 mb-4 text-3xl sm:text-4xl lg:text-5xl">
+              50% OFF
+            </p>
+            <p className="uppercase text-xl sm:text-2xl lg:text-3xl">
+              On all items
+            </p>
+          </div>
+
+          <div className="flex justify-center items-center">
+            <button className="bg-transparent border-2 border-black text-black py-2 px-4 rounded-lg hover:bg-black hover:text-white transition duration-300 text-base sm:text-lg lg:text-xl">
+              SHOP NOW
+            </button>
+          </div>
         </div>
       </div>
-      {/* end banner qcáo sp 50% */}
+      {/* end banner */}
 
-      {/* sp bán chạy slider */}
-      <div className="product-container px-4 pb-12">
-        <div className="product-header flex justify-between items-center pb-4">
-          <h2
-            className="text-2xl font-bold"
-            style={{ textTransform: "uppercase" }}
-          >
-            Top Sellers
-          </h2>
-
-          <Link href="/all-products" className="text-blue-500 hover:underline">
-            See All
+      {/* sp mới hot slider */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">TOP SELLERS</h2>
+          <Link href="#" className="text-blue-500 hover:underline">
+            SEE ALL
           </Link>
         </div>
 
-        <Swiper
-          modules={[Navigation]}
-          className="mySwiper2"
-          slidesPerView={1}
-          spaceBetween={15}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-
-            768: {
-              slidesPerView: 3,
-            },
-
-            1024: {
-              slidesPerView: 4,
-            },
-          }}
-          navigation={{
-            nextEl: ".custom-arrow-next-top-seller",
-            prevEl: ".custom-arrow-prev-top-seller",
-          }}
-        >
-          <div className="product-slider grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {classesSwiper.map((classItem, itemswiperclass) => (
-              <SwiperSlide key={"item swiper class" + itemswiperclass}>
-                <div className="border border-gray-200 p-4 relativee">
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <Image
-                      src="https://cotton4u.vn/files/product/thumab/400/2024/07/26/0997f49136c4a49b79d56f36c7ce8126.webp"
-                      alt={classItem.class_name}
-                      width={500}
-                      height={500}
-                      className="w-full h-[400px] object-cover"
-                    />
-                  </Link>
-                  <span className="absolutee top-[65%] left-5 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-                    {classItem.campus.campus_name}
-                  </span>
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
-                    <h3 className="mt-2 text-lg font-semibold">
-                      {classItem.class_name}
-                    </h3>
-                  </Link>
-                  <p className="text-sm text-gray-600">
-                    {classItem.campus.campus_address}
-                  </p>
-                  <div className="flex flex-col lg:flex-row justify-between items-center mt-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-red-500">
-                        {classItem.course_price.toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </span>
-                      {classItem.course_discount > 0 && (
-                        <span className="text-sm line-through text-gray-500">
-                          ${classItem.course_price + classItem.course_discount}
-                        </span>
-                      )}
+        {isLoading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
+            navigation={true}
+            modules={[Navigation]}
+          >
+            {classesSwiper.map((classItem) => (
+              <SwiperSlide key={classItem.id}>
+                <div
+                  key={classItem.id}
+                  className="border p-4 bg-white flex flex-col rounded-lg"
+                >
+                  <div className="relative">
+                    <Link href={`/pages/sanpham/${classItem.id}`}>
+                      <img
+                        src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/23/7a640db034408beed84684f0cac6e6d8.webp"
+                        alt={classItem.class_name}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </Link>
+                    <div className="absolute bottom-2 left-2 bg-black text-white text-sm px-2 py-1 rounded">
+                      {classItem.class_code}
                     </div>
-                    {classItem.course_discount > 0 && (
-                      <div className="absolutee top-100 right-2 border border-black text-xs px-2 py-1 rounded bg-red-500 text-white">
-                        {classItem.course_discount}% OFF
-                      </div>
-                    )}
+                  </div>
+                  <h3 className="font-semibold mt-2 text-lg">
+                    {classItem.class_name}
+                  </h3>
+                  <div className="text-gray-500">
+                    {classItem.teachers.length > 0
+                      ? classItem.teachers[0].name
+                      : "No Brand"}
+                  </div>
+                  <div className="flex justify-between mt-2">
+                    <span className="line-through text-gray-400">
+                      VND {classItem.course_price.toLocaleString()}
+                    </span>
+                    <span className="font-bold text-black">
+                      VND{" "}
+                      {(
+                        classItem.course_price - classItem.course_discount
+                      ).toLocaleString()}
+                    </span>
+                    <span className="text-green-500">
+                      {(
+                        (classItem.course_discount / classItem.course_price) *
+                        100
+                      ).toFixed(0)}
+                      % Off
+                    </span>
                   </div>
                 </div>
               </SwiperSlide>
             ))}
-          </div>
-        </Swiper>
+          </Swiper>
+        )}
+      </div>
+      {/* end sp mới hot slider */}
 
-        <div className="custom-arrows-swiper-top-seller">
-          <div className="arrows-swiper-top-seller custom-arrow-prev-top-seller">
-            <ArrowLeftOutlined />
+      {/* banner */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-8 bg-[#E3E3E3]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center gap-4">
+          <div className="flex justify-center items-center">
+            <img
+              src="https://t4.ftcdn.net/jpg/04/96/39/19/360_F_496391960_SzLnSBgWxfN4OnJbH5Om3I3y5aFyLV0F.jpg"
+              alt="Banner"
+              className="w-full h-full object-cover rounded-lg"
+            />
           </div>
-          <div className="arrows-swiper-top-seller custom-arrow-next-top-seller">
-            <ArrowRightOutlined />
+
+          <div className="text-center">
+            <p className="font-bold text-red-600 mb-4 text-3xl sm:text-4xl lg:text-5xl">
+              35% OFF
+            </p>
+            <p className="text-xl sm:text-2xl lg:text-3xl">
+              All <b>SKINCARE Items</b>
+            </p>
+          </div>
+
+          <div className="flex justify-center items-center">
+            <button className="bg-transparent border-2 border-black text-black py-2 px-4 rounded-lg hover:bg-black hover:text-white transition duration-300 text-base sm:text-lg lg:text-xl">
+              SHOP NOW
+            </button>
           </div>
         </div>
       </div>
-      {/* end sp bán chạy slider */}
+      {/* end banner */}
 
-      {/* banner qcáo sp */}
-      <div className="banner-sale-off-50 py-2">
-        <div className="sale-banner-image">
-          <Image
-            src="https://mint07.com/wp-content/uploads/2020/12/banner-web-paula-choice.png"
-            alt="Sale Banner"
-            fill
-          />
-        </div>
-        <div className="sale-banner-content">
-          <h2 className="sale-title">35% OFF</h2>
-          <p className="sale-subtitle">
-            All <b>SKINCARE Items</b>
-          </p>
-          <button className="sale-button">Shop Now</button>
-        </div>
-      </div>
-      {/* end banner qcáo sp */}
-
-      {/* khách hàng */}
-      <div className="product-container px-4 pb-12 mt-0">
-        <div className="product-header flex justify-between items-center pb-4">
-          <h2
-            className="text-2xl font-bold"
-            style={{ textTransform: "uppercase" }}
-          >
-            Ambassadors
-          </h2>
-
-          <Link href="/all-products" className="text-blue-500 hover:underline">
-            See All
+      {/* sp mới hot slider */}
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">AMBASSADORS</h2>
+          <Link href="#" className="text-blue-500 hover:underline">
+            SEE ALL
           </Link>
         </div>
 
-        <Swiper
-          modules={[Navigation]}
-          className="mySwiper5"
-          slidesPerView={1}
-          spaceBetween={15}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            1024: {
-              slidesPerView: 4,
-            },
-          }}
-          navigation={{
-            nextEl: ".custom-arrow-next-ambassadors",
-            prevEl: ".custom-arrow-prev-ambassadors",
-          }}
-        >
-          <div className="flex space-x-5 w-full">
-            {classesSwiper.map((classItem23, itemclassescustomer) => (
-              <>
-                <SwiperSlide key={"item swiper class customer 2" + itemclassescustomer}>
-                  <ClassCard classItem2={classItem23} key={itemclassescustomer} />
-                </SwiperSlide>
-              </>
+        {isLoading ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
+            navigation={true}
+            modules={[Navigation]}
+          >
+            {classesSwiper.map((classItem) => (
+              <SwiperSlide key={classItem.id}>
+                <div className="border p-6 bg-white flex flex-col items-center rounded-lg shadow-lg">
+                  <div className="mb-4">
+                    <Link href={`/pages/sanpham/${classItem.id}`}>
+                      <img
+                        src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/23/7a640db034408beed84684f0cac6e6d8.webp"
+                        alt={classItem.class_name}
+                        className="w-32 h-32 object-cover rounded-full border-2 border-gray-300"
+                      />
+                    </Link>
+                  </div>
+                  <h3 className="font-semibold text-lg text-center">
+                    {classItem.campus.campus_name}
+                  </h3>
+                  <div className="flex justify-center">
+                    <span className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-full text-gray-500 text-sm">
+                      {classItem.teachers.length > 0
+                        ? `@${classItem.course_level.course_level_title}`
+                        : "@NoBrand"}
+                    </span>
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <FaFacebookF />
+                    <FaInstagram />
+                    <FaYoutube />
+                  </div>
+                  <div className="w-full"></div>
+                  <button className="mt-4 px-4 py-2 bg-black text-white rounded-full">
+                    SHOP WITH ME
+                  </button>
+                </div>
+              </SwiperSlide>
             ))}
-          </div>
-        </Swiper>
-
-        <div className="custom-arrows-swiper-ambassadors">
-          <div className="arrows-swiper-ambassadors custom-arrow-prev-ambassadors">
-            <ArrowLeftOutlined />
-          </div>
-          <div className="arrows-swiper-ambassadors custom-arrow-next-ambassadors">
-            <ArrowRightOutlined />
-          </div>
-        </div>
+          </Swiper>
+        )}
       </div>
-      {/* end khách hàng */}
+      {/* end sp mới hot slider */}
     </>
   );
 };

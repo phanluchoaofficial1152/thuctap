@@ -135,12 +135,12 @@ const DashBoardPage: NextPage<{}> = () => {
 
       <BreadCumbs name={dashboardName} />
 
-      <Title level={2} className="px-4 py-4 text-center">
+      <Title level={2} className="px-4 md:px-[6rem] text-center">
         {dashboardName.toUpperCase()}
       </Title>
 
       {/* dashboard */}
-      <div className="px-4 py-4 flex flex-col items-center justify-center">
+      <div className="px-4 md:px-[6rem] flex flex-col items-center justify-center">
         <div className="w-full max-w-4xl">
           <div className="flex flex-col items-center">
             <h2 className="text-xl font-bold">Welcome NAME SURNAME</h2>

@@ -31,15 +31,15 @@ const AddReviews: NextPage<{}> = () => {
   }, []);
 
   return (
-    <div className="px-4 py-4">
+    <>
       <BreadCumbs name={dashboardName} />
 
-      <Title level={2} className="px-4 uppercase">
+      <Title level={2} className="px-4 md:px-[6rem] uppercase">
         Add Review
       </Title>
 
       {/* add reviews form */}
-      <div className="bg-white p-6 rounded shadow-md">
+      <div className="bg-white p-6 px-4 md:px-[6rem] rounded shadow-md">
         <Row gutter={16}>
           <Col span={12}>
             <label className="block mb-2">Select Brand</label>
@@ -48,7 +48,7 @@ const AddReviews: NextPage<{}> = () => {
               <Option value="brand2">Brand 2</Option>
             </Select>
           </Col>
-          
+
           <Col span={12}>
             <label className="block mb-2">Select Product</label>
             <Select className="w-full" defaultValue="Personal">
@@ -95,7 +95,7 @@ const AddReviews: NextPage<{}> = () => {
         </Button>
       </div>
       {/* end add reviews form */}
-    </div>
+    </>
   );
 };
 

@@ -44,7 +44,7 @@ const BreadCumbs: FC<BreadcumbsProps> = ({ name }) => {
   ];
 
   return (
-    <div className="px-5 py-4">
+    <div className="px-4 py-4 md:px-[6rem]">
       <Breadcrumb
         className="text-sm md:text-base"
         separator={<RightOutlined style={{ fontSize: "10px" }} />}

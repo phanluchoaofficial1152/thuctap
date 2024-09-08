@@ -19,6 +19,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { FaUserCircle } from "react-icons/fa";
+import { useLocation } from "wouter";
 
 const LoginModal = () => {
   const [visible, setVisible] = useState(false);
@@ -26,6 +27,7 @@ const LoginModal = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
   const { login, isAuthenticated } = useAuthStore();
+  const [, navigate] = useLocation();
 
   const url: string = "https://api-pro.teklearner.com";
 
@@ -80,7 +82,7 @@ const LoginModal = () => {
 
         if (isAuthenticated) {
           handleCancel();
-          location.href = String(urlLogin);
+          navigate(String(urlLogin));
         }
       } catch (error: any) {
         message.error(error.message);
@@ -139,7 +141,7 @@ const LoginModal = () => {
   };
 
   const handleRedirect = (url: string) => {
-    location.href = String(url);
+    navigate(String(url));
     handleCancel();
   };
 

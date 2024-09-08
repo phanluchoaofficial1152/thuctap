@@ -9,12 +9,12 @@ import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 import Link from "next/link";
 import "./Home.css";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { CircularProgress, Box, IconButton } from "@mui/material";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { useLocation } from "wouter";
 
 interface Class {
   id: string;
@@ -43,7 +43,8 @@ const HomePage = () => {
   const [classes, setClasses] = useState<Class[]>([]);
   const [classesSwiper, setClassesSwiper] = useState<Class[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -77,6 +78,10 @@ const HomePage = () => {
 
     loadData();
   }, []);
+
+  const handRedirect = (url: string) => {
+    navigate(url);
+  };
 
   const handleNext = () => {
     carouselRef.current.slickNext();
@@ -213,7 +218,12 @@ const HomePage = () => {
                 className="border p-4 bg-white flex flex-col rounded-lg"
               >
                 <div className="relative">
-                  <Link href={`/pages/sanpham/${classItem.id}`}>
+                  <Link
+                    href="#"
+                    onClick={() =>
+                      handRedirect(`/pages/sanpham/${classItem.id}`)
+                    }
+                  >
                     <img
                       src="https://pubcdn.ivymoda.com/files/product/thumab/400/2024/06/19/9c2dc8cb739c45c9389309359d569ffe.webp"
                       alt={classItem.class_name}
@@ -311,7 +321,12 @@ const HomePage = () => {
                   className="border p-4 bg-white flex flex-col rounded-lg"
                 >
                   <div className="relative">
-                    <Link href={`/pages/sanpham/${classItem.id}`}>
+                    <Link
+                      href="#"
+                      onClick={() =>
+                        handRedirect(`/pages/sanpham/${classItem.id}`)
+                      }
+                    >
                       <img
                         src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/23/7a640db034408beed84684f0cac6e6d8.webp"
                         alt={classItem.class_name}
@@ -428,7 +443,12 @@ const HomePage = () => {
                   className="border p-4 bg-white flex flex-col rounded-lg"
                 >
                   <div className="relative">
-                    <Link href={`/pages/sanpham/${classItem.id}`}>
+                    <Link
+                      href="#"
+                      onClick={() =>
+                        handRedirect(`/pages/sanpham/${classItem.id}`)
+                      }
+                    >
                       <img
                         src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/23/7a640db034408beed84684f0cac6e6d8.webp"
                         alt={classItem.class_name}
@@ -542,7 +562,12 @@ const HomePage = () => {
               <SwiperSlide key={classItem.id}>
                 <div className="border p-6 bg-white flex flex-col items-center rounded-lg shadow-lg">
                   <div className="mb-4">
-                    <Link href={`/pages/sanpham/${classItem.id}`}>
+                    <Link
+                      href="#"
+                      onClick={() =>
+                        handRedirect(`/pages/sanpham/${classItem.id}`)
+                      }
+                    >
                       <img
                         src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/08/23/7a640db034408beed84684f0cac6e6d8.webp"
                         alt={classItem.class_name}

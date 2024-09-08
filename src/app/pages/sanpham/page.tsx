@@ -56,12 +56,12 @@ const ProductPage: NextPage<{}> = async () => {
       <title>Sản phẩm | IVY moda | Thực tập NextJS</title>
 
       <Breadcrumb
-        className="text-sm md:text-base px-5 py-5"
+        className="text-sm md:text-base px-4 md:px-[6rem] py-5"
         separator=">"
         items={breadcrumbItems}
       />
 
-      <div className="px-4">
+      <div className="px-4 md:px-[6rem]">
         <ProductList products={products} />
       </div>
     </>

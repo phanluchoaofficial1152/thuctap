@@ -28,7 +28,7 @@ const AmbassadorsDetails: NextPage = () => {
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 md:px-[6rem] py-4">
       <title>Ambassadors Details | IVY moda | Thực tập NextJS</title>
 
       {/* info ambassadorsDetails */}

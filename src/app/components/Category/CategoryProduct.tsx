@@ -6,8 +6,10 @@ import { Pagination } from "antd";
 
 import "@/app/pages/danhmuc/[slug]/slug.css";
 import { FaRegUserCircle } from "react-icons/fa";
+import Link from "next/link";
 
 interface Product {
+  id: string;
   title: string;
   brand: string;
   originalPrice: string;
@@ -51,13 +53,15 @@ const CategoryProduct: FC<CategoryProductProps> = ({ products }) => {
             key={index + 1}
             className="bg-gray-200 p-3 rounded-lg relativeeeee"
           >
-            <Image
-              src={product.image}
-              alt={product.title}
-              width={1000}
-              height={1000}
-              className="object-cover mb-3"
-            />
+            <Link href={`/pages/sanpham/${product.id}`}>
+              <Image
+                src={product.image}
+                alt={product.title}
+                width={1000}
+                height={1000}
+                className="object-cover mb-3"
+              />
+            </Link>
             {product.isNew && (
               <span className="absoluteeeee new-label">NEW</span>
             )}

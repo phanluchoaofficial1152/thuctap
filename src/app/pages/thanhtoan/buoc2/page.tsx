@@ -16,7 +16,7 @@ import {
   InputNumber,
 } from "antd";
 import { NextPage } from "next";
-import { useRouter } from "next/navigation";
+import { useLocation } from "wouter";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -46,7 +46,7 @@ const CheckOutStep2: NextPage<{}> = () => {
   const [expiryYear, setExpiryYear] = useState<number>(0);
   const [cvv, setCvv] = useState<number>(0);
 
-  const router = useRouter();
+  const [, navigate] = useLocation();
 
   const calculatePercent = () => {
     let filledFields = 0;
@@ -87,14 +87,14 @@ const CheckOutStep2: NextPage<{}> = () => {
 
   const handleContinue = () => {
     if (percent === 100) {
-      router.push("/pages/camon");
+      navigate("/pages/camon");
     } else {
       message.warning("Vui lòng nhập đầy đủ thông tin.");
     }
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 md:px-[6rem] py-4">
       <title>Thanh toán | IVY moda | Thực tập NextJS</title>
 
       <Breadcrumb

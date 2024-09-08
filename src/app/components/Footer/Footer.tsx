@@ -15,7 +15,7 @@ import Image from "next/image";
 const Footer: FC = () => {
   return (
     <>
-      <div className="footer-container bg-gray-100 w-full border-t-slate-200 border py-12 px-6 dark:bg-gray-800 dark:border-t-slate-300 dark:border">
+      <div className="footer-container bg-gray-100 w-full border-t-slate-200 border py-12 px-4 md:px-[6rem] dark:bg-gray-800 dark:border-t-slate-300 dark:border">
         <div className="container mx-auto flex flex-wrap justify-between pt-10 pb-10">
           <div className="w-full sm:w-1/5 mb-6 sm:mb-0">
             <Image
@@ -133,7 +133,7 @@ const Footer: FC = () => {
         </div>
       </div>
 
-      <div className="footer-copyright bg-gray-800 text-white py-4 px-6 dark:border-t-slate-100 dark:border">
+      <div className="footer-copyright bg-gray-800 text-white py-4 px-4 md:px-[6rem] dark:border-t-slate-100 dark:border">
         <div className="container mx-auto flex justify-between items-center">
           <div>&copy; 2024. All Rights Reserved.</div>
           <div className="flex space-x-4">

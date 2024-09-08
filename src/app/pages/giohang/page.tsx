@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Breadcrumb, Button, Input, Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useLocation } from "wouter";
 
 const { Title, Text } = Typography;
 
@@ -46,7 +46,7 @@ const CartPage: NextPage<{}> = () => {
     Array(products.length).fill(1)
   );
 
-  const router = useRouter();
+  const [, navigate] = useLocation();
 
   const handleQuantityChange = (index: number, value: number) => {
     const newQuantities = [...quantities];
@@ -62,11 +62,11 @@ const CartPage: NextPage<{}> = () => {
   };
 
   const handlePayment = () => {
-    router.replace("/pages/thanhtoan/buoc1");
+    navigate("/pages/thanhtoan/buoc1");
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 md:px-[6rem] py-4">
       <title>Giỏ hàng | IVY moda | Thực tập NextJS</title>
 
       <Breadcrumb
@@ -140,7 +140,7 @@ const CartPage: NextPage<{}> = () => {
           ))}
         </div>
 
-        <div className="w-full md:w-1/3 bg-gray-100 p-4 rounded-lg shadow-md ml-6 mt-12">
+        <div className="w-full md:w-1/3 bg-gray-100 p-4 rounded-lg shadow-md mt-4 md:ml-6 md:mt-12">
           <Title level={4}>Add Promo Code</Title>
           <Input placeholder="Enter promo code" className="mb-4" />
           <Button type="primary" className="w-full">

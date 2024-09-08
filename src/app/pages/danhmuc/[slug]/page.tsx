@@ -62,6 +62,7 @@ const CategorySlugContent: NextPage<{}> = () => {
         const data = response.data.data;
 
         const formattedProducts = data.map((item: any) => ({
+          id: item.id,
           title: item.class_name,
           brand: item.campus.campus_name,
           originalPrice: item.course_price,

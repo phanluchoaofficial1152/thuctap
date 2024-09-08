@@ -32,7 +32,7 @@ const Ambassadors: NextPage = () => {
   };
 
   return (
-    <div className="px-4 py-4 max-w">
+    <div className="px-4 md:px-[6rem] py-4 max-w">
       <title>Ambassadors | IVY moda | Thực tập NextJS</title>
 
       <div className="bg-white p-4 rounded-md shadow-md">

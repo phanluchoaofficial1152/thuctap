@@ -14,7 +14,7 @@ import {
   message,
 } from "antd";
 import { NextPage } from "next";
-import { useRouter } from "next/navigation";
+import { useLocation } from "wouter";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -40,7 +40,7 @@ const CheckOutStep1: NextPage<{}> = () => {
   const [percent, setPercent] = useState<number>(0);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const router = useRouter();
+  const [, navigate] = useLocation();
 
   const calculatePercent = () => {
     let filledFields = 0;
@@ -73,14 +73,14 @@ const CheckOutStep1: NextPage<{}> = () => {
   const handleContinue = () => {
     if (percent === 100) {
       setCurrentStep(1);
-      router.push("/pages/thanhtoan/buoc2");
+      navigate("/pages/thanhtoan/buoc2");
     } else {
       message.warning("Vui lòng nhập đầy đủ thông tin.");
     }
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 md:px-[6rem] py-4">
       <title>Thanh toán | IVY moda | Thực tập NextJS</title>
 
       <Breadcrumb
@@ -93,7 +93,7 @@ const CheckOutStep1: NextPage<{}> = () => {
         CHECKOUT
       </Title>
 
-      <div className="flex flex-col md:flex-row gap-3">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 space-y-2">
           <Steps
             current={currentStep}

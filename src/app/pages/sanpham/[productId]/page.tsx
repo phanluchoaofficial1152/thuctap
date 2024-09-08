@@ -204,7 +204,7 @@ const ProductDetails: NextPage<{}> = () => {
     <>
       <title>{`${classDetail?.class_name} - IVY moda - Thực tập NextJS`}</title>
 
-      <div className="px-4 py-4">
+      <div className="px-4 md:px-[6rem] py-4">
         {/* điều hướng trang */}
         <Breadcrumb
           className="text-sm md:text-base"

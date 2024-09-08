@@ -14,9 +14,9 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
+import { useLocation } from "wouter";
 
 const RegisterPage: NextPage<{}> = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -26,7 +26,7 @@ const RegisterPage: NextPage<{}> = () => {
   const [otp, setOtp] = useState("");
   const [registrationData, setRegistrationData] = useState<any>(null);
   useState<any>(null);
-  const router = useRouter();
+  const [, navigate] = useLocation();
   const imgbbAPIKey = String(process.env.NEXT_PUBLIC_IMG_UPLOAD_API_KEY);
   const url: string = "https://api-pro.teklearner.com";
 
@@ -175,7 +175,7 @@ const RegisterPage: NextPage<{}> = () => {
       try {
         await axios.post(`${url}/auth/v1/register`, values);
         message.success("Đăng ký thành công!");
-        router.replace("/");
+        navigate("/");
       } catch (error) {
         message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
         console.log("Lỗi: ", error);
@@ -264,7 +264,7 @@ const RegisterPage: NextPage<{}> = () => {
         await axios.post(`${url}/auth/v1/register`, dataSubmit);
         message.success("Đăng ký thành công!");
         setIsModalOpen(false);
-        router.replace("/");
+        navigate("/");
       } catch (error) {
         message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
         console.log("Lỗi: ", error);
@@ -282,7 +282,7 @@ const RegisterPage: NextPage<{}> = () => {
     <>
       <title>Đăng ký - IVY moda - Thực tập NextJS</title>
 
-      <div className="px-3 py-4 pb-10">
+      <div className="px-4 py-4 lg:px-[6rem] lg:py-10">
         <Breadcrumb
           className="text-sm md:text-base p-1"
           separator=">"
@@ -305,8 +305,8 @@ const RegisterPage: NextPage<{}> = () => {
           onSubmit={handleSubmit}
         >
           {({ setFieldValue, values }) => (
-            <Form className="h-full flex flex-col bg-white shadow-md rounded-lg p-6 mt-3">
-              <div className="gap-3 flex flex-col sm:flex-row sm:gap-3 justify-center items-center mb-4">
+            <Form className="bg-white shadow-md rounded-lg p-6 mt-3 flex flex-col space-y-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-3 mb-4">
                 <Button
                   icon={<GoogleOutlined />}
                   onClick={handleGoogleRegister}
@@ -389,7 +389,7 @@ const RegisterPage: NextPage<{}> = () => {
                 Personal Details
               </Title>
 
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="mb-2">
                   <Field name="name">
                     {({ field }: { field: any }) => (

@@ -18,6 +18,7 @@ import { signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { FaUserCircle } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LoginModal = () => {
   const [visible, setVisible] = useState(false);
@@ -237,12 +238,9 @@ const LoginModal = () => {
             sx={{ textAlign: "center", marginTop: 2 }}
           >
             <Button color="primary">Forgot Password?</Button>
-            <Button
-              color="primary"
-              onClick={() => handleRedirect("/pages/taikhoan/dangky")}
-            >
-              Register Now
-            </Button>
+            <Link href="/pages/taikhoan/dangky">
+              <Button color="primary">Register Now</Button>
+            </Link>
           </Typography>
         </DialogContent>
         <DialogActions

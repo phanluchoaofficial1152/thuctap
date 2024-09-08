@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
@@ -17,8 +19,8 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { FaUserCircle } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const LoginModal = () => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +28,6 @@ const LoginModal = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
   const { login, isAuthenticated } = useAuthStore();
-
   const router = useRouter();
 
   const url: string = "https://api-pro.teklearner.com";
@@ -80,7 +81,6 @@ const LoginModal = () => {
 
         if (isAuthenticated) {
           handleCancel();
-          handleRedirect("/");
         }
       } catch (error: any) {
         message.error(error.message);
@@ -138,15 +138,6 @@ const LoginModal = () => {
     }
   };
 
-  const handleRedirect = (url: string) => {
-    try {
-      router.push(url);
-      handleCancel();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleBlur = (field: string) => {
     let formErrors = { ...errors };
 
@@ -159,6 +150,13 @@ const LoginModal = () => {
     }
 
     setErrors(formErrors);
+  };
+
+  const handleRegisterClick = () => {
+    handleCancel();
+    setTimeout(() => {
+      router.push("/pages/taikhoan/dangky");
+    }, 500);
   };
 
   return (
@@ -238,9 +236,9 @@ const LoginModal = () => {
             sx={{ textAlign: "center", marginTop: 2 }}
           >
             <Button color="primary">Forgot Password?</Button>
-            <Link href="/pages/taikhoan/dangky">
-              <Button color="primary">Register Now</Button>
-            </Link>
+            <Button color="primary" onClick={handleRegisterClick}>
+              Register Now
+            </Button>
           </Typography>
         </DialogContent>
         <DialogActions

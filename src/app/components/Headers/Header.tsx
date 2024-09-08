@@ -8,14 +8,12 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { FaSearch, FaCartPlus, FaUser, FaBars } from "react-icons/fa";
+import { FaSearch, FaCartPlus, FaBars } from "react-icons/fa";
 import Image from "next/image";
 import { Dropdown, Menu } from "antd";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import LoginModal from "../Login/LoginModal";
 import { CircularProgress } from "@mui/material";
-import { useLocation } from "wouter";
-import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,9 +43,6 @@ const Header = () => {
       href: "/pages/danhmuc/sell-with-us",
     },
   ]);
-
-  const router = useRouter();
-  const [, navigate] = useLocation();
 
   const fetchClassData = async () => {
     try {
@@ -79,14 +74,6 @@ const Header = () => {
     }
   };
 
-  const handleRedirect = (url: string) => {
-    if (typeof window !== "undefined") {
-      navigate(url);
-    } else {
-      router.push(url);
-    }
-  };
-
   useEffect(() => {
     fetchClassData();
   }, []);
@@ -94,12 +81,7 @@ const Header = () => {
   const userMenu = (
     <Menu>
       <Menu.Item>
-        <Link
-          href="#"
-          onClick={() => handleRedirect("/pages/taikhoan/capnhattaikhoan")}
-        >
-          Update Account
-        </Link>
+        <Link href="/pages/taikhoan/capnhattaikhoan">Update Account</Link>
       </Menu.Item>
       <Menu.Item onClick={() => logout()}>Logout</Menu.Item>
     </Menu>
@@ -118,7 +100,7 @@ const Header = () => {
     <header className="bg-gray-100 py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-[6rem]">
         <div className="flex items-center">
-          <Link href="#" onClick={() => handleRedirect("/")}>
+          <Link href="/">
             <Image
               src="https://pubcdn.ivymoda.com/ivy2/images/logo.png"
               alt="Logo"
@@ -143,11 +125,7 @@ const Header = () => {
         </div>
 
         <div className="hidden md:hidden lg:flex items-center space-x-2">
-          <Link
-            href="#"
-            onClick={() => handleRedirect("/pages/giohang")}
-            className="flex items-center space-x-2"
-          >
+          <Link href="/pages/giohang" className="flex items-center space-x-2">
             <FaCartPlus className="text-xl" />
             <span>Cart</span>
           </Link>
@@ -208,17 +186,15 @@ const Header = () => {
             </div>
             <div className="flex flex-col space-y-4 mt-4">
               {filteredMenuItems.map((item) => (
-                <Link
-                  key={item.key}
-                  href="#"
-                  onClick={() => handleRedirect(item.href)}
-                  className="font-medium"
-                >
+                <Link key={item.key} href={item.href} className="font-medium">
                   {item.label}
                 </Link>
               ))}
               <div className="flex gap-4 justify-center items-center">
-                <Link href="/cart" className="flex items-center space-x-2">
+                <Link
+                  href="/pages/giohang"
+                  className="flex items-center space-x-2"
+                >
                   <FaCartPlus className="text-xl" />
                   <span>Cart</span>
                 </Link>
@@ -256,12 +232,7 @@ const Header = () => {
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    className="w-full text-left"
-                    onClick={() => handleRedirect("/pages/sanpham")}
-                  >
-                    ALL BRANDS
-                  </Button>
+                  <Button className="w-full text-left">ALL BRANDS</Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem>
@@ -290,12 +261,7 @@ const Header = () => {
           <div className="hidden md:flex">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  className="px-4 py-2 font-medium"
-                  onClick={() => handleRedirect("/pages/sanpham")}
-                >
-                  ALL BRANDS
-                </Button>
+                <Button className="px-4 py-2 font-medium">ALL BRANDS</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
@@ -313,12 +279,7 @@ const Header = () => {
 
           <div className="hidden md:flex justify-center items-center space-x-8">
             {filteredMenuItems.map((item) => (
-              <Link
-                key={item.key}
-                href="#"
-                onClick={() => handleRedirect(item.href)}
-                className="font-medium"
-              >
+              <Link key={item.key} href={item.href} className="font-medium">
                 {item.label}
               </Link>
             ))}

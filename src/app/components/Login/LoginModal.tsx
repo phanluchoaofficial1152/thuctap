@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
@@ -19,7 +17,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { FaUserCircle } from "react-icons/fa";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 
 const LoginModal = () => {
   const [visible, setVisible] = useState(false);
@@ -27,11 +25,10 @@ const LoginModal = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ username: "", password: "" });
   const { login, isAuthenticated } = useAuthStore();
-  const [, navigate] = useLocation();
+
+  const router = useRouter();
 
   const url: string = "https://api-pro.teklearner.com";
-
-  const urlLogin: string = "http://localhost:8005/";
 
   const showModal = () => {
     setVisible(true);
@@ -82,7 +79,7 @@ const LoginModal = () => {
 
         if (isAuthenticated) {
           handleCancel();
-          navigate(String(urlLogin));
+          handleRedirect("/");
         }
       } catch (error: any) {
         message.error(error.message);
@@ -141,8 +138,12 @@ const LoginModal = () => {
   };
 
   const handleRedirect = (url: string) => {
-    navigate(String(url));
-    handleCancel();
+    try {
+      router.push(url);
+      handleCancel();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleBlur = (field: string) => {
@@ -235,12 +236,7 @@ const LoginModal = () => {
             variant="body2"
             sx={{ textAlign: "center", marginTop: 2 }}
           >
-            <Button
-              color="primary"
-              onClick={() => handleRedirect("/pages/taikhoan/quenmatkhau")}
-            >
-              Forgot Password?
-            </Button>
+            <Button color="primary">Forgot Password?</Button>
             <Button
               color="primary"
               onClick={() => handleRedirect("/pages/taikhoan/dangky")}

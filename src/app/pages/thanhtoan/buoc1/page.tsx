@@ -14,7 +14,7 @@ import {
   message,
 } from "antd";
 import { NextPage } from "next";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -40,7 +40,7 @@ const CheckOutStep1: NextPage<{}> = () => {
   const [percent, setPercent] = useState<number>(0);
   const [currentStep, setCurrentStep] = useState<number>(0);
 
-  const [, navigate] = useLocation();
+  const router = useRouter();
 
   const calculatePercent = () => {
     let filledFields = 0;
@@ -73,7 +73,7 @@ const CheckOutStep1: NextPage<{}> = () => {
   const handleContinue = () => {
     if (percent === 100) {
       setCurrentStep(1);
-      navigate("/pages/thanhtoan/buoc2");
+      router.push("/pages/thanhtoan/buoc2");
     } else {
       message.warning("Vui lòng nhập đầy đủ thông tin.");
     }

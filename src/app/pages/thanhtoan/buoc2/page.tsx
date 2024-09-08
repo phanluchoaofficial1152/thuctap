@@ -16,7 +16,7 @@ import {
   InputNumber,
 } from "antd";
 import { NextPage } from "next";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -46,7 +46,7 @@ const CheckOutStep2: NextPage<{}> = () => {
   const [expiryYear, setExpiryYear] = useState<number>(0);
   const [cvv, setCvv] = useState<number>(0);
 
-  const [, navigate] = useLocation();
+  const router = useRouter();
 
   const calculatePercent = () => {
     let filledFields = 0;
@@ -87,7 +87,7 @@ const CheckOutStep2: NextPage<{}> = () => {
 
   const handleContinue = () => {
     if (percent === 100) {
-      navigate("/pages/camon");
+      router.push("/pages/camon");
     } else {
       message.warning("Vui lòng nhập đầy đủ thông tin.");
     }

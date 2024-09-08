@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Breadcrumb, Button, Input, Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useLocation } from "wouter";
+import { useRouter } from "next/navigation";
 
 const { Title, Text } = Typography;
 
@@ -46,7 +46,7 @@ const CartPage: NextPage<{}> = () => {
     Array(products.length).fill(1)
   );
 
-  const [, navigate] = useLocation();
+  const router = useRouter();
 
   const handleQuantityChange = (index: number, value: number) => {
     const newQuantities = [...quantities];
@@ -62,7 +62,7 @@ const CartPage: NextPage<{}> = () => {
   };
 
   const handlePayment = () => {
-    navigate("/pages/thanhtoan/buoc1");
+    router.push("/pages/thanhtoan/buoc1");
   };
 
   return (

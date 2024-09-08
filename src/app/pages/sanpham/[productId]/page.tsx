@@ -698,7 +698,7 @@ const ProductDetails: NextPage<{}> = () => {
               <SwiperSlide key={index + 1}>
                 <div className="bg-white shadow-md rounded-md overflow-hidden">
                   <div className="relativeee">
-                    <Link href={`/sanpham/${product.id}`}>
+                    <Link href={`/pages/sanpham/${product.id}`}>
                       <Image
                         src={
                           "https://pubcdn.ivymoda.com/files/product/thumab/1400/2024/07/31/84bf1a969195253ffbe1bd34f33ebe65.webp"

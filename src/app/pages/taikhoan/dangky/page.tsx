@@ -16,7 +16,7 @@ import {
 import axios from "axios";
 import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
-import { useLocation } from "wouter";
+import { permanentRedirect } from 'next/navigation'
 
 const RegisterPage: NextPage<{}> = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -26,7 +26,6 @@ const RegisterPage: NextPage<{}> = () => {
   const [otp, setOtp] = useState("");
   const [registrationData, setRegistrationData] = useState<any>(null);
   useState<any>(null);
-  const [, navigate] = useLocation();
   const imgbbAPIKey = String(process.env.NEXT_PUBLIC_IMG_UPLOAD_API_KEY);
   const url: string = "https://api-pro.teklearner.com";
 
@@ -175,7 +174,7 @@ const RegisterPage: NextPage<{}> = () => {
       try {
         await axios.post(`${url}/auth/v1/register`, values);
         message.success("Đăng ký thành công!");
-        navigate("/");
+        permanentRedirect("/");
       } catch (error) {
         message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
         console.log("Lỗi: ", error);
@@ -264,7 +263,7 @@ const RegisterPage: NextPage<{}> = () => {
         await axios.post(`${url}/auth/v1/register`, dataSubmit);
         message.success("Đăng ký thành công!");
         setIsModalOpen(false);
-        navigate("/");
+        permanentRedirect("/");
       } catch (error) {
         message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
         console.log("Lỗi: ", error);

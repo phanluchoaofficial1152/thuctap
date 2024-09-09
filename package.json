@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 8005",
+    "dev": "next dev --experimental-https --port 8005",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -29,6 +29,8 @@
     "express": "^4.19.2",
     "firebase": "^10.13.1",
     "formik": "^2.4.6",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.438.0",
     "navaid": "^1.2.0",
@@ -54,7 +56,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
-    "@types/node": "^20",
+    "@types/node": "^20.16.5",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^18",
     "@types/react-dom": "^18",

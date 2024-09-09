@@ -88,7 +88,11 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         const token: string = `${tokenData}.${signature}`;
 
-        Cookies.set("access_token", token, { expires: 7 });
+        Cookies.set("access_token", token, {
+          expires: 7,
+          sameSite: "None",
+          secure: true,
+        });
 
         set({
           isAuthenticated: true,
@@ -218,7 +222,11 @@ export const useAuthStore = create<AuthState>((set) => ({
         );
 
         const newToken: string = `${newTokenData}.${newSignature}`;
-        Cookies.set("access_token", newToken, { expires: 1 / 24 });
+        Cookies.set("access_token", newToken, {
+          expires: 1 / 24,
+          sameSite: "None",
+          secure: true,
+        });
 
         set({ token: newToken });
         useAuthStore.getState().scheduleTokenRefresh();
@@ -235,7 +243,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (token) {
       setTimeout(() => {
         useAuthStore.getState().refreshToken();
-      }, 15 * 60 * 1000);
+      }, 2 * 60 * 1000);
     }
   },
 }));

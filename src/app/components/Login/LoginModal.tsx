@@ -19,7 +19,6 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithPopup } from "firebase/auth";
 import { message } from "antd";
 import { FaUserCircle } from "react-icons/fa";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const LoginModal = () => {
@@ -79,9 +78,9 @@ const LoginModal = () => {
       try {
         await login(username, password);
 
-        if (isAuthenticated) {
-          handleCancel();
-        }
+        // if (isAuthenticated) {
+        //   handleCancel();
+        // }
       } catch (error: any) {
         message.error(error.message);
         console.log("Login error:", error);
@@ -123,9 +122,10 @@ const LoginModal = () => {
           const password = accessToken;
 
           await login(email, password);
-          if (isAuthenticated) {
-            handleCancel();
-          }
+
+          // if (isAuthenticated) {
+          //   handleCancel();
+          // }
         } else {
           message.error("Email không tồn tại trong hệ thống.");
         }

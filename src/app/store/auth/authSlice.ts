@@ -90,9 +90,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
         Cookies.set("access_token", token, {
           expires: 7,
-          sameSite: "Strict",
-          secure: true,
-          partitioned: true, 
         });
 
         set({
@@ -225,9 +222,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         const newToken: string = `${newTokenData}.${newSignature}`;
         Cookies.set("access_token", newToken, {
           expires: 1 / 24,
-          sameSite: "Strict",
-          secure: true,
-          partitioned: true, 
         });
 
         set({ token: newToken });

@@ -8,26 +8,34 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 import Image from "next/image";
-import {
-  GoogleOutlined,
-  InstagramOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { GoogleOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { fetchSignInMethodsForEmail, signInWithPopup } from "firebase/auth";
+import {
+  fetchSignInMethodsForEmail,
+  GithubAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth, provider } from "@/app/firebase/firebaseConfig";
-import { permanentRedirect } from 'next/navigation'
+import { permanentRedirect } from "next/navigation";
+import { FaGithub } from "react-icons/fa";
 
 const RegisterPage: NextPage<{}> = () => {
   const [image, setImage] = useState<string | null>(null);
   const [otpSent, setOtpSent] = useState(false);
   const [resendTimeout, setResendTimeout] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenGithub, setIsModalOpenGithub] = useState(false);
   const [otp, setOtp] = useState("");
+  const [otpGithub, setOtpGithub] = useState("");
   const [registrationData, setRegistrationData] = useState<any>(null);
+  useState<any>(null);
+  const [registrationDataGithub, setRegistrationDataGithub] =
+    useState<any>(null);
   useState<any>(null);
   const imgbbAPIKey = String(process.env.NEXT_PUBLIC_IMG_UPLOAD_API_KEY);
   const url: string = "https://api-pro.teklearner.com";
+
+  const gitHubProvider = new GithubAuthProvider();
 
   const breadcrumbItems = [
     {
@@ -101,6 +109,26 @@ const RegisterPage: NextPage<{}> = () => {
   };
 
   const checkEmailGoogle = async (email: string): Promise<boolean> => {
+    try {
+      const response = await axios.post(`${url}/auth/v1/check-email`, {
+        email,
+      });
+
+      if (response.data.data === true) {
+        message.error("Email đã tồn tại trong hệ thống.");
+        return false;
+      }
+
+      const firebaseCheck = await checkEmailFirebase(email);
+      return firebaseCheck;
+    } catch (error) {
+      message.error("Đã xảy ra lỗi trong quá trình kiểm tra.");
+      console.log("Lỗi: ", error);
+      return false;
+    }
+  };
+
+  const checkEmailGithub = async (email: string): Promise<boolean> => {
     try {
       const response = await axios.post(`${url}/auth/v1/check-email`, {
         email,
@@ -247,7 +275,7 @@ const RegisterPage: NextPage<{}> = () => {
         }
       }
     } catch (error) {
-      message.error("Đăng nhập bằng Google thất bại.");
+      message.error("Đăng ký bằng Google thất bại.");
       console.log("Lỗi: ", error);
     }
   };
@@ -263,6 +291,79 @@ const RegisterPage: NextPage<{}> = () => {
         await axios.post(`${url}/auth/v1/register`, dataSubmit);
         message.success("Đăng ký thành công!");
         setIsModalOpen(false);
+        permanentRedirect("/");
+      } catch (error) {
+        message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
+        console.log("Lỗi: ", error);
+      }
+    };
+
+    const handleOk = () => {
+      handleSubmit();
+    };
+
+    return { handleOk };
+  };
+
+  const handleGithubRegister = async () => {
+    try {
+      const result = await signInWithPopup(auth, gitHubProvider);
+      const user = result.user;
+      const email = user.email;
+      const phone =
+        user.phoneNumber ||
+        `09${Math.floor(10000000 + Math.random() * 90000000)}`;
+
+      if (email) {
+        const valid = await checkEmailGithub(email);
+
+        if (valid) {
+          const fullAccessToken = await user.getIdToken();
+          const accessToken = fullAccessToken.slice(0, 20);
+
+          const otpResponse = await axios.post(
+            `${url}/auth/v1/send-otp-email`,
+            { email }
+          );
+
+          if (otpResponse.status === 200) {
+            message.success("Mã OTP đã được gửi đến email.");
+            setIsModalOpenGithub(true);
+
+            if (otpResponse.status === 200) {
+              message.success("Mã OTP đã được gửi đến email.");
+              setIsModalOpenGithub(true);
+
+              const registrationData = {
+                name: user.displayName || "Phan Lục Hòa",
+                email,
+                phone,
+                password: accessToken,
+                otp: "",
+              };
+
+              setRegistrationDataGithub(registrationData);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      message.error("Đăng ký bằng Github thất bại.");
+      console.log("Lỗi: ", error);
+    }
+  };
+
+  const submitRegisterGithub = async (data: any, otpGithub: string) => {
+    const dataSubmit: any = {
+      ...data,
+      otpGithub,
+    };
+
+    const handleSubmit = async () => {
+      try {
+        await axios.post(`${url}/auth/v1/register`, dataSubmit);
+        message.success("Đăng ký thành công!");
+        setIsModalOpenGithub(false);
         permanentRedirect("/");
       } catch (error) {
         message.error("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
@@ -336,10 +437,40 @@ const RegisterPage: NextPage<{}> = () => {
                     onChange={(e) => setOtp(e.target.value)}
                   />
                 </Modal>
-                <Button icon={<InstagramOutlined />}>
-                  Register with Instagram
+                <Button icon={<FaGithub />} onClick={handleGithubRegister}>
+                  Register with Github
                 </Button>
+                <Modal
+                  title="Nhập mã OTP"
+                  open={isModalOpenGithub}
+                  onOk={async () => {
+                    if (registrationDataGithub) {
+                      const response = await submitRegisterGithub(
+                        registrationDataGithub,
+                        otpGithub
+                      );
+                      response.handleOk();
+                    } else {
+                      message.error(
+                        "Đăng ký không thành công. Vui lòng thử lại."
+                      );
+                    }
+                  }}
+                  onCancel={() => setIsModalOpenGithub(false)}
+                >
+                  <Input
+                    placeholder="Nhập mã OTP"
+                    value={otp}
+                    onChange={(e) => setOtpGithub(e.target.value)}
+                  />
+                </Modal>
               </div>
+
+              <p className="text-center text-red-600">
+                <b className="underline font-extrabold">Lưu ý:</b> Mỗi email chỉ
+                được đăng ký 1 lần, nếu đã đăng ký bằng Google trước đó thì
+                không đăng ký qua Github được.
+              </p>
 
               <div className="text-center mb-4">OR</div>
 

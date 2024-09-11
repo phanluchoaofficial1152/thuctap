@@ -468,8 +468,7 @@ const RegisterPage: NextPage<{}> = () => {
 
               <p className="text-center text-red-600">
                 <b className="underline font-extrabold">Lưu ý:</b> Mỗi email chỉ
-                được đăng ký 1 lần, nếu đã đăng ký bằng Google trước đó thì
-                không đăng ký qua Github được.
+                được đăng ký 1 lần.
               </p>
 
               <div className="text-center mb-4">OR</div>

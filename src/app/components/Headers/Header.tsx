@@ -120,7 +120,7 @@ const Header = () => {
             variant="ghost"
             className="absolute top-[40%] right-3 transform -translate-y-1/2 p-2 flex items-center justify-center"
           >
-            <FaSearch className="text-gray-500" />
+            <FaSearch className="text-gray-600" />
           </Button>
         </div>
 
@@ -135,7 +135,7 @@ const Header = () => {
               <CircularProgress style={{ width: 20, height: 20 }} />
             ) : isAuthenticated ? (
               <Dropdown overlay={userMenu} trigger={["click"]}>
-                <div className="flex items-center space-x-2 cursor-pointer">
+                <div className="flex items-center space-x-2 cursor-pointer whitespace-nowrap">
                   <Image
                     src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
                     alt={displayName ? displayName : "Avatar"}
@@ -204,7 +204,7 @@ const Header = () => {
                     <CircularProgress style={{ width: 20, height: 20 }} />
                   ) : isAuthenticated ? (
                     <Dropdown overlay={userMenu} trigger={["click"]}>
-                      <div className="flex items-center space-x-2 cursor-pointer">
+                      <div className="flex items-center space-x-2 cursor-pointer whitespace-nowrap">
                         <Image
                           src="https://files.fullstack.edu.vn/f8-prod/avatars/EYI0ooSfnavZu3jDqtuGgZqWq0uCYVs0mwbpbgHy.png"
                           alt={displayName ? displayName : "Avatar"}

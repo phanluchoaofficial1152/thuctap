@@ -78,9 +78,9 @@ const LoginModal = () => {
       try {
         await login(username, password);
 
-        // if (isAuthenticated) {
-        //   handleCancel();
-        // }
+        if (isAuthenticated) {
+          handleCancel();
+        }
       } catch (error: any) {
         message.error(error.message);
         console.log("Login error:", error);
@@ -123,9 +123,9 @@ const LoginModal = () => {
 
           await login(email, password);
 
-          // if (isAuthenticated) {
-          //   handleCancel();
-          // }
+          if (isAuthenticated) {
+            handleCancel();
+          }
         } else {
           message.error("Email không tồn tại trong hệ thống.");
         }

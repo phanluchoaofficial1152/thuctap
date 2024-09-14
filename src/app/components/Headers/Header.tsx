@@ -14,6 +14,7 @@ import { Dropdown, Menu } from "antd";
 import { useAuthStore } from "@/app/store/auth/authSlice";
 import LoginModal from "../Login/LoginModal";
 import { CircularProgress } from "@mui/material";
+import { useCartStore } from "@/app/store/cart/cartStore";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,6 +44,13 @@ const Header = () => {
       href: "/pages/danhmuc/sell-with-us",
     },
   ]);
+
+  const [cartLength, setCartLength] = useState(0);
+  const cart = useCartStore((state) => state.cart);
+
+  useEffect(() => {
+    setCartLength(cart.length);
+  }, [cart]);
 
   const fetchClassData = async () => {
     try {
@@ -125,9 +133,15 @@ const Header = () => {
         </div>
 
         <div className="hidden md:hidden lg:flex items-center space-x-2">
-          <Link href="/pages/giohang" className="flex items-center space-x-2">
+          <Link
+            href="/pages/giohang"
+            className="flex items-center space-x-2 relative"
+          >
             <FaCartPlus className="text-xl" />
             <span>Cart</span>
+            <span className="absolute top-0 left-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+              {cartLength}
+            </span>
           </Link>
           <span>|</span>
           <Link href="#" className="flex items-center space-x-2">
@@ -193,10 +207,13 @@ const Header = () => {
               <div className="flex gap-4 justify-center items-center">
                 <Link
                   href="/pages/giohang"
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-2 relative"
                 >
                   <FaCartPlus className="text-xl" />
                   <span>Cart</span>
+                  <span className="absolute top-0 left-0 translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                    {cartLength}
+                  </span>
                 </Link>
                 <span>|</span>
                 <Link href="#" className="flex items-center space-x-2">

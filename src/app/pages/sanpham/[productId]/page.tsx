@@ -23,6 +23,7 @@ import "swiper/css/navigation";
 
 import "./details.css";
 import { NextPage } from "next";
+import { useCartStore } from "@/app/store/cart/cartStore";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -102,6 +103,7 @@ const ProductDetails: NextPage<{}> = () => {
   const [visible, setVisible] = useState(false);
   const [desiredPrice, setDesiredPrice] = useState("");
   const [email, setEmail] = useState("");
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const showModal = () => {
     setVisible(true);
@@ -199,6 +201,17 @@ const ProductDetails: NextPage<{}> = () => {
       title: classDetail?.class_name,
     },
   ];
+
+  const handleAddToCart = (product: ClassDetail) => {
+    const cartItem = {
+      id: product.id,
+      name: product.class_name,
+      price: product.course_price,
+      quantity: 1,
+    };
+
+    addToCart(cartItem);
+  };
 
   return (
     <>
@@ -377,7 +390,12 @@ const ProductDetails: NextPage<{}> = () => {
               </div>
             </Modal>
             <div className="mt-6 flex space-x-4">
-              <Button type="primary" size="large" className="w-full md:w-auto">
+              <Button
+                type="primary"
+                size="large"
+                className="w-full md:w-auto"
+                onClick={() => handleAddToCart(classDetail!)}
+              >
                 ADD TO CART
               </Button>
               <Button
